@@ -1,5 +1,4 @@
 import {
-  Trophy,
   Users,
   CalendarDays,
   Images,
@@ -7,15 +6,6 @@ import {
   ScrollText,
 } from "lucide-react";
 import { PlaceholderPage } from "@/components/PlaceholderPage";
-
-export const Leaderboard = () => (
-  <PlaceholderPage
-    testId="leaderboard-page"
-    title="Leaderboard"
-    icon={Trophy}
-    description="Live scoring and standings for the 8th Annual Dalleo Open will appear here during tournament weekend."
-  />
-);
 
 export const Teams = () => (
   <PlaceholderPage

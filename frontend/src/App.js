@@ -4,8 +4,8 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { ScrollToTop } from "@/components/ScrollToTop";
 import Home from "@/pages/Home";
+import Leaderboard from "@/pages/Leaderboard";
 import {
-  Leaderboard,
   Teams,
   Schedule,
   Gallery,
