@@ -2,6 +2,11 @@
 // Replace these exports with API-fed data in a future sprint — components
 // only read from this file, so the page layout never changes.
 
+// Team names, colors, and captains come from the shared team source.
+import { TEAMS, TEAM_VISUALS } from "@/data/teams";
+
+export { TEAM_VISUALS };
+
 // Flip to false to see the pre-tournament empty state.
 export const SCORING_STARTED = true;
 
@@ -12,31 +17,27 @@ export const ROUNDS = [
   { id: "final", label: "Final" },
 ];
 
-export const TEAM_VISUALS = {
-  green: { dot: "#1F4E3D", label: "Green" },
-  gold: { dot: "#C9A227", label: "Gold" },
-  white: { dot: "#FFFFFF", label: "White" },
-  black: { dot: "#262B2E", label: "Black" },
+const team = (rank, colorKey, points, movement, status) => {
+  const identity = TEAMS.find((t) => t.colorKey === colorKey);
+  return {
+    rank,
+    colorKey,
+    name: identity.name,
+    captain: identity.captain,
+    points,
+    movement,
+    status,
+  };
 };
-
-const team = (rank, colorKey, name, captain, points, movement, status) => ({
-  rank,
-  colorKey,
-  name,
-  captain,
-  points,
-  movement,
-  status,
-});
 
 export const LEADERBOARD = {
   overall: {
     meta: { roundLabel: "Round 2", status: "live", statusLabel: "Live", updatedAt: "Today at 2:18 PM" },
     standings: [
-      team(1, "green", "Team Green", "M. Dalleo", 124, { dir: "same" }, "live"),
-      team(2, "gold", "Team Gold", "J. Carter", 119, { dir: "up", places: 1 }, "live"),
-      team(3, "white", "Team White", "S. Reyes", 113, { dir: "down", places: 1 }, "live"),
-      team(4, "black", "Team Black", "T. O'Neil", 109, { dir: "same" }, "live"),
+      team(1, "green", 124, { dir: "same" }, "live"),
+      team(2, "gold", 119, { dir: "up", places: 1 }, "live"),
+      team(3, "white", 113, { dir: "down", places: 1 }, "live"),
+      team(4, "black", 109, { dir: "same" }, "live"),
     ],
     matches: [
       { id: "match-1", name: "Match 1 · Group A", home: "green", away: "gold", status: "in-progress", score: "32 – 30" },
@@ -47,10 +48,10 @@ export const LEADERBOARD = {
   round1: {
     meta: { roundLabel: "Round 1", status: "final", statusLabel: "Final", updatedAt: "Saturday at 6:42 PM" },
     standings: [
-      team(1, "green", "Team Green", "M. Dalleo", 61, null, "final"),
-      team(2, "white", "Team White", "S. Reyes", 58, null, "final"),
-      team(3, "gold", "Team Gold", "J. Carter", 56, null, "final"),
-      team(4, "black", "Team Black", "T. O'Neil", 52, null, "final"),
+      team(1, "green", 61, null, "final"),
+      team(2, "white", 58, null, "final"),
+      team(3, "gold", 56, null, "final"),
+      team(4, "black", 52, null, "final"),
     ],
     matches: [
       { id: "r1-match-1", name: "Match 1 · Group A", home: "green", away: "white", status: "final", score: "61 – 58" },
@@ -60,10 +61,10 @@ export const LEADERBOARD = {
   round2: {
     meta: { roundLabel: "Round 2", status: "live", statusLabel: "Live", updatedAt: "Today at 2:18 PM" },
     standings: [
-      team(1, "green", "Team Green", "M. Dalleo", 63, { dir: "same" }, "live"),
-      team(2, "gold", "Team Gold", "J. Carter", 62, { dir: "up", places: 1 }, "live"),
-      team(3, "black", "Team Black", "T. O'Neil", 57, { dir: "up", places: 1 }, "live"),
-      team(4, "white", "Team White", "S. Reyes", 55, { dir: "down", places: 2 }, "live"),
+      team(1, "green", 63, { dir: "same" }, "live"),
+      team(2, "gold", 62, { dir: "up", places: 1 }, "live"),
+      team(3, "black", 57, { dir: "up", places: 1 }, "live"),
+      team(4, "white", 55, { dir: "down", places: 2 }, "live"),
     ],
     matches: [
       { id: "r2-match-1", name: "Match 1 · Group A", home: "green", away: "gold", status: "in-progress", score: "32 – 30" },
@@ -74,10 +75,10 @@ export const LEADERBOARD = {
   final: {
     meta: { roundLabel: "Final Round", status: "upcoming", statusLabel: "Upcoming", updatedAt: "Sunday, time TBA" },
     standings: [
-      team(1, "green", "Team Green", "M. Dalleo", null, null, "upcoming"),
-      team(2, "gold", "Team Gold", "J. Carter", null, null, "upcoming"),
-      team(3, "white", "Team White", "S. Reyes", null, null, "upcoming"),
-      team(4, "black", "Team Black", "T. O'Neil", null, null, "upcoming"),
+      team(1, "green", null, null, "upcoming"),
+      team(2, "gold", null, null, "upcoming"),
+      team(3, "white", null, null, "upcoming"),
+      team(4, "black", null, null, "upcoming"),
     ],
     matches: [
       { id: "f-match-1", name: "Championship Match", home: "green", away: "gold", status: "upcoming", score: null },

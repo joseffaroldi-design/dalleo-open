@@ -1,20 +1,10 @@
 import {
-  Users,
   CalendarDays,
   Images,
   Heart,
   ScrollText,
 } from "lucide-react";
 import { PlaceholderPage } from "@/components/PlaceholderPage";
-
-export const Teams = () => (
-  <PlaceholderPage
-    testId="teams-page"
-    title="Teams"
-    icon={Users}
-    description="Meet the teams competing in this year's Dalleo Open. Rosters and pairings will be announced soon."
-  />
-);
 
 export const Schedule = () => (
   <PlaceholderPage

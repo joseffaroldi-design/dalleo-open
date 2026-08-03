@@ -5,8 +5,9 @@ import { Footer } from "@/components/Footer";
 import { ScrollToTop } from "@/components/ScrollToTop";
 import Home from "@/pages/Home";
 import Leaderboard from "@/pages/Leaderboard";
+import Teams from "@/pages/Teams";
+import TeamDetail from "@/pages/TeamDetail";
 import {
-  Teams,
   Schedule,
   Gallery,
   Brandon,
@@ -24,6 +25,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/leaderboard" element={<Leaderboard />} />
             <Route path="/teams" element={<Teams />} />
+            <Route path="/teams/:teamId" element={<TeamDetail />} />
             <Route path="/schedule" element={<Schedule />} />
             <Route path="/gallery" element={<Gallery />} />
             <Route path="/brandon" element={<Brandon />} />

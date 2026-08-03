@@ -25,11 +25,13 @@ Build the Dalleo Open Digital Clubhouse, a modern, mobile-first web app for the 
 - 2026-07-03 (Sprint 1): Full responsive frontend foundation — all 7 routes, Home with all specified sections, 6 placeholder pages, sticky responsive navbar with mobile menu, footer with nav + Instagram placeholder + copyright, Dalleo design system (palette + Manrope), data-testids on all interactive elements, ScrollToTop, page title/meta. Verified via screenshots (desktop home, mobile home, mobile nav, placeholder pages) and navigation click-throughs.
 - 2026-07-03 (Sprint 2): Live Leaderboard public experience with centralized mock data (src/data/leaderboard.js) — page header (round, Live status, updated time), featured current-leader card with lead margin, ranked 4-team standings with color identifiers/captains/movement/status chips, Current Matches section (In Progress/Final/Upcoming with scores), front-end round selector (Overall/Round 1/Round 2/Final over local datasets), pre-tournament empty state via SCORING_STARTED flag, compact homepage leaderboard preview fed by the same data file. Verified: all 4 round options, empty state, navigation to/from, no mobile horizontal overflow, production build passing, all Sprint 1 routes intact.
 
+- 2026-07-03 (Sprint 3): Public Teams experience — Teams page (header + 2-col card grid), team detail route /teams/:teamId (dedicated accessible route with back control, bad-id redirect), roster views with initials avatars and Captain labels, pre-announcement empty state via TEAMS_ANNOUNCED flag, compact homepage Teams preview (4 teams · 24 players + captain color row). Team identity centralized in src/data/teams.js (TEAMS with id/colorKey/name/captain/motto/roster, TEAM_VISUALS); leaderboard.js now derives team names/captains/colors from it — zero duplication, leaderboard behavior unchanged. Verified: all 4 detail views, all back/close controls, empty state toggle, no mobile/tablet overflow, leaderboard consistency, all routes, build passing.
+
 ## Backlog (future sprints — NOT built, awaiting approval)
 - P0: Live countdown to tournament date, real tournament date, real logo/hero photo/Brandon photo assets
-- P1: Real leaderboard data via backend API + database (mock file is API-ready swap point), teams/rosters content, full schedule content, gallery with uploads, Brandon memorial page content, rules content
-- P2: Admin dashboard, authentication, CMS/announcements management, push notifications, statistics, hole-by-hole scoring
+- P1: Real leaderboard/teams data via backend API + database (data files are API-ready swap points), full schedule content, gallery with uploads, Brandon memorial page content, rules content
+- P2: Admin dashboard, authentication, CMS/announcements management, push notifications, statistics, hole-by-hole scoring, draft board
 
 ## Next Tasks
 1. Obtain brand assets (logo, hero photo, Brandon photo) and tournament date
-2. Sprint 3 scoping with stakeholder approval (likely: backend + real scoring data, or Teams/Schedule content)
+2. Sprint 4 scoping with stakeholder approval (Schedule page content is the next untouched public page)

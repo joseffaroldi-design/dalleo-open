@@ -13,7 +13,7 @@ export const LeaderboardPreview = () => {
     <section
       data-testid="home-leaderboard-preview"
       aria-labelledby="home-leaderboard-title"
-      className="mx-auto max-w-6xl px-4 pb-20 sm:px-6 sm:pb-28"
+      className="mx-auto max-w-6xl px-4 pb-6 sm:px-6 sm:pb-8"
     >
       <div className="flex flex-col gap-6 rounded-3xl bg-forest p-7 shadow-md ring-1 ring-gold/40 sm:flex-row sm:items-center sm:justify-between sm:p-9">
         <div>
