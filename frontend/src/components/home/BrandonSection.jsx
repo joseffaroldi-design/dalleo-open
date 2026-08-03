@@ -1,0 +1,48 @@
+import { Link } from "react-router-dom";
+import { Heart, ImageIcon } from "lucide-react";
+
+export const BrandonSection = () => (
+  <section
+    data-testid="brandon-section"
+    aria-labelledby="brandon-title"
+    className="mx-auto max-w-6xl px-4 py-20 sm:px-6 sm:py-28"
+  >
+    <div className="grid grid-cols-1 items-center gap-12 md:grid-cols-2">
+      <div
+        data-testid="brandon-photo-placeholder"
+        role="img"
+        aria-label="Photo of Brandon Dalleo — coming soon"
+        className="flex aspect-[4/5] w-full flex-col items-center justify-center gap-3 rounded-3xl border-2 border-dashed border-forest/25 bg-forest-mist text-forest/50"
+      >
+        <ImageIcon className="h-10 w-10" aria-hidden="true" />
+        <span className="text-sm font-semibold">Photo of Brandon coming soon</span>
+      </div>
+      <div>
+        <p className="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-[0.2em] text-gold-deep">
+          <Heart className="h-4 w-4" aria-hidden="true" />
+          Remembering Brandon
+        </p>
+        <h2
+          id="brandon-title"
+          className="mt-4 text-3xl font-extrabold tracking-tight text-forest sm:text-4xl"
+        >
+          More than a tournament.
+        </h2>
+        <p className="mt-6 text-base leading-relaxed text-charcoal/70">
+          The Dalleo Open began as a way for friends and family to honor
+          Brandon Dalleo — his love of the game, his laugh on the course, and
+          the way he brought people together. Eight years on, it remains a
+          weekend about community, remembrance, and celebrating a life well
+          lived.
+        </p>
+        <Link
+          to="/brandon"
+          data-testid="learn-about-brandon-button"
+          className="mt-9 inline-flex min-h-12 items-center rounded-full bg-gold px-8 py-3 text-base font-extrabold text-forest-deep shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:bg-gold-soft hover:shadow-md"
+        >
+          Learn About Brandon
+        </Link>
+      </div>
+    </div>
+  </section>
+);
