@@ -39,10 +39,17 @@ export const Footer = () => {
           ))}
         </nav>
       </div>
-      <div className="mt-12 border-t border-cream/10 pt-6 text-center text-xs text-cream/50 sm:text-left">
+      <div className="mt-12 flex flex-wrap items-center justify-between gap-3 border-t border-cream/10 pt-6 text-center text-xs text-cream/50 sm:text-left">
         <p data-testid="footer-copyright">
           &copy; {new Date().getFullYear()} Dalleo Open. All rights reserved.
         </p>
+        <Link
+          to="/admin/login"
+          data-testid="footer-organizer-link"
+          className="rounded-md py-1 font-semibold text-cream/40 transition-colors duration-200 hover:text-gold"
+        >
+          Organizer Login
+        </Link>
       </div>
     </div>
   </footer>
