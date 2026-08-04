@@ -13,14 +13,16 @@ export const LeaderboardPreview = () => {
   if (liveLb) {
     started = liveLb.scoringStarted;
     const teams = liveTeams?.items ?? TEAMS;
+    const byId = Object.fromEntries(teams.map((t) => [t.id, t]));
     const byColor = Object.fromEntries(teams.map((t) => [t.colorKey, t]));
     const rows = liveLb.standings
       .filter((s) => s.points !== null && s.points !== undefined)
       .sort((a, b) => b.points - a.points);
+    const leadTeam = rows.length ? byId[rows[0].teamId] ?? byColor[rows[0].colorKey] : null;
     summary =
       rows.length >= 2
         ? {
-            leader: { ...rows[0], name: byColor[rows[0].colorKey]?.name ?? rows[0].colorKey },
+            leader: { colorKey: leadTeam?.colorKey ?? "green", name: leadTeam?.name ?? "Team", points: rows[0].points },
             lead: rows[0].points - rows[1].points,
           }
         : null;

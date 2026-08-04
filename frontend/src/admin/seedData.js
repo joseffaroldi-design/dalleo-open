@@ -21,7 +21,7 @@ export const SEED = {
     status: LEADERBOARD.overall.meta.status,
     statusLabel: LEADERBOARD.overall.meta.statusLabel,
     updatedAt: LEADERBOARD.overall.meta.updatedAt,
-    standings: LEADERBOARD.overall.standings.map((s) => ({ colorKey: s.colorKey, points: s.points, status: s.status })),
+    standings: LEADERBOARD.overall.standings.map((s) => ({ teamId: s.colorKey, points: s.points, status: s.status })),
   }),
   teams: () => ({ published: TEAMS_ANNOUNCED, items: TEAMS.map((t) => ({ ...t, players: t.players.map((p) => ({ ...p })) })) }),
   schedule: () => ({

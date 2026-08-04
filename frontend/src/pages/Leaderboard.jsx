@@ -17,18 +17,22 @@ export default function Leaderboard() {
   const { rounds, started } = useMemo(() => {
     if (!liveLb) return { rounds: LEADERBOARD, started: SCORING_STARTED };
     const teams = liveTeams?.items ?? TEAMS;
+    const byId = Object.fromEntries(teams.map((t) => [t.id, t]));
     const byColor = Object.fromEntries(teams.map((t) => [t.colorKey, t]));
     const standings = [...liveLb.standings]
       .sort((a, b) => (b.points ?? -1) - (a.points ?? -1))
-      .map((s, i) => ({
-        rank: i + 1,
-        colorKey: s.colorKey,
-        name: byColor[s.colorKey]?.name ?? `Team ${s.colorKey}`,
-        captain: byColor[s.colorKey]?.captain ?? "",
-        points: s.points,
-        movement: null,
-        status: s.status,
-      }));
+      .map((s, i) => {
+        const team = byId[s.teamId] ?? byColor[s.colorKey];
+        return {
+          rank: i + 1,
+          colorKey: team?.colorKey ?? "green",
+          name: team?.name ?? s.teamId ?? "Team",
+          captain: team?.captain ?? "",
+          points: s.points,
+          movement: null,
+          status: s.status,
+        };
+      });
     return {
       started: liveLb.scoringStarted,
       rounds: {

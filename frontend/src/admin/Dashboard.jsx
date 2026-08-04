@@ -31,11 +31,12 @@ export default function Dashboard() {
       .then(([announcements, leaderboard, teams, schedule, gallery]) => {
         const teamList = teams?.items ?? TEAMS;
         const lbStandings = leaderboard?.standings ?? LEADERBOARD.overall.standings;
+        const byId = Object.fromEntries(teamList.map((t) => [t.id, t]));
         const byColor = Object.fromEntries(teamList.map((t) => [t.colorKey, t]));
         const started = lbStandings.filter((s) => s.points !== null && s.points !== undefined);
-        const leader = started.length
-          ? byColor[[...started].sort((a, b) => b.points - a.points)[0].colorKey]?.name ?? "—"
-          : "Not started";
+        const top = started.length ? [...started].sort((a, b) => b.points - a.points)[0] : null;
+        const topTeam = top ? byId[top.teamId] ?? byColor[top.colorKey] : null;
+        const leader = topTeam?.name ?? "Not started";
         const events = schedule?.events ?? DAYS.flatMap((d) => SCHEDULE[d.id]);
         const galleryItems = gallery?.items ?? GALLERY_ITEMS;
         const announcementsList = announcements?.items?.filter((a) => a.published) ?? [];

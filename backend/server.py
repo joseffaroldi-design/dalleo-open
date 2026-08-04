@@ -127,7 +127,7 @@ class AnnouncementsDoc(BaseModel):
 
 
 class StandingInput(BaseModel):
-    colorKey: Literal["green", "gold", "white", "black"]
+    teamId: str = Field(min_length=1, max_length=40)
     points: Optional[int] = Field(None, ge=0, le=9999)
     status: Literal["live", "final", "upcoming"]
 

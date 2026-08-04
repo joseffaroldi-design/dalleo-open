@@ -1,5 +1,6 @@
+import { useEffect, useState } from "react";
+import { adminFetch } from "@/lib/api";
 import { SEED } from "@/admin/seedData";
-import { TEAMS } from "@/data/teams";
 import {
   useAdminDomain, AdminSection, AdminLoading, Field, TextInput,
   SelectInput, Toggle, SaveBar,
@@ -13,16 +14,27 @@ const STATUS_OPTIONS = [
 
 export default function LeaderboardAdmin() {
   const { data, setData, loading, saving, saved, error, save } = useAdminDomain("leaderboard", SEED.leaderboard);
+  const [teams, setTeams] = useState(null);
 
-  if (loading || !data) return <AdminLoading />;
+  useEffect(() => {
+    adminFetch("/admin/teams")
+      .then((res) => setTeams(res.data?.items?.length ? res.data.items : SEED.teams().items))
+      .catch(() => setTeams(SEED.teams().items));
+  }, []);
+
+  if (loading || !data || !teams) return <AdminLoading />;
 
   const update = (patch) => setData((d) => ({ ...d, ...patch }));
-  const updateStanding = (colorKey, patch) =>
-    setData((d) => ({
-      ...d,
-      standings: d.standings.map((s) => (s.colorKey === colorKey ? { ...s, ...patch } : s)),
-    }));
-  const teamName = (colorKey) => TEAMS.find((t) => t.colorKey === colorKey)?.name ?? colorKey;
+  const updateStanding = (teamId, patch) =>
+    setData((d) => {
+      const exists = d.standings.some((s) => s.teamId === teamId);
+      return {
+        ...d,
+        standings: exists
+          ? d.standings.map((s) => (s.teamId === teamId ? { ...s, ...patch } : s))
+          : [...d.standings, { teamId, points: null, status: "upcoming", ...patch }],
+      };
+    });
 
   return (
     <div data-testid="leaderboard-admin">
@@ -50,29 +62,35 @@ export default function LeaderboardAdmin() {
           </div>
         </AdminSection>
 
-        <AdminSection title="Team Totals" description="Leave points empty for teams that have not started." testId="lb-teams-section">
-          {data.standings.map((s) => (
-            <div key={s.colorKey} data-testid={`lb-row-${s.colorKey}`} className="grid grid-cols-1 items-end gap-3 rounded-2xl border border-border p-4 sm:grid-cols-3">
-              <p className="self-center font-extrabold text-charcoal">{teamName(s.colorKey)}</p>
-              <Field label="Total points">
-                <TextInput
-                  type="number"
-                  min="0"
-                  data-testid={`lb-points-${s.colorKey}`}
-                  value={s.points ?? ""}
-                  onChange={(e) => updateStanding(s.colorKey, { points: e.target.value === "" ? null : Number(e.target.value) })}
-                />
-              </Field>
-              <Field label="Status">
-                <SelectInput
-                  data-testid={`lb-team-status-${s.colorKey}`}
-                  value={s.status}
-                  onChange={(e) => updateStanding(s.colorKey, { status: e.target.value })}
-                  options={STATUS_OPTIONS}
-                />
-              </Field>
-            </div>
-          ))}
+        <AdminSection title="Team Totals" description="Leave points empty for teams that have not started. Standings sort by points automatically." testId="lb-teams-section">
+          {teams.map((t) => {
+            const s = data.standings.find((x) => x.teamId === t.id) ?? { points: null, status: "upcoming" };
+            return (
+              <div key={t.id} data-testid={`lb-row-${t.id}`} className="grid grid-cols-1 items-end gap-3 rounded-2xl border border-border p-4 sm:grid-cols-3">
+                <p className="self-center font-extrabold text-charcoal">
+                  {t.name}
+                  <span className="ml-2 text-xs font-semibold text-charcoal/50">Capt. {t.captain}</span>
+                </p>
+                <Field label="Total points">
+                  <TextInput
+                    type="number"
+                    min="0"
+                    data-testid={`lb-points-${t.id}`}
+                    value={s.points ?? ""}
+                    onChange={(e) => updateStanding(t.id, { points: e.target.value === "" ? null : Number(e.target.value) })}
+                  />
+                </Field>
+                <Field label="Status">
+                  <SelectInput
+                    data-testid={`lb-team-status-${t.id}`}
+                    value={s.status}
+                    onChange={(e) => updateStanding(t.id, { status: e.target.value })}
+                    options={STATUS_OPTIONS}
+                  />
+                </Field>
+              </div>
+            );
+          })}
         </AdminSection>
       </div>
 
