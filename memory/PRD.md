@@ -73,6 +73,8 @@ Build the Dalleo Open Digital Clubhouse, a modern, mobile-first web app for the 
 
 - 2026-08-04 (Awards + captain PINs): Awards Ceremony added to Saturday at 2:00 PM (between Tournament Start and the 2:30 bus) on both environments. Official captain PINs generated and set for all 8 teams on BOTH preview and production (hashed, verified with live captain logins on both); recorded in test_credentials.md.
 
+- 2026-08-04 (After Party): "After Party at G's" (3:30 PM–Till, Gennaro's) added as the final Saturday event on both environments — full day now 10 events. Owner confirmed pairings arrive tournament morning for lock-in on both environments.
+
 ## Backlog (post-launch evaluation — NOT built)
 - Media file uploads (object storage), refresh tokens, automated test suite, memory submissions, notifications, hole-by-hole scoring, draft board, audit history
 
