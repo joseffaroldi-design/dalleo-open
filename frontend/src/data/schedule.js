@@ -5,6 +5,46 @@
 // Flip to false to see the unpublished-schedule empty state.
 export const SCHEDULE_PUBLISHED = true;
 
+// Real tournament weekend dates (7th Annual Dalleo Open).
+export const TOURNAMENT_DAYS = {
+  friday: "2026-09-04",
+  saturday: "2026-09-05",
+  sunday: "2026-09-06",
+};
+
+export const TOURNAMENT_DATES_TEXT = "September 4–6, 2026";
+
+// Automatic badge labels shown on event cards.
+export const STATUS_LABELS = {
+  upcoming: "Upcoming",
+  "happening-now": "Current",
+  completed: "Complete",
+  delayed: "Delayed",
+  updated: "Updated",
+};
+
+export const eventStart = (event) =>
+  new Date(`${TOURNAMENT_DAYS[event.day]}T${event.sortKey}:00`);
+
+// Status from the user's local time. Organizer-marked statuses
+// (completed/delayed/updated) always win over the clock.
+export const getAutoStatus = (event, dayEvents, now = new Date()) => {
+  if (["completed", "delayed", "updated"].includes(event.status)) return event.status;
+  const start = eventStart(event);
+  if (now < start) return "upcoming";
+  const later = dayEvents
+    .filter((e) => eventStart(e) > start)
+    .sort((a, b) => eventStart(a) - eventStart(b))[0];
+  const end = later ? eventStart(later) : new Date(start.getTime() + 2 * 3600000);
+  return now < end ? "happening-now" : "completed";
+};
+
+export const getNextEvents = (events, count = 3, now = new Date()) =>
+  [...events]
+    .sort((a, b) => eventStart(a) - eventStart(b))
+    .filter((e) => eventStart(e) > now && e.status !== "completed")
+    .slice(0, count);
+
 export const DAYS = [
   { id: "friday", label: "Friday", tagline: "Draft Party" },
   { id: "saturday", label: "Saturday", tagline: "Tournament Round" },

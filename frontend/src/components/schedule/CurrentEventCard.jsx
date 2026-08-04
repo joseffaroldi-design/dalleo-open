@@ -1,5 +1,6 @@
 import { MapPin, Zap } from "lucide-react";
 import { StatusChip } from "@/components/leaderboard/StatusChip";
+import { STATUS_LABELS } from "@/data/schedule";
 
 export const CurrentEventCard = ({ current }) => {
   if (!current) return null;
@@ -30,7 +31,7 @@ export const CurrentEventCard = ({ current }) => {
             {event.time}
           </p>
         </div>
-        <StatusChip status={event.status} size="lg" />
+        <StatusChip status={event.status} label={STATUS_LABELS[event.status]} size="lg" />
       </div>
       {event.note && (
         <p

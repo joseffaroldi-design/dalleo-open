@@ -1,5 +1,6 @@
 import { MapPin } from "lucide-react";
 import { StatusChip } from "@/components/leaderboard/StatusChip";
+import { STATUS_LABELS } from "@/data/schedule";
 
 const TimeBlock = ({ time }) => {
   const [clock, meridiem] = time.split(" ");
@@ -22,7 +23,7 @@ export const ScheduleTimeline = ({ events }) => (
         key={item.id}
         data-testid={`schedule-event-${i + 1}`}
         className={`flex gap-4 rounded-2xl p-4 shadow-sm ring-1 transition-shadow duration-200 hover:shadow-md sm:gap-6 sm:p-6 ${
-          item.isCurrent ? "bg-forest-mist ring-gold/50" : "bg-white ring-border"
+          (item.displayStatus ?? item.status) === "happening-now" ? "bg-forest-mist ring-gold/50" : "bg-white ring-border"
         }`}
       >
         <TimeBlock time={item.time} />
@@ -31,7 +32,7 @@ export const ScheduleTimeline = ({ events }) => (
             <h3 className="text-base font-extrabold tracking-tight text-charcoal sm:text-lg">
               {item.title}
             </h3>
-            <StatusChip status={item.status} />
+            <StatusChip status={item.displayStatus ?? item.status} label={STATUS_LABELS[item.displayStatus ?? item.status]} />
           </div>
           <p className="mt-1.5 text-sm leading-relaxed text-charcoal/60">
             {item.description}
