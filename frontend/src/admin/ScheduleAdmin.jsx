@@ -8,7 +8,6 @@ import {
 const DAY_OPTIONS = [
   { value: "friday", label: "Friday" },
   { value: "saturday", label: "Saturday" },
-  { value: "sunday", label: "Sunday" },
 ];
 
 const STATUS_OPTIONS = [

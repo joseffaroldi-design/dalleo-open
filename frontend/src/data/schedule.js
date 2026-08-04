@@ -12,7 +12,7 @@ export const TOURNAMENT_DAYS = {
   sunday: "2026-09-06",
 };
 
-export const TOURNAMENT_DATES_TEXT = "September 4–6, 2026";
+export const TOURNAMENT_DATES_TEXT = "September 4–5, 2026";
 
 // Automatic badge labels shown on event cards.
 export const STATUS_LABELS = {
@@ -48,7 +48,6 @@ export const getNextEvents = (events, count = 3, now = new Date()) =>
 export const DAYS = [
   { id: "friday", label: "Friday", tagline: "Draft Party" },
   { id: "saturday", label: "Saturday", tagline: "Tournament Round" },
-  { id: "sunday", label: "Sunday", tagline: "Championship & Awards" },
 ];
 
 const event = (id, time, sortKey, title, description, location, status, note = null, isCurrent = false) => ({

@@ -57,6 +57,8 @@ Build the Dalleo Open Digital Clubhouse, a modern, mobile-first web app for the 
 
 - 2026-07-04 (One-round correction): Tournament is a single round on Saturday 9/5/2026 — removed "Afternoon Matches" and all Sunday events (Sunday tab shows clean empty state), retitled tee time to "Tournament Round — First Tee Time" and evening event to "Awards & Closing Celebration", leaderboard label set to "Tournament Round" with the multi-round selector now hidden when live data is active, rules format text updated to one round. Saturday now has 6 events. Build passing.
 
+- 2026-07-04 (Sunday removed): Weekend is Friday + Saturday only — Sunday tab removed from the public schedule and the admin schedule editor, dates line updated to "September 4–5, 2026". Verified: two tabs only, homepage This Weekend still shows next 3 events, build passing.
+
 ## Backlog (post-launch evaluation — NOT built)
 - Media file uploads (object storage), refresh tokens, automated test suite, memory submissions, notifications, hole-by-hole scoring, draft board, audit history
 
