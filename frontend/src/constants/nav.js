@@ -3,6 +3,7 @@ export const NAV_LINKS = [
   { to: "/teams", label: "Teams", testId: "nav-link-teams" },
   { to: "/schedule", label: "Schedule", testId: "nav-link-schedule" },
   { to: "/gallery", label: "Gallery", testId: "nav-link-gallery" },
+  { to: "/draft", label: "Draft", testId: "nav-link-draft" },
   { to: "/brandon", label: "Brandon", testId: "nav-link-brandon" },
   { to: "/rules", label: "Rules", testId: "nav-link-rules" },
 ];

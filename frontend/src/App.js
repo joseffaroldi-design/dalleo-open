@@ -12,6 +12,7 @@ import Schedule from "@/pages/Schedule";
 import Gallery from "@/pages/Gallery";
 import Brandon from "@/pages/Brandon";
 import Rules from "@/pages/Rules";
+import Draft from "@/pages/Draft";
 import AdminLogin from "@/admin/AdminLogin";
 import AdminLayout from "@/admin/AdminLayout";
 import Dashboard from "@/admin/Dashboard";
@@ -30,6 +31,7 @@ const PAGE_TITLES = [
   [/^\/gallery/, "Gallery — Dalleo Open"],
   [/^\/brandon/, "In Memory of Brandon Dalleo — Dalleo Open"],
   [/^\/rules/, "Rules & Format — Dalleo Open"],
+  [/^\/draft/, "2026 Draft — Dalleo Open"],
   [/^\/admin/, "Organizer — Dalleo Open"],
 ];
 
@@ -56,6 +58,7 @@ const Shell = () => {
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/brandon" element={<Brandon />} />
           <Route path="/rules" element={<Rules />} />
+          <Route path="/draft" element={<Draft />} />
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/admin" element={<AdminLayout />}>
             <Route index element={<Dashboard />} />
