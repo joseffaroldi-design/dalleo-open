@@ -43,6 +43,8 @@ Build the Dalleo Open Digital Clubhouse, a modern, mobile-first web app for the 
 
 - 2026-07-04 (Draft update): Added /draft page — "Dalleo Open 2026 Draft" board showing the completed 8-team snake draft: 8 captain cards with 3 players each and overall pick numbers (24 picks, no next-pick UI), "Draft Complete" status chip, Draft link added to main/footer nav (only entry point added). Data in src/data/draft.js. Unverified spellings flagged in file comments: Mlev, Josef Foraldi (possibly Josef Faroldi), Christian Clav, Devin Ariaga, Chad Nillen. Nicknames Small Fry and Pops preserved. Verified desktop/mobile, build passing.
 
+- 2026-07-04 (Publish): Owner confirmed draft spellings as displayed. Published real content via admin API: 8 drafted teams (Team Martin/White/Foret/Boner/Doell/Breaud/Berner/Franklin, captain + 3 players each, colors cycling green/gold/white/black), draft-results announcement (Important, published, on homepage), leaderboard set to pre-tournament (scoringStarted=false — avoids fake mock scores against real teams), schedule saved with Live Draft marked completed and no current event (homepage schedule preview hidden). Verified: 8 team cards + detail rosters, homepage "8 teams · 32 players", announcement live, leaderboard pre-tournament state, draft board intact. NOTE: leaderboard data model supports 4 color slots — needs extension before live scoring with 8 teams.
+
 ## Backlog (post-launch evaluation — NOT built)
 - Media file uploads (object storage), refresh tokens, automated test suite, memory submissions, notifications, hole-by-hole scoring, draft board, audit history
 

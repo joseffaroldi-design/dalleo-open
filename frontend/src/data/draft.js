@@ -1,8 +1,5 @@
 // Dalleo Open 2026 draft results (final — draft complete).
-// Names shown exactly as provided. The following could not be verified
-// against any existing project data and await owner confirmation:
-// "Mlev", "Josef Foraldi" (possibly "Josef Faroldi"), "Christian Clav",
-// "Devin Ariaga", "Chad Nillen". Nicknames "Small Fry" and "Pops" preserved.
+// Spellings confirmed by the owner. Nicknames "Small Fry" and "Pops" preserved.
 
 export const DRAFT_2026 = {
   title: "Dalleo Open 2026 Draft",
