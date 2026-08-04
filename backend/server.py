@@ -81,7 +81,7 @@ class LoginInput(BaseModel):
 @api_router.post("/auth/login")
 async def login(input: LoginInput, request: Request):
     email = input.email.strip().lower()
-    identifier = f"{request.client.host}:{email}"
+    identifier = email
     attempts = await db.login_attempts.find_one({"identifier": identifier})
     if attempts and attempts.get("locked_until"):
         locked_until = datetime.fromisoformat(attempts["locked_until"])

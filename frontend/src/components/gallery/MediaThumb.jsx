@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Trophy, PartyPopper, Users, Medal, Heart, Images, Play } from "lucide-react";
 
 const CATEGORY_ICONS = {
@@ -26,6 +27,7 @@ const ASPECTS = {
 export const MediaThumb = ({ item, aspect, className = "", iconClassName = "h-12 w-12" }) => {
   const scheme = SCHEMES[item.order % SCHEMES.length];
   const Icon = CATEGORY_ICONS[item.category] ?? Images;
+  const [imgError, setImgError] = useState(false);
   return (
     <div
       role="img"
@@ -34,8 +36,13 @@ export const MediaThumb = ({ item, aspect, className = "", iconClassName = "h-12
       className={`relative flex items-center justify-center overflow-hidden ${ASPECTS[aspect ?? item.aspect]} ${className}`}
       style={{ backgroundColor: scheme.bg }}
     >
-      {item.src && (
-        <img src={item.src} alt={item.alt} className="absolute inset-0 h-full w-full object-cover" />
+      {item.src && !imgError && (
+        <img
+          src={item.src}
+          alt={item.alt}
+          onError={() => setImgError(true)}
+          className="absolute inset-0 h-full w-full object-cover"
+        />
       )}
       <span
         aria-hidden="true"

@@ -22,6 +22,11 @@ export default function Teams() {
       </header>
       <div className="mt-10">
         {announced ? (
+          teams.length === 0 ? (
+            <p data-testid="teams-empty-live" className="rounded-3xl bg-white p-10 text-center text-sm font-semibold text-charcoal/50 shadow-sm ring-1 ring-border">
+              Rosters are being finalized — check back soon.
+            </p>
+          ) : (
           <div
             data-testid="teams-grid"
             className="grid grid-cols-1 gap-5 sm:grid-cols-2"
@@ -30,6 +35,7 @@ export default function Teams() {
               <TeamCard key={team.id} team={team} />
             ))}
           </div>
+          )
         ) : (
           <TeamsEmptyState />
         )}

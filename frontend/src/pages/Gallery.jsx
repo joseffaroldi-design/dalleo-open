@@ -57,6 +57,11 @@ export default function Gallery() {
                 Media gallery
               </h2>
               <CategoryFilter value={category} onChange={setCategory} />
+              {visibleItems.length === 0 ? (
+                <p data-testid="gallery-empty-live" className="mt-8 rounded-3xl bg-white p-10 text-center text-sm font-semibold text-charcoal/50 shadow-sm ring-1 ring-border">
+                  No media in this category yet — check back soon.
+                </p>
+              ) : (
               <ul
                 data-testid="media-grid"
                 className="mt-8 columns-2 gap-4 sm:columns-3 lg:columns-4"
@@ -65,6 +70,7 @@ export default function Gallery() {
                   <MediaCard key={item.id} item={item} onOpen={(id) => openItem(id, visibleItems)} />
                 ))}
               </ul>
+              )}
             </section>
           </div>
         ) : (

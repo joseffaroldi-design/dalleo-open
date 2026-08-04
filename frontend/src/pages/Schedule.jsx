@@ -58,7 +58,13 @@ export default function Schedule() {
                 {activeDay.label} &middot; {activeDay.tagline}
               </h2>
               <div className="mt-6">
-                <ScheduleTimeline events={byDay[dayId] ?? []} />
+                {(byDay[dayId] ?? []).length === 0 ? (
+                  <p data-testid="schedule-empty-live" className="rounded-2xl bg-white p-8 text-center text-sm font-semibold text-charcoal/50 shadow-sm ring-1 ring-border">
+                    No events scheduled for this day yet.
+                  </p>
+                ) : (
+                  <ScheduleTimeline events={byDay[dayId] ?? []} />
+                )}
               </div>
             </section>
           </div>

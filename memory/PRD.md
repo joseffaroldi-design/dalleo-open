@@ -37,11 +37,13 @@ Build the Dalleo Open Digital Clubhouse, a modern, mobile-first web app for the 
 
 - 2026-07-04 (Sprint 8): Organizer admin foundation + real-data layer — FastAPI/MongoDB backend (JWT auth, single organizer seeded from env, bcrypt, 12h tokens, 5-attempt/15-min lockout, per-domain pydantic validation, GET /api/public/{domain} public reads, GET/PUT /api/admin/{domain} protected writes; domains: announcements, leaderboard, teams, schedule, gallery, site, rules stored as single docs in site_content collection). React admin at /admin (login, dashboard with stats, 7 section editors, save bars with success/error states, two-step delete confirmations, mobile-friendly). Public pages fetch live data via react-query (useLiveData hook) and fall back to the existing mock data files when no saved record exists — no visual redesign. Homepage Sample badge hides when live announcements exist. Verified: login/failed login/logout, unauth redirect, protected-write rejection, leaderboard points edit reflected publicly (auto-sorted), team rename consistent across pages, schedule current-event change reflected on page + homepage, announcement add/publish on homepage, rules approval state, empty-DB fallback, mobile admin no overflow, build passing. Test data cleaned after verification (DB empty = mock fallback state).
 
+- 2026-07-04 (Sprint 9): Production hardening (QA/security/release sweep, no new features) — Fixed: invalid routes rendered blank page (added catch-all redirect to Home); .env files were not git-ignored (added .env to .gitignore, confirmed git no longer tracks them); login lockout broken behind ingress because attempts were keyed by rotating source IP (rekeyed to email — 5 failures now locks for 15 min, verified); empty live-data pages showed blank areas (added restrained empty messages for teams/schedule/gallery/standings); broken gallery image URLs would show broken-image icons (onError falls back to placeholder tile); added prefers-reduced-motion CSS guard. Rotated JWT_SECRET and organizer password (old credentials invalidated, verified; new ones in test_credentials.md only). Verified: all 8 public routes + 8 admin sections, no console errors, no secrets in frontend src/bundle, tampered/invalid tokens rejected, unauth writes rejected, mobile 360px/390px/tablet zero overflow incl. media viewer dialog, empty states for every domain, mock fallback after DB wipe, build+lint passing (bundle ~412K).
+
 ## Backlog (future sprints — NOT built, awaiting approval)
-- P0: Organizer-approved rules (flip approved in admin), real tournament content via admin editors, real brand assets/media
-- P1: Media file uploads (object storage) replacing URL-only gallery references, real countdown, refresh-token flow for longer organizer sessions
-- P2: Memory submissions (Share a Memory), announcements scheduling, push notifications, hole-by-hole scoring, draft board, audit history
+- P0: Organizer enters real content via /admin, organizer-approved rules, real brand assets/media
+- P1: Media file uploads (object storage), refresh-token flow, automated test suite
+- P2: Memory submissions, push notifications, hole-by-hole scoring, draft board, audit history
 
 ## Next Tasks
-1. Sprint 9 scoping with stakeholder approval (launch hardening, uploads, or content entry)
-2. Organizers enter real content through /admin before tournament weekend
+1. Sprint 10 scoping with stakeholder approval (launch or content-entry sprint)
+2. Organizers load real content and approve rules before tournament weekend

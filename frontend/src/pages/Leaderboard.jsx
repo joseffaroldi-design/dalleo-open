@@ -84,7 +84,13 @@ export default function Leaderboard() {
           <div className="flex flex-col gap-12">
             <RoundSelector value={roundId} onChange={setRoundId} />
             {summary && <LeaderCard summary={summary} roundLabel={round.meta.roundLabel} />}
-            <StandingsList standings={round.standings} />
+            {round.standings.length === 0 ? (
+              <p data-testid="standings-empty-live" className="rounded-3xl bg-white p-10 text-center text-sm font-semibold text-charcoal/50 shadow-sm ring-1 ring-border">
+                Standings will appear here once scores are entered.
+              </p>
+            ) : (
+              <StandingsList standings={round.standings} />
+            )}
             <MatchesSection matches={round.matches} />
           </div>
         ) : (
