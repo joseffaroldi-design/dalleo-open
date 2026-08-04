@@ -59,9 +59,13 @@ Build the Dalleo Open Digital Clubhouse, a modern, mobile-first web app for the 
 
 - 2026-07-04 (Sunday removed): Weekend is Friday + Saturday only — Sunday tab removed from the public schedule and the admin schedule editor, dates line updated to "September 4–5, 2026". Verified: two tabs only, homepage This Weekend still shows next 3 events, build passing.
 
+- 2026-08-04 (Scramble format + award-grade redesign): Official Rules Tournament Format updated via admin API to the confirmed "Four-Person Scramble Championship" — 8-team scramble (all four hit, best ball selected, everyone plays from that spot), shotgun start, one round Saturday Sept 5 2026, lowest team score wins; formatNote confirms the 2026 format. Public site redesigned to an editorial "Tournament Journal" art direction: Fraunces display serif + Manrope, kinetic hero with masked line-by-line headline reveal + giant outlined parallax DALLEO masthead word + mouse-parallax springs + arched spotlight photo frame, minimal hairline countdown, slow editorial marquee band (data-testid=editorial-marquee), numbered Chapter 01–07 manifesto eyebrows across home sections, framer-motion Reveal/MaskedLine scroll reveals, lenis smooth momentum scrolling (public only, reduced-motion safe), grain overlay, MotionConfig reducedMotion=user, route-change fade transitions. Admin untouched. Verified by testing agent (iteration_1): all 9 public routes, rules format text live, hero/marquee/chapters render, admin login + dashboard intact, zero console errors, 100% pass.
+
 ## Backlog (post-launch evaluation — NOT built)
 - Media file uploads (object storage), refresh tokens, automated test suite, memory submissions, notifications, hole-by-hole scoring, draft board, audit history
 
 ## Next Tasks
-1. Owner: configure production env vars, deploy, connect domain (follow docs/LAUNCH_RUNBOOK.md)
-2. Owner: enter approved real content (docs/CONTENT_ENTRY_CHECKLIST.md) and approve rules
+1. P1 — Enter Round Points: live scoring toggled Saturday morning of the tournament (awaiting owner data)
+2. P2 — Tee time groups: add pairings to the Saturday schedule (awaiting owner pairings)
+3. Owner: configure production env vars, deploy, connect domain (follow docs/LAUNCH_RUNBOOK.md)
+4. P2 — Gallery user uploads (deferred past Sprint 10)
