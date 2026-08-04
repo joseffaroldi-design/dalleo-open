@@ -33,11 +33,13 @@ Build the Dalleo Open Digital Clubhouse, a modern, mobile-first web app for the 
 
 - 2026-07-04 (Sprint 6): Brandon memorial page — hero (photo placeholder, "In Memory of Brandon Dalleo", restrained subtitle, understated gold heart), Brandon's Story (2 placeholder paragraphs), Why the Dalleo Open Exists (Remember/Celebrate/Compete/Stay Connected values), The Tradition Continues (4 generic milestones, no invented dates), In Photos (1 featured + 2 supporting placeholders + Gallery link), Share a Memory informational section (flag-gated, no form), closing message with Gallery/Schedule/Home links. All copy centralized in src/data/memorial.js (MEMORIAL_PUBLISHED + SHARE_MEMORY_ENABLED flags); homepage Brandon section now uses MEMORIAL.homeMessage. No unsupported biographical facts. Verified: all links, unpublished state, no mobile/tablet overflow, keyboard focus, all Sprint 1–5 routes/features intact, build passing.
 
+- 2026-07-04 (Sprint 7): Rules & Format page (final placeholder page — all 7 routes now real pages) — header with edition, draft-content notice (visible until RULES_APPROVED), Quick Reminders forest card, 6-pill section anchor nav, Tournament Format (placeholder structure, no invented format), Scoring (fictional example values + confirmation note), Match Rules (8-topic accessible accordion), Player Conduct (6 welcoming principles), Tie-Breakers (3-step example marked awaiting confirmation), FAQ (6 accessible accordion Q&As pointing to Schedule/Leaderboard/organizers), unpublished state with Home/Schedule links. Content centralized in src/data/rules.js with RULES_PUBLISHED + RULES_APPROVED flags. placeholders.jsx deleted. Verified: all nav links, accordion aria-expanded toggle + keyboard Enter, both flag states (approved hides notice; unpublished state renders with links), no mobile/tablet overflow, homepage quick-nav + footer links, all Sprint 1–6 routes/features intact, build passing.
+
 ## Backlog (future sprints — NOT built, awaiting approval)
-- P0: Rules page (last placeholder page), real tournament date, real brand assets (logo, hero photo, Brandon photo, real gallery media)
-- P1: Owner-approved memorial copy + real photos, real data via backend API + database (data files are API-ready swap points), video playback for gallery videos
-- P2: Admin dashboard, authentication, CMS/announcements management, memory submissions (Share a Memory), uploads/cloud storage, push notifications, statistics, hole-by-hole scoring, draft board
+- P0: Organizer-approved rules (flip RULES_APPROVED), real tournament date, real brand assets (logo, photos, gallery media)
+- P1: Backend + database sprint — real data APIs replacing mock data files (teams, leaderboard, schedule, gallery, rules), admin content management, authentication
+- P2: Admin dashboard, score entry, memory submissions, media uploads/cloud storage, push notifications, statistics, hole-by-hole scoring, draft board
 
 ## Next Tasks
-1. Sprint 7 scoping with stakeholder approval (Rules is the last placeholder page; then backend/content sprints)
-2. Collect owner-approved memorial copy, Brandon photos, and real tournament assets
+1. Sprint 8 scoping with stakeholder approval (likely: backend + admin foundation, or content replacement sprint)
+2. Collect organizer-approved rules, real rosters, real schedule, and media assets

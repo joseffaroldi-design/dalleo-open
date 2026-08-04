@@ -10,9 +10,7 @@ import TeamDetail from "@/pages/TeamDetail";
 import Schedule from "@/pages/Schedule";
 import Gallery from "@/pages/Gallery";
 import Brandon from "@/pages/Brandon";
-import {
-  Rules,
-} from "@/pages/placeholders";
+import Rules from "@/pages/Rules";
 
 function App() {
   return (
