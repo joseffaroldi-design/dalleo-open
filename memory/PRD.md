@@ -75,6 +75,8 @@ Build the Dalleo Open Digital Clubhouse, a modern, mobile-first web app for the 
 
 - 2026-08-04 (After Party): "After Party at G's" (3:30 PM–Till, Gennaro's) added as the final Saturday event on both environments — full day now 10 events. Owner confirmed pairings arrive tournament morning for lock-in on both environments.
 
+- 2026-08-04 (Game Day checklist): New phone-first admin page /admin/gameday ("Game Day" nav) — 16-item tap-to-check tournament-morning checklist in 5 timeline sections (Before Saturday, Tournament Morning at Gennaro's, 8:30 Shotgun Start, During the Round, After the Round) with inline links to the right admin screens, progress counter, reset, localStorage persistence per device. Verified at 390px: checks toggle, progress survives reload.
+
 ## Backlog (post-launch evaluation — NOT built)
 - Media file uploads (object storage), refresh tokens, automated test suite, memory submissions, notifications, hole-by-hole scoring, draft board, audit history
 

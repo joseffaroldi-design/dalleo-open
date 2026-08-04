@@ -31,6 +31,7 @@ import ContentAdmin from "@/admin/ContentAdmin";
 import RulesAdmin from "@/admin/RulesAdmin";
 import ChampionsAdmin from "@/admin/ChampionsAdmin";
 import ScoringAdmin from "@/admin/ScoringAdmin";
+import GameDayAdmin from "@/admin/GameDayAdmin";
 
 const PAGE_TITLES = [
   [/^\/leaderboard/, "Live Leaderboard — Dalleo Open"],
@@ -95,6 +96,7 @@ const Shell = () => {
             <Route path="rules" element={<RulesAdmin />} />
             <Route path="champions" element={<ChampionsAdmin />} />
             <Route path="scoring" element={<ScoringAdmin />} />
+            <Route path="gameday" element={<GameDayAdmin />} />
           </Route>
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
