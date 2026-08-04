@@ -9,7 +9,9 @@ export default function TeamDetail() {
   const teams = live ? live.items : TEAMS;
   const team = teams.find((t) => t.id === teamId);
 
-  if (!team) return <Navigate to="/teams" replace />;
+  // Wait for live data before redirecting — mock fallback ids differ from real ones.
+  if (live && !team) return <Navigate to="/teams" replace />;
+  if (!team) return null;
 
   const visual = TEAM_VISUALS[team.colorKey];
   const paired = team.startingHole

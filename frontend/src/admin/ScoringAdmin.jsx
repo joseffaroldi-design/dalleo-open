@@ -63,7 +63,10 @@ export default function ScoringAdmin() {
     setArmedOverwrite(false);
     setFlash("");
     setEntryError("");
-    const s = data.scores.find((x) => x.teamId === id && x.hole === hole);
+    // Jump to this team's first unscored hole — avoids cross-team misalignment.
+    const firstOpen = HOLES.find((h) => !data.scores.some((x) => x.teamId === id && x.hole === h)) ?? 18;
+    setHole(firstOpen);
+    const s = data.scores.find((x) => x.teamId === id && x.hole === firstOpen);
     setStrokes(s ? String(s.strokes) : "");
   };
 
