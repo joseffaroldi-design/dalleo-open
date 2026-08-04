@@ -55,6 +55,8 @@ Build the Dalleo Open Digital Clubhouse, a modern, mobile-first web app for the 
 
 - 2026-07-04 (Official rules): Owner supplied the official Dalleo Open rules — saved as the 8 Match Rules accordion topics (No Mulligans, No Gimmes, No Breakfast Balls, Out of Bounds, Re-Tee Rule, Unplayable Lies, Bushes & Trouble, Hole 13 Tradition 🍻) and flipped approved=true, so the public draft notice is gone. Edition label updated to 7th Annual. Scoring values remain inline-marked examples pending confirmation. Verified publicly: notice hidden, accordion renders all 8 rules with bodies.
 
+- 2026-07-04 (One-round correction): Tournament is a single round on Saturday 9/5/2026 — removed "Afternoon Matches" and all Sunday events (Sunday tab shows clean empty state), retitled tee time to "Tournament Round — First Tee Time" and evening event to "Awards & Closing Celebration", leaderboard label set to "Tournament Round" with the multi-round selector now hidden when live data is active, rules format text updated to one round. Saturday now has 6 events. Build passing.
+
 ## Backlog (post-launch evaluation — NOT built)
 - Media file uploads (object storage), refresh tokens, automated test suite, memory submissions, notifications, hole-by-hole scoring, draft board, audit history
 
