@@ -39,7 +39,11 @@ export default function Schedule() {
   }, [live, now]);
 
   const [selectedDay, setSelectedDay] = useState(null);
-  const dayId = selectedDay ?? current?.day.id ?? "friday";
+  const visibleDays = DAYS.filter((d) => (byDay[d.id] ?? []).length > 0);
+  const dayId =
+    selectedDay && visibleDays.some((d) => d.id === selectedDay)
+      ? selectedDay
+      : current?.day.id ?? visibleDays[0]?.id ?? "saturday";
   const activeDay = DAYS.find((d) => d.id === dayId);
 
   return (
@@ -60,7 +64,7 @@ export default function Schedule() {
         {published ? (
           <div className="flex flex-col gap-10">
             <CurrentEventCard current={current} />
-            <DaySelector value={dayId} onChange={setSelectedDay} />
+            {visibleDays.length > 1 && <DaySelector value={dayId} onChange={setSelectedDay} days={visibleDays} />}
             <section data-testid="day-schedule" aria-labelledby="day-schedule-title">
               <h2
                 id="day-schedule-title"

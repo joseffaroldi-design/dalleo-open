@@ -12,7 +12,7 @@ export const TOURNAMENT_DAYS = {
   sunday: "2026-09-06",
 };
 
-export const TOURNAMENT_DATES_TEXT = "September 4–5, 2026";
+export const TOURNAMENT_DATES_TEXT = "September 5, 2026";
 
 // Automatic badge labels shown on event cards.
 export const STATUS_LABELS = {

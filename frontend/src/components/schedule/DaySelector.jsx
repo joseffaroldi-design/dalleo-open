@@ -1,13 +1,16 @@
 import { DAYS } from "@/data/schedule";
 
-export const DaySelector = ({ value, onChange }) => (
+// Tabs follow the schedule content — pass only the days that have events.
+export const DaySelector = ({ value, onChange, days = DAYS }) => (
   <div
     data-testid="day-selector"
     role="group"
     aria-label="Select schedule day"
-    className="grid grid-cols-3 gap-2 rounded-2xl bg-white p-2 shadow-sm ring-1 ring-border"
+    className={`grid gap-2 rounded-2xl bg-white p-2 shadow-sm ring-1 ring-border ${
+      days.length <= 1 ? "grid-cols-1" : days.length === 2 ? "grid-cols-2" : "grid-cols-3"
+    }`}
   >
-    {DAYS.map(({ id, label }) => {
+    {days.map(({ id, label }) => {
       const active = value === id;
       return (
         <button
