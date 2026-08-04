@@ -92,6 +92,7 @@ export default function ChampionDetail() {
                 caption={entry.photoCaption || `${entry.year} championship photo — coming soon`}
                 testId="champion-hero-photo"
                 aspect="aspect-[16/9]"
+                src={entry.photoUrl}
               />
             </div>
           </Reveal>

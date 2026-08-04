@@ -14,15 +14,24 @@ export const BrandonSection = () => {
   >
     <div className="grid grid-cols-1 items-center gap-12 md:grid-cols-2">
       <Reveal>
-      <div
-        data-testid="brandon-photo-placeholder"
-        role="img"
-        aria-label="Photo of Brandon Dalleo — coming soon"
-        className="flex aspect-[4/5] w-full flex-col items-center justify-center gap-3 rounded-t-[999px] border border-gold/40 bg-forest-mist text-forest/50 shadow-sm"
-      >
-        <ImageIcon className="h-10 w-10" aria-hidden="true" />
-        <span className="text-sm font-semibold">Photo of Brandon coming soon</span>
-      </div>
+      {site?.brandonPhotoUrl ? (
+        <img
+          src={site.brandonPhotoUrl}
+          alt="Photo of Brandon Dalleo"
+          data-testid="brandon-photo"
+          className="aspect-[4/5] w-full rounded-t-[999px] border border-gold/40 object-cover shadow-sm"
+        />
+      ) : (
+        <div
+          data-testid="brandon-photo-placeholder"
+          role="img"
+          aria-label="Photo of Brandon Dalleo — coming soon"
+          className="flex aspect-[4/5] w-full flex-col items-center justify-center gap-3 rounded-t-[999px] border border-gold/40 bg-forest-mist text-forest/50 shadow-sm"
+        >
+          <ImageIcon className="h-10 w-10" aria-hidden="true" />
+          <span className="text-sm font-semibold">Photo of Brandon coming soon</span>
+        </div>
+      )}
       </Reveal>
       <Reveal delay={0.12}>
       <div>

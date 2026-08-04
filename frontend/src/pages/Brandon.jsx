@@ -18,7 +18,7 @@ export default function Brandon() {
   const memorial = site
     ? {
         ...MEMORIAL,
-        hero: { ...MEMORIAL.hero, title: site.memorialHeroTitle, subtitle: site.memorialHeroSubtitle },
+        hero: { ...MEMORIAL.hero, title: site.memorialHeroTitle, subtitle: site.memorialHeroSubtitle, photoUrl: site.brandonPhotoUrl ?? null },
         story: site.story,
         milestones: site.milestones.map((m, i) => ({ id: `m${i + 1}`, ...m })),
         closing: { message: site.closingMessage },

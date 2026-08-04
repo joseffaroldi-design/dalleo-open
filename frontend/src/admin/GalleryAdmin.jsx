@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { SEED } from "@/admin/seedData";
+import { ImageUpload } from "@/admin/ImageUpload";
 import {
   useAdminDomain, AdminSection, AdminLoading, Field, TextInput, TextArea,
   SelectInput, Toggle, SaveBar, ConfirmDelete,
@@ -99,6 +100,14 @@ export default function GalleryAdmin() {
               </Field>
               <Field label="Source URL (optional)">
                 <TextInput data-testid="gal-src" value={editing.src} onChange={(e) => setEditing({ ...editing, src: e.target.value })} placeholder="https://…" />
+              </Field>
+              <Field label="Or upload a photo">
+                <ImageUpload
+                  testId="gal-upload"
+                  value={editing.src ?? ""}
+                  onChange={(url) => setEditing({ ...editing, src: url })}
+                  previewClass="h-24 w-32"
+                />
               </Field>
               <Field label="Photographer / source label (optional)">
                 <TextInput data-testid="gal-source" value={editing.source} onChange={(e) => setEditing({ ...editing, source: e.target.value })} />

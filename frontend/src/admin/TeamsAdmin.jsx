@@ -1,4 +1,5 @@
 import { SEED } from "@/admin/seedData";
+import { ImageUpload } from "@/admin/ImageUpload";
 import {
   useAdminDomain, AdminSection, AdminLoading, Field, TextInput, TextArea,
   SelectInput, Toggle, SaveBar,
@@ -88,11 +89,12 @@ export default function TeamsAdmin() {
                   onChange={(e) => updateTeam(team.id, { order: e.target.value === "" ? null : Number(e.target.value) })}
                 />
               </Field>
-              <Field label="Team logo / photo URL (optional)">
-                <TextInput
-                  data-testid={`team-photo-${team.id}`}
+              <Field label="Team photo (optional)">
+                <ImageUpload
+                  testId={`team-photo-upload-${team.id}`}
                   value={team.photoUrl ?? ""}
-                  onChange={(e) => updateTeam(team.id, { photoUrl: e.target.value || null })}
+                  onChange={(url) => updateTeam(team.id, { photoUrl: url || null })}
+                  previewClass="h-24 w-32"
                 />
               </Field>
             </div>

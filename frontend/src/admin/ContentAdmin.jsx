@@ -1,4 +1,5 @@
 import { SEED } from "@/admin/seedData";
+import { ImageUpload } from "@/admin/ImageUpload";
 import {
   useAdminDomain, AdminSection, AdminLoading, Field, TextInput, TextArea,
   Toggle, SaveBar,
@@ -37,12 +38,28 @@ export default function ContentAdmin() {
           <Field label="Hero subtitle (homepage)">
             <TextInput data-testid="site-hero-subtitle" value={data.heroSubtitle} onChange={(e) => update({ heroSubtitle: e.target.value })} />
           </Field>
+          <ImageUpload
+            label="Homepage hero photo"
+            hint="Fills the arched frame on the homepage hero. JPEG/PNG/WebP/GIF, up to 12 MB."
+            testId="site-hero-image-upload"
+            value={data.heroImageUrl ?? ""}
+            onChange={(url) => update({ heroImageUrl: url || null })}
+            previewClass="h-28 w-40"
+          />
           <Field label="Homepage memorial message">
             <TextArea data-testid="site-home-message" value={data.homeMessage} onChange={(e) => update({ homeMessage: e.target.value })} />
           </Field>
         </AdminSection>
 
         <AdminSection title="Memorial Page" testId="content-memorial-section">
+          <ImageUpload
+            label="Photo of Brandon"
+            hint="Shown on the memorial page and the homepage memorial section."
+            testId="site-brandon-photo-upload"
+            value={data.brandonPhotoUrl ?? ""}
+            onChange={(url) => update({ brandonPhotoUrl: url || null })}
+            previewClass="h-28 w-24"
+          />
           <Toggle label="Memorial page published" testId="site-memorial-published" checked={data.memorialPublished} onChange={(v) => update({ memorialPublished: v })} />
           <Toggle label="Show Share a Memory section" testId="site-share-memory" checked={data.shareMemoryEnabled} onChange={(v) => update({ shareMemoryEnabled: v })} />
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">

@@ -1,4 +1,5 @@
 import { SEED } from "@/admin/seedData";
+import { ImageUpload } from "@/admin/ImageUpload";
 import {
   useAdminDomain, AdminSection, AdminLoading, Field, TextInput, TextArea,
   Toggle, SaveBar, ConfirmDelete,
@@ -217,6 +218,14 @@ export default function ChampionsAdmin() {
                 data-testid={`champion-photo-caption-${entry.year}`}
                 value={entry.photoCaption}
                 onChange={(e) => updateEntry(entry.year, { photoCaption: e.target.value })}
+              />
+            </Field>
+            <Field label="Championship team photo">
+              <ImageUpload
+                testId={`champion-photo-upload-${entry.year}`}
+                value={entry.photoUrl ?? ""}
+                onChange={(url) => updateEntry(entry.year, { photoUrl: url || null })}
+                previewClass="h-24 w-36"
               />
             </Field>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">

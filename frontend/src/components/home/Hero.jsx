@@ -113,15 +113,24 @@ export const Hero = () => {
           transition={{ duration: 1.2, delay: 0.9, ease: EASE }}
           style={{ x: frameX, y: frameY }}
         >
-          <div
-            data-testid="hero-image-placeholder"
-            role="img"
-            aria-label="Hero image placeholder — tournament photo coming soon"
-            className="spotlight-frame flex aspect-[4/3] w-full flex-col items-center justify-center gap-3 rounded-t-[999px] border border-gold/40 bg-forest text-cream/50 sm:aspect-[16/9]"
-          >
-            <ImageIcon className="h-10 w-10" aria-hidden="true" />
-            <span className="text-sm font-semibold">Tournament photo coming soon</span>
-          </div>
+          {site?.heroImageUrl ? (
+            <img
+              src={site.heroImageUrl}
+              alt="Dalleo Open tournament photo"
+              data-testid="hero-image"
+              className="spotlight-frame aspect-[4/3] w-full rounded-t-[999px] border border-gold/40 object-cover sm:aspect-[16/9]"
+            />
+          ) : (
+            <div
+              data-testid="hero-image-placeholder"
+              role="img"
+              aria-label="Hero image placeholder — tournament photo coming soon"
+              className="spotlight-frame flex aspect-[4/3] w-full flex-col items-center justify-center gap-3 rounded-t-[999px] border border-gold/40 bg-forest text-cream/50 sm:aspect-[16/9]"
+            >
+              <ImageIcon className="h-10 w-10" aria-hidden="true" />
+              <span className="text-sm font-semibold">Tournament photo coming soon</span>
+            </div>
+          )}
         </motion.div>
       </div>
 

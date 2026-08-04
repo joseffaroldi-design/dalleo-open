@@ -70,6 +70,7 @@ const ChampionCard = ({ entry, index }) => (
             caption={entry.photoCaption || `${entry.year} championship photo — coming soon`}
             testId={`champion-photo-${entry.year}`}
             aspect="aspect-[4/3]"
+            src={entry.photoUrl}
           />
         </div>
       </Link>

@@ -60,6 +60,15 @@ export default function TeamDetail() {
         </p>
       </header>
 
+      {team.photoUrl && (
+        <img
+          src={team.photoUrl}
+          alt={`${team.name} team photo`}
+          data-testid="team-photo"
+          className="mt-10 max-h-96 w-full rounded-3xl border border-gold/40 object-cover shadow-sm"
+        />
+      )}
+
       <section aria-labelledby="shotgun-title" className="mt-10">
         <h2
           id="shotgun-title"

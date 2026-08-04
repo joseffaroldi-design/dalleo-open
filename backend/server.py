@@ -1,3 +1,6 @@
+import uuid
+
+import requests
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -9,7 +12,8 @@ from typing import Optional, List, Literal
 
 import bcrypt
 import jwt
-from fastapi import FastAPI, APIRouter, HTTPException, Request, Depends
+from fastapi import FastAPI, APIRouter, HTTPException, Request, Depends, UploadFile, File
+from fastapi.responses import Response
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from starlette.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
@@ -21,6 +25,44 @@ db = client[os.environ["DB_NAME"]]
 
 app = FastAPI()
 api_router = APIRouter(prefix="/api")
+
+# ---------- Object storage (Emergent integrations) ----------
+STORAGE_URL = "https://integrations.emergentagent.com/objstore/api/v1/storage"
+APP_NAME = "dalleo-open"
+storage_key = None
+
+
+def init_storage():
+    global storage_key
+    if storage_key:
+        return storage_key
+    resp = requests.post(
+        f"{STORAGE_URL}/init",
+        json={"emergent_key": os.environ["EMERGENT_LLM_KEY"]},
+        timeout=30,
+    )
+    resp.raise_for_status()
+    storage_key = resp.json()["storage_key"]
+    return storage_key
+
+
+def put_object(path: str, data: bytes, content_type: str) -> dict:
+    key = init_storage()
+    resp = requests.put(
+        f"{STORAGE_URL}/objects/{path}",
+        headers={"X-Storage-Key": key, "Content-Type": content_type},
+        data=data,
+        timeout=120,
+    )
+    resp.raise_for_status()
+    return resp.json()
+
+
+def get_object(path: str):
+    key = init_storage()
+    resp = requests.get(f"{STORAGE_URL}/objects/{path}", headers={"X-Storage-Key": key}, timeout=60)
+    resp.raise_for_status()
+    return resp.content, resp.headers.get("Content-Type", "application/octet-stream")
 
 JWT_ALGORITHM = "HS256"
 DOMAINS = {"announcements", "leaderboard", "teams", "schedule", "gallery", "site", "rules", "champions", "scoring"}
@@ -237,6 +279,59 @@ async def team_pins_set(input: TeamPinInput, user=Depends(get_current_user)):
     return {"ok": True}
 
 
+# ---------- Image uploads (organizer) ----------
+
+ALLOWED_IMAGE_TYPES = {"image/jpeg", "image/png", "image/webp", "image/gif"}
+MAX_UPLOAD_BYTES = 12 * 1024 * 1024
+
+
+@api_router.post("/admin/uploads")
+async def upload_image(file: UploadFile = File(...), user=Depends(get_current_user)):
+    if file.content_type not in ALLOWED_IMAGE_TYPES:
+        raise HTTPException(status_code=422, detail="Only JPEG, PNG, WebP, or GIF images")
+    data = await file.read()
+    if not data:
+        raise HTTPException(status_code=422, detail="Empty file")
+    if len(data) > MAX_UPLOAD_BYTES:
+        raise HTTPException(status_code=422, detail="Image must be under 12 MB")
+    ext = file.filename.rsplit(".", 1)[-1].lower() if "." in (file.filename or "") else "jpg"
+    if ext not in ("jpg", "jpeg", "png", "webp", "gif"):
+        ext = "jpg"
+    path = f"{APP_NAME}/uploads/{uuid.uuid4()}.{ext}"
+    try:
+        result = put_object(path, data, file.content_type)
+    except Exception as e:
+        logger.error(f"Storage upload failed: {e}")
+        raise HTTPException(status_code=502, detail="Upload failed — please try again")
+    canonical = result["path"]
+    await db.files.insert_one({
+        "id": str(uuid.uuid4()),
+        "storage_path": canonical,
+        "original_filename": file.filename,
+        "content_type": file.content_type,
+        "size": result["size"],
+        "is_deleted": False,
+        "created_at": datetime.now(timezone.utc).isoformat(),
+    })
+    return {"url": f"/api/files/{canonical}", "filename": file.filename, "size": result["size"]}
+
+
+@api_router.get("/files/{path:path}")
+async def serve_file(path: str):
+    record = await db.files.find_one({"storage_path": path, "is_deleted": False})
+    if not record:
+        raise HTTPException(status_code=404, detail="File not found")
+    try:
+        data, content_type = get_object(path)
+    except Exception:
+        raise HTTPException(status_code=404, detail="File not found")
+    return Response(
+        content=data,
+        media_type=record.get("content_type", content_type),
+        headers={"Cache-Control": "public, max-age=86400"},
+    )
+
+
 
 # ---------- Domain validation models ----------
 
@@ -350,6 +445,8 @@ class SiteDoc(BaseModel):
     story: List[str]
     milestones: List[MilestoneInput]
     closingMessage: str = Field(min_length=1, max_length=600)
+    heroImageUrl: Optional[str] = Field(None, max_length=500)
+    brandonPhotoUrl: Optional[str] = Field(None, max_length=500)
 
 
 class TextPair(BaseModel):
@@ -409,6 +506,7 @@ class ChampionEntry(BaseModel):
     awards: List[str] = []
     stats: List[ChampionStat] = []
     photoCaption: str = Field(default="", max_length=200)
+    photoUrl: Optional[str] = Field(None, max_length=500)
     published: bool = True
     placeholder: bool = True
 
@@ -551,6 +649,12 @@ async def startup():
     await db.users.create_index("email", unique=True)
     await db.login_attempts.create_index("identifier")
     await db.team_pins.create_index("teamId", unique=True)
+    await db.files.create_index("storage_path", unique=True)
+    try:
+        init_storage()
+        logger.info("Object storage initialized")
+    except Exception as e:
+        logger.error(f"Storage init failed (uploads will retry on demand): {e}")
     admin_email = os.environ["ADMIN_EMAIL"].strip().lower()
     admin_password = os.environ["ADMIN_PASSWORD"]
     existing = await db.users.find_one({"email": admin_email})
