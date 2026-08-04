@@ -12,7 +12,7 @@ export const RULES = {
   header: {
     title: "Rules & Format",
     edition: "8th Annual Dalleo Open · 2026",
-    description: "Tournament format, scoring, and the rules every player should know.",
+    description: "Tournament format and the rules every player should know.",
   },
   draftNotice:
     "Draft rules shown below are placeholder content and require organizer approval.",
@@ -24,7 +24,6 @@ export const RULES = {
   ],
   sectionNav: [
     { id: "format", label: "Tournament Format" },
-    { id: "scoring", label: "Scoring" },
     { id: "match-rules", label: "Match Rules" },
     { id: "conduct", label: "Conduct" },
     { id: "tiebreakers", label: "Tie-Breakers" },
@@ -32,23 +31,16 @@ export const RULES = {
   ],
   format: {
     intro:
-      "The Dalleo Open is a team-based competition played across tournament weekend. The details below describe the general structure — the confirmed playing format will be published after organizer review.",
+      "The Dalleo Open is played as an 8-team, four-person scramble championship. All four players hit each shot, the team selects the best ball, and everyone plays from that spot. Shotgun start. One round on Saturday, September 5, 2026. Lowest team score wins.",
     points: [
-      "Team-based competition with captains and drafted rosters",
-      "Multiple rounds or sessions across the weekend",
-      "Points accumulated by teams across all rounds",
-      "Final standings determined after the last round",
+      "8 teams, four players per team — captained and drafted",
+      "Four-person scramble: all four players hit each shot",
+      "The team selects the best ball, and everyone plays from that spot",
+      "All teams tee off from the black tee boxes",
+      "Shotgun start — one round on Saturday, September 5, 2026",
+      "Lowest team score wins the championship",
     ],
-    note: "Specific playing formats — such as scramble, best ball, alternate shot, match play, or stroke play — are examples under review and require organizer confirmation.",
-  },
-  scoring: {
-    note: "Final scoring values will be added after organizer confirmation.",
-    rows: [
-      { result: "Win", points: "10 pts (example)", explanation: "Sample points awarded to the team that wins a match." },
-      { result: "Tie", points: "5 pts (example)", explanation: "Sample points awarded to each team when a match ends level." },
-      { result: "Loss", points: "2 pts (example)", explanation: "Sample participation points for completing a match." },
-      { result: "Bonus", points: "TBD (example only)", explanation: "Bonus scoring opportunities are examples awaiting organizer confirmation." },
-    ],
+    note: "The 2026 format is confirmed — an 8-team, four-person scramble championship.",
   },
   matchRules: [
     { id: "starting-times", title: "Starting Times", body: "Be at your assigned starting point before your scheduled time. Check the Schedule page for any updates." },

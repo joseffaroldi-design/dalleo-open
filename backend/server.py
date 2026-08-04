@@ -445,24 +445,16 @@ class Topic(BaseModel):
     body: str = Field(min_length=1, max_length=1000)
 
 
-class ScoringRow(BaseModel):
-    result: str = Field(min_length=1, max_length=60)
-    points: str = Field(min_length=1, max_length=60)
-    explanation: str = Field(min_length=1, max_length=300)
-
-
 class RulesDoc(BaseModel):
     published: bool
     approved: bool
-    header: TextPair = TextPair(title="Rules & Format", body="Tournament format, scoring, and the rules every player should know.")
+    header: TextPair = TextPair(title="Rules & Format", body="Tournament format and the rules every player should know.")
     edition: str = "8th Annual Dalleo Open · 2026"
     draftNotice: str = Field(min_length=1, max_length=300)
     quickReminders: List[str]
     formatIntro: str = Field(min_length=1, max_length=1000)
     formatPoints: List[str]
     formatNote: str = Field(min_length=1, max_length=400)
-    scoringNote: str = Field(min_length=1, max_length=300)
-    scoringRows: List[ScoringRow]
     matchRules: List[Topic]
     conduct: List[TextPair]
     tiebreakNote: str = Field(min_length=1, max_length=300)

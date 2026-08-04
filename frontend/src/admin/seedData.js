@@ -49,8 +49,6 @@ export const SEED = {
     formatIntro: RULES.format.intro,
     formatPoints: [...RULES.format.points],
     formatNote: RULES.format.note,
-    scoringNote: RULES.scoring.note,
-    scoringRows: RULES.scoring.rows.map((r) => ({ ...r })),
     matchRules: RULES.matchRules.map((r) => ({ ...r })),
     conduct: RULES.conduct.map((r) => ({ ...r })),
     tiebreakNote: RULES.tiebreakers.note,

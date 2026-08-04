@@ -39,8 +39,6 @@ export default function RulesAdmin() {
   if (loading || !data) return <AdminLoading />;
 
   const update = (patch) => setData((d) => ({ ...d, ...patch }));
-  const updateScoringRow = (i, patch) =>
-    setData((d) => ({ ...d, scoringRows: d.scoringRows.map((r, j) => (j === i ? { ...r, ...patch } : r)) }));
 
   const stateText = !data.published
     ? "Public: unpublished state is shown"
@@ -74,25 +72,6 @@ export default function RulesAdmin() {
           </Field>
           <Field label="Format note">
             <TextInput data-testid="rules-format-note" value={data.formatNote} onChange={(e) => update({ formatNote: e.target.value })} />
-          </Field>
-        </AdminSection>
-
-        <AdminSection title="Scoring" testId="rules-scoring-section">
-          {data.scoringRows.map((row, i) => (
-            <div key={i} className="grid grid-cols-1 gap-3 rounded-2xl border border-border p-4 sm:grid-cols-3">
-              <Field label="Result">
-                <TextInput data-testid={`scoring-result-${i}`} value={row.result} onChange={(e) => updateScoringRow(i, { result: e.target.value })} />
-              </Field>
-              <Field label="Points">
-                <TextInput data-testid={`scoring-points-${i}`} value={row.points} onChange={(e) => updateScoringRow(i, { points: e.target.value })} />
-              </Field>
-              <Field label="Explanation">
-                <TextInput data-testid={`scoring-explanation-${i}`} value={row.explanation} onChange={(e) => updateScoringRow(i, { explanation: e.target.value })} />
-              </Field>
-            </div>
-          ))}
-          <Field label="Scoring note">
-            <TextInput data-testid="rules-scoring-note" value={data.scoringNote} onChange={(e) => update({ scoringNote: e.target.value })} />
           </Field>
         </AdminSection>
 

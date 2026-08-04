@@ -11,7 +11,6 @@ const fromLive = (live) => ({
   quickReminders: live.quickReminders,
   sectionNav: RULES.sectionNav,
   format: { intro: live.formatIntro, points: live.formatPoints, note: live.formatNote },
-  scoring: { note: live.scoringNote, rows: live.scoringRows },
   matchRules: live.matchRules,
   conduct: live.conduct,
   tiebreakers: { note: live.tiebreakNote, steps: live.tiebreakSteps },
@@ -62,31 +61,6 @@ export default function Rules() {
                   {R.format.note}
                 </p>
               </div>
-            </RuleSection>
-
-            <RuleSection id="scoring" title="Scoring" testId="section-scoring">
-              <div className="flex flex-col gap-3">
-                {RULES.scoring.rows.map((row, i) => (
-                  <div
-                    key={row.result}
-                    data-testid={`scoring-row-${i + 1}`}
-                    className="flex flex-col gap-2 rounded-2xl bg-white p-5 shadow-sm ring-1 ring-border sm:flex-row sm:items-center sm:gap-6 sm:p-6"
-                  >
-                    <p className="w-28 shrink-0 text-lg font-extrabold tracking-tight text-forest">
-                      {row.result}
-                    </p>
-                    <p className="shrink-0 text-base font-extrabold text-gold-deep sm:w-36">
-                      {row.points}
-                    </p>
-                    <p className="text-sm leading-relaxed text-charcoal/60 sm:text-base">
-                      {row.explanation}
-                    </p>
-                  </div>
-                ))}
-              </div>
-              <p className="mt-5 rounded-2xl bg-gold/10 px-4 py-3 text-sm font-semibold text-gold-deep">
-                {R.scoring.note}
-              </p>
             </RuleSection>
 
             <RuleSection id="match-rules" title="Match Rules" testId="section-match-rules">
