@@ -81,6 +81,8 @@ Build the Dalleo Open Digital Clubhouse, a modern, mobile-first web app for the 
 
 - 2026-08-04 (Points system removed): Legacy match-points leaderboard fully deleted — LeaderboardAdmin, data/leaderboard.js mock, and unused LeaderCard/StandingsList/MatchesSection/RoundSelector components removed; "Points (Legacy)" nav link, Dashboard quick link, /admin/leaderboard route, and the backend "leaderboard" domain + models (StandingInput/LeaderboardDoc) removed; champions regression test updated. Stroke-play scoring (scoring domain) is now the only scoring system. 39/39 tests pass, lints clean, admin UI verified. NOTE: needs redeploy for production.
 
+- 2026-08-04 (Rules scoring removed + unpaired teams): Scoring section fully removed from Rules (page, admin editor, model ScoringRow/scoringNote/scoringRows, fallback, section nav) — consistent with the points removal. "All teams tee off from the black tee boxes" added as a format bullet on both environments; rules header text de-scored on both. All 8 teams' startingHole/startingTime cleared on BOTH environments — no pairings anywhere (TBD chips; pairings section auto-hidden). 39/39 tests pass. NOTE: production still shows the old Scoring section until redeploy (its data keeps the legacy fields for its old model; they drop on next save after deploy).
+
 ## Backlog (post-launch evaluation — NOT built)
 - Media file uploads (object storage), refresh tokens, automated test suite, memory submissions, notifications, hole-by-hole scoring, draft board, audit history
 
