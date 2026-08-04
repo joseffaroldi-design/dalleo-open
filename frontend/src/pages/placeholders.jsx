@@ -1,18 +1,8 @@
 import {
-  Images,
   Heart,
   ScrollText,
 } from "lucide-react";
 import { PlaceholderPage } from "@/components/PlaceholderPage";
-
-export const Gallery = () => (
-  <PlaceholderPage
-    testId="gallery-page"
-    title="Gallery"
-    icon={Images}
-    description="Photos and memories from past Dalleo Opens will be showcased here for the whole community."
-  />
-);
 
 export const Brandon = () => (
   <PlaceholderPage

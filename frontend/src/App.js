@@ -8,8 +8,8 @@ import Leaderboard from "@/pages/Leaderboard";
 import Teams from "@/pages/Teams";
 import TeamDetail from "@/pages/TeamDetail";
 import Schedule from "@/pages/Schedule";
+import Gallery from "@/pages/Gallery";
 import {
-  Gallery,
   Brandon,
   Rules,
 } from "@/pages/placeholders";

@@ -29,11 +29,13 @@ Build the Dalleo Open Digital Clubhouse, a modern, mobile-first web app for the 
 
 - 2026-07-04 (Sprint 4): Public Schedule experience — Tournament Schedule page (header, Happening Now current-event highlight, Friday/Saturday/Sunday day selector styled like the round selector, chronological timeline cards with time/title/description/location/status/note), statuses (Completed/Happening Now/Upcoming/Delayed/Updated) added to the shared StatusChip with text labels, unpublished empty state via SCHEDULE_PUBLISHED flag, homepage This Weekend section replaced with a compact schedule preview (current event + day/time/location + View Full Schedule link) fed by src/data/schedule.js. Verified: all 3 day tabs (4/6/5 events), current-event highlight on page + homepage from same data, empty-state toggle hides homepage section, no mobile/tablet overflow, all Sprint 1–3 routes/features intact, build passing.
 
+- 2026-07-04 (Sprint 5): Public Gallery experience — Gallery page (header, featured memory card, 6-category pill filter, masonry grid of 12 mock media items incl. 2 video placeholders with play badges), accessible lightbox viewer (dialog role, focus trap, focus restore, Escape/arrow-key navigation, wrap-around prev/next, labeled controls), unpublished empty state via GALLERY_PUBLISHED flag, homepage "Latest Memories" preview with 3 uniform thumbnails fed by src/data/gallery.js. Mock media rendered as generated local placeholder tiles (no remote URLs); src field ready for real hosted media. Verified: all 6 category filters (12/4/2/2/2/2 items), viewer open/wrap/prev/next/Escape on first and last items, both video items, featured View Memory action, empty-state toggle hides homepage preview, no mobile/tablet overflow incl. viewer, all Sprint 1–4 routes/features intact, build passing.
+
 ## Backlog (future sprints — NOT built, awaiting approval)
 - P0: Live countdown to tournament date, real tournament date, real logo/hero photo/Brandon photo assets
-- P1: Real leaderboard/teams/schedule data via backend API + database (data files are API-ready swap points), gallery with uploads, Brandon memorial page content, rules content, auto-calculated current event from real times
-- P2: Admin dashboard, authentication, CMS/announcements management, push notifications, statistics, hole-by-hole scoring, draft board
+- P1: Real data via backend API + database (data files are API-ready swap points), real gallery media from owner, Brandon memorial page content, Rules page content, video playback for gallery videos
+- P2: Admin dashboard, authentication, CMS/announcements management, uploads/cloud storage for media, push notifications, statistics, hole-by-hole scoring, draft board
 
 ## Next Tasks
-1. Obtain brand assets (logo, hero photo, Brandon photo) and tournament date
-2. Sprint 5 scoping with stakeholder approval (Gallery, Brandon, or Rules are the remaining placeholder pages)
+1. Obtain brand assets (logo, hero photo, Brandon photo, real gallery media) and tournament date
+2. Sprint 6 scoping with stakeholder approval (Brandon and Rules are the last placeholder pages)

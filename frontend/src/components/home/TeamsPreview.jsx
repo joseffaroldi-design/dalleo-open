@@ -9,7 +9,7 @@ export const TeamsPreview = () => {
     <section
       data-testid="home-teams-preview"
       aria-labelledby="home-teams-title"
-      className="mx-auto max-w-6xl px-4 pb-20 sm:px-6 sm:pb-28"
+      className="mx-auto max-w-6xl px-4 pb-6 sm:px-6 sm:pb-8"
     >
       <div className="flex flex-col gap-6 rounded-3xl bg-white p-7 shadow-sm ring-1 ring-border sm:flex-row sm:items-center sm:justify-between sm:p-9">
         <div>
