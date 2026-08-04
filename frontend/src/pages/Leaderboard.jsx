@@ -45,7 +45,7 @@ export default function Leaderboard() {
             updatedAt: liveLb.updatedAt,
           },
           standings,
-          matches: LEADERBOARD.overall.matches,
+          matches: [],
         },
       },
     };
@@ -95,7 +95,7 @@ export default function Leaderboard() {
             ) : (
               <StandingsList standings={round.standings} />
             )}
-            <MatchesSection matches={round.matches} />
+            {round.matches.length > 0 && <MatchesSection matches={round.matches} />}
           </div>
         ) : (
           <EmptyState />

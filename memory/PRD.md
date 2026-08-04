@@ -47,6 +47,8 @@ Build the Dalleo Open Digital Clubhouse, a modern, mobile-first web app for the 
 
 - 2026-07-04 (Leaderboard extension + mottos): Upgraded scoring from 4 fixed color slots to teamId-based standings supporting all 8 drafted teams — backend StandingInput now takes teamId (any string), public Leaderboard page, homepage preview, admin Dashboard, and admin Leaderboard editor all resolve teams by id (colorKey kept for dot visuals, legacy-compatible). Admin editor now renders one row per real team (8 rows). Added mottos for all 8 teams (owner-editable in Teams admin). Verified with live 8-team test scores (sorted standings, leader card, dashboard stat, mobile) then reverted to pre-tournament state. Schedule remains the saved weekend lineup — owner to confirm real times in admin. Build passing.
 
+- 2026-07-04 (Date + scoring on): Tournament date set — hero now shows "Saturday, September 5, 2026" (site doc dateText). Scoring flipped on: leaderboard is Round 1 / Live with all 8 teams upcoming and no points yet; mock match results and fake leader card no longer render in live mode (matches hidden until real ones exist). Fixed a latent bug: the Sprint 8 hero dateText wiring had never applied (hardcoded string), found while the date appeared stale; also added no-store + cache-buster to public data fetches. Verified hero date, leaderboard Round 1 state with 8 upcoming rows, build passing.
+
 ## Backlog (post-launch evaluation — NOT built)
 - Media file uploads (object storage), refresh tokens, automated test suite, memory submissions, notifications, hole-by-hole scoring, draft board, audit history
 

@@ -49,7 +49,7 @@ export const Hero = () => {
         data-testid="hero-date-placeholder"
         className="mt-5 text-base font-semibold text-cream/70 sm:text-lg"
       >
-        Tournament dates to be announced
+        {site?.dateText ?? "Tournament dates to be announced"}
       </p>
       <CountdownPlaceholder />
     </div>

@@ -44,7 +44,7 @@ export async function loginRequest(email, password) {
 }
 
 export async function fetchPublic(domain) {
-  const res = await fetch(`${API}/public/${domain}`);
+  const res = await fetch(`${API}/public/${domain}?_=${Date.now()}`, { cache: "no-store" });
   const body = await res.json().catch(() => ({}));
   return body.data ?? null;
 }
