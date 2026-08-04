@@ -71,6 +71,8 @@ Build the Dalleo Open Digital Clubhouse, a modern, mobile-first web app for the 
 
 - 2026-08-04 (Saturday-only schedule): Owner's official tournament-day itinerary live on BOTH preview and production data — Friday events removed entirely; Saturday now 8 events (6:15 AM Arrival at Gennaro's, 6:30 Photographer Onsite, 6:45 Departure to LA Tour, 7:45 Arrive at the Course, 8:15 Opening Ceremony, 8:25 Depart to Assigned Holes, 8:30 Tournament Start, 2:30 PM Bus Departure to Gennaro's). All 8 teams' startingTime unified to "8:30 AM" (both envs). Day tabs now derive from schedule content (DaySelector takes days prop; hidden when only one day) so the Friday tab is gone; TOURNAMENT_DATES_TEXT → "September 5, 2026"; hero countdown retargeted to 8:30 AM. Fixed sortKey format bug ("0615" → "06:15") that made auto-status show Complete. 40/40 tests pass. NOTE: production data updated; the tab-free single-day layout + countdown change need a redeploy to reach production.
 
+- 2026-08-04 (Awards + captain PINs): Awards Ceremony added to Saturday at 2:00 PM (between Tournament Start and the 2:30 bus) on both environments. Official captain PINs generated and set for all 8 teams on BOTH preview and production (hashed, verified with live captain logins on both); recorded in test_credentials.md.
+
 ## Backlog (post-launch evaluation — NOT built)
 - Media file uploads (object storage), refresh tokens, automated test suite, memory submissions, notifications, hole-by-hole scoring, draft board, audit history
 
