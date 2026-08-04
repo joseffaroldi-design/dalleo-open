@@ -1,4 +1,5 @@
 import { Hero } from "@/components/home/Hero";
+import { Marquee } from "@/components/Marquee";
 import { QuickNav } from "@/components/home/QuickNav";
 import { LeaderboardPreview } from "@/components/home/LeaderboardPreview";
 import { TeamsPreview } from "@/components/home/TeamsPreview";
@@ -11,6 +12,7 @@ export default function Home() {
   return (
     <div data-testid="home-page">
       <Hero />
+      <Marquee />
       <QuickNav />
       <LeaderboardPreview />
       <TeamsPreview />

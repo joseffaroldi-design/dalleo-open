@@ -91,3 +91,24 @@
         border-bottom-color: inherit;
     }
 }
+
+/* ——— Tournament Journal art direction ——— */
+.text-outline-cream {
+    -webkit-text-stroke: 1.5px rgb(250 248 244 / 0.12);
+    color: transparent;
+}
+
+.grain-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 40;
+    pointer-events: none;
+    opacity: 0.05;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.spotlight-frame {
+    background-image: radial-gradient(ellipse 70% 90% at 50% 0%, rgb(231 206 122 / 0.12), transparent 60%);
+    box-shadow: 0 0 0 1px rgb(201 162 39 / 0.15), 0 40px 80px -30px rgb(0 0 0 / 0.5);
+}

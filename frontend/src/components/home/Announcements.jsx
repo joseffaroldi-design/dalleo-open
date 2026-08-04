@@ -1,5 +1,6 @@
 import { Megaphone } from "lucide-react";
 import { useLiveData } from "@/data/useLiveData";
+import { Reveal } from "@/components/motion/Reveal";
 
 const SAMPLE_ANNOUNCEMENTS = [
   {
@@ -34,19 +35,25 @@ export const Announcements = () => {
     className="bg-white"
   >
     <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6 sm:py-28">
+      <Reveal>
       <div className="flex items-center justify-between gap-4">
-        <h2
-          id="announcements-title"
-          className="text-base font-bold uppercase tracking-[0.2em] text-gold-deep md:text-lg"
-        >
-          Announcements
-        </h2>
+        <div>
+          <p className="font-display text-sm italic text-gold-deep">Chapter 05 · The Bulletin</p>
+          <h2
+            id="announcements-title"
+            className="mt-2 text-base font-bold uppercase tracking-[0.2em] text-gold-deep md:text-lg"
+          >
+            Announcements
+          </h2>
+        </div>
         {!live && (
           <span className="rounded-full bg-gold/15 px-4 py-1 text-xs font-bold uppercase tracking-widest text-gold-deep">
             Sample
           </span>
         )}
       </div>
+      </Reveal>
+      <Reveal delay={0.12}>
       <div className="mt-10 overflow-hidden rounded-3xl border border-border bg-cream shadow-sm">
         {items.length === 0 ? (
           <p className="p-8 text-center text-sm font-semibold text-charcoal/50">
@@ -87,6 +94,7 @@ export const Announcements = () => {
           ))
         )}
       </div>
+      </Reveal>
     </div>
   </section>
   );

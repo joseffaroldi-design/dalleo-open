@@ -1,9 +1,11 @@
 import "@/App.css";
 import { useEffect } from "react";
 import { BrowserRouter, Routes, Route, useLocation, Navigate } from "react-router-dom";
+import { MotionConfig, motion } from "framer-motion";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { ScrollToTop } from "@/components/ScrollToTop";
+import { useLenis } from "@/hooks/useLenis";
 import Home from "@/pages/Home";
 import Leaderboard from "@/pages/Leaderboard";
 import Teams from "@/pages/Teams";
@@ -41,6 +43,8 @@ const Shell = () => {
   const { pathname } = useLocation();
   const isAdmin = pathname.startsWith("/admin");
 
+  useLenis(!isAdmin);
+
   useEffect(() => {
     const match = PAGE_TITLES.find(([pattern]) => pattern.test(pathname));
     document.title = match ? match[1] : "Dalleo Open Digital Clubhouse";
@@ -50,7 +54,14 @@ const Shell = () => {
     <>
       <ScrollToTop />
       {!isAdmin && <Navbar />}
+      {!isAdmin && <div aria-hidden="true" className="grain-overlay" />}
       <main id="main-content">
+        <motion.div
+          key={pathname}
+          initial={{ opacity: 0, y: 14 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+        >
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/leaderboard" element={<Leaderboard />} />
@@ -75,6 +86,7 @@ const Shell = () => {
           </Route>
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
+        </motion.div>
       </main>
       {!isAdmin && <Footer />}
     </>
@@ -83,11 +95,13 @@ const Shell = () => {
 
 function App() {
   return (
-    <div className="App">
-      <BrowserRouter>
-        <Shell />
-      </BrowserRouter>
-    </div>
+    <MotionConfig reducedMotion="user">
+      <div className="App">
+        <BrowserRouter>
+          <Shell />
+        </BrowserRouter>
+      </div>
+    </MotionConfig>
   );
 }
 

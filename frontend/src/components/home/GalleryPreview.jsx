@@ -3,6 +3,7 @@ import { ArrowRight } from "lucide-react";
 import { GALLERY_PUBLISHED, getLatestItems } from "@/data/gallery";
 import { MediaThumb } from "@/components/gallery/MediaThumb";
 import { useLiveData } from "@/data/useLiveData";
+import { Reveal } from "@/components/motion/Reveal";
 
 export const GalleryPreview = () => {
   const live = useLiveData("gallery");
@@ -18,13 +19,17 @@ export const GalleryPreview = () => {
       aria-labelledby="home-gallery-title"
       className="mx-auto max-w-6xl px-4 pb-20 sm:px-6 sm:pb-28"
     >
+      <Reveal>
       <div className="flex items-end justify-between gap-4">
-        <h2
-          id="home-gallery-title"
-          className="text-base font-bold uppercase tracking-[0.2em] text-gold-deep md:text-lg"
-        >
-          Latest Memories
-        </h2>
+        <div>
+          <p className="font-display text-sm italic text-gold-deep">Chapter 04 · The Memories</p>
+          <h2
+            id="home-gallery-title"
+            className="mt-2 text-base font-bold uppercase tracking-[0.2em] text-gold-deep md:text-lg"
+          >
+            Latest Memories
+          </h2>
+        </div>
         <Link
           to="/gallery"
           data-testid="view-gallery-link"
@@ -34,6 +39,8 @@ export const GalleryPreview = () => {
           <ArrowRight className="h-4 w-4" aria-hidden="true" />
         </Link>
       </div>
+      </Reveal>
+      <Reveal delay={0.12}>
       <div className="mt-6 grid grid-cols-3 gap-3 sm:gap-4">
         {latest.map((item) => (
           <Link
@@ -47,6 +54,7 @@ export const GalleryPreview = () => {
           </Link>
         ))}
       </div>
+      </Reveal>
     </section>
   );
 };

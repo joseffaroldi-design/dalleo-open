@@ -4,6 +4,7 @@ import { SCORING_STARTED, TEAM_VISUALS, getLeaderSummary } from "@/data/leaderbo
 import { TEAMS } from "@/data/teams";
 import { StatusChip } from "@/components/leaderboard/StatusChip";
 import { useLiveData } from "@/data/useLiveData";
+import { Reveal } from "@/components/motion/Reveal";
 
 export const LeaderboardPreview = () => {
   const liveLb = useLiveData("leaderboard");
@@ -37,9 +38,11 @@ export const LeaderboardPreview = () => {
       aria-labelledby="home-leaderboard-title"
       className="mx-auto max-w-6xl px-4 pb-6 sm:px-6 sm:pb-8"
     >
+      <Reveal>
       <div className="flex flex-col gap-6 rounded-3xl bg-forest p-7 shadow-md ring-1 ring-gold/40 sm:flex-row sm:items-center sm:justify-between sm:p-9">
         <div>
-          <p className="flex items-center gap-3 text-sm font-bold uppercase tracking-[0.2em] text-gold">
+          <p className="font-display text-sm italic text-gold-soft">Chapter 02 · The Standings</p>
+          <p className="mt-2 flex items-center gap-3 text-sm font-bold uppercase tracking-[0.2em] text-gold">
             Live Leaderboard
             <StatusChip status="live" />
           </p>
@@ -70,6 +73,7 @@ export const LeaderboardPreview = () => {
           <ArrowRight className="h-4 w-4" aria-hidden="true" />
         </Link>
       </div>
+      </Reveal>
     </section>
   );
 };

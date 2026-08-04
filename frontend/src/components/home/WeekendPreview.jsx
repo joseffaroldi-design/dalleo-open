@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { ArrowRight, MapPin } from "lucide-react";
 import { SCHEDULE_PUBLISHED, SCHEDULE, DAYS, getNextEvents } from "@/data/schedule";
 import { useLiveData } from "@/data/useLiveData";
+import { Reveal } from "@/components/motion/Reveal";
 
 export const WeekendPreview = () => {
   const live = useLiveData("schedule");
@@ -22,9 +23,11 @@ export const WeekendPreview = () => {
     >
       <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6 sm:py-28">
         <div data-testid="home-schedule-preview">
+          <Reveal>
           <div className="flex flex-wrap items-end justify-between gap-5">
             <div>
-              <p className="text-sm font-bold uppercase tracking-[0.2em] text-gold">
+              <p className="font-display text-sm italic text-gold-soft">Chapter 06 · The Weekend</p>
+              <p className="mt-2 text-sm font-bold uppercase tracking-[0.2em] text-gold">
                 This Weekend
               </p>
               <h2
@@ -43,6 +46,8 @@ export const WeekendPreview = () => {
               <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </Link>
           </div>
+          </Reveal>
+          <Reveal delay={0.12}>
           <ol className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-3">
             {next.map((event, i) => (
               <li
@@ -63,6 +68,7 @@ export const WeekendPreview = () => {
               </li>
             ))}
           </ol>
+          </Reveal>
         </div>
       </div>
     </section>

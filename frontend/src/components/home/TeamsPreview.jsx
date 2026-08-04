@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import { TEAMS, TEAMS_ANNOUNCED, TEAM_VISUALS, TOTAL_PLAYERS } from "@/data/teams";
 import { useLiveData } from "@/data/useLiveData";
+import { Reveal } from "@/components/motion/Reveal";
 
 export const TeamsPreview = () => {
   const live = useLiveData("teams");
@@ -16,9 +17,11 @@ export const TeamsPreview = () => {
       aria-labelledby="home-teams-title"
       className="mx-auto max-w-6xl px-4 pb-6 sm:px-6 sm:pb-8"
     >
+      <Reveal>
       <div className="flex flex-col gap-6 rounded-3xl bg-white p-7 shadow-sm ring-1 ring-border sm:flex-row sm:items-center sm:justify-between sm:p-9">
         <div>
-          <p className="text-sm font-bold uppercase tracking-[0.2em] text-gold-deep">
+          <p className="font-display text-sm italic text-gold-deep">Chapter 03 · The Field</p>
+          <p className="mt-2 text-sm font-bold uppercase tracking-[0.2em] text-gold-deep">
             Teams
           </p>
           <h2
@@ -53,6 +56,7 @@ export const TeamsPreview = () => {
           <ArrowRight className="h-4 w-4" aria-hidden="true" />
         </Link>
       </div>
+      </Reveal>
     </section>
   );
 };

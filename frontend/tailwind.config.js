@@ -9,6 +9,7 @@ module.exports = {
     extend: {
       fontFamily: {
         sans: ['Manrope', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        display: ['Fraunces', 'Georgia', 'serif'],
       },
       borderRadius: {
         lg: 'var(--radius)',
@@ -71,6 +72,10 @@ module.exports = {
         }
       },
       keyframes: {
+        marquee: {
+          from: { transform: 'translateX(0)' },
+          to: { transform: 'translateX(-50%)' }
+        },
         'accordion-down': {
           from: {
             height: '0'
@@ -89,6 +94,7 @@ module.exports = {
         }
       },
       animation: {
+        marquee: 'marquee 52s linear infinite',
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out'
       }

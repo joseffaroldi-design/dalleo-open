@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-// Countdown to the 7th Annual Dalleo Open — Saturday, September 5, 2026 (first tee).
+// Countdown to the 8th Annual Dalleo Open — Saturday, September 5, 2026 (first tee).
 const TARGET = new Date("2026-09-05T08:00:00");
 
 export const Countdown = () => {
@@ -23,17 +23,22 @@ export const Countdown = () => {
     <div
       data-testid="countdown-placeholder"
       aria-label="Countdown to the tournament"
-      className="mt-10 flex items-center justify-center gap-3 sm:gap-4"
+      className="mt-12 flex items-start justify-center"
     >
-      {units.map(([unit, value]) => (
+      {units.map(([unit, value], i) => (
         <div
           key={unit}
-          className="flex w-16 flex-col items-center rounded-2xl bg-cream/10 px-2 py-3 ring-1 ring-cream/15 sm:w-20 sm:py-4"
+          className={`flex w-20 flex-col items-center px-3 sm:w-24 ${
+            i > 0 ? "border-l border-cream/15" : ""
+          }`}
         >
-          <span data-testid={`countdown-${unit.toLowerCase()}`} className="text-2xl font-extrabold text-gold sm:text-3xl">
+          <span
+            data-testid={`countdown-${unit.toLowerCase()}`}
+            className="font-display text-4xl font-medium tabular-nums text-gold sm:text-5xl"
+          >
             {String(value).padStart(2, "0")}
           </span>
-          <span className="mt-1 text-[10px] font-bold uppercase tracking-widest text-cream/60 sm:text-xs">
+          <span className="mt-2 text-[10px] font-bold uppercase tracking-[0.25em] text-cream/50 sm:text-xs">
             {unit}
           </span>
         </div>
