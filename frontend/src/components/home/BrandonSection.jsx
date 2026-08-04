@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { Heart, ImageIcon } from "lucide-react";
+import { MEMORIAL } from "@/data/memorial";
 
 export const BrandonSection = () => (
   <section
@@ -29,11 +30,7 @@ export const BrandonSection = () => (
           More than a tournament.
         </h2>
         <p className="mt-6 text-base leading-relaxed text-charcoal/70">
-          The Dalleo Open began as a way for friends and family to honor
-          Brandon Dalleo — his love of the game, his laugh on the course, and
-          the way he brought people together. Eight years on, it remains a
-          weekend about community, remembrance, and celebrating a life well
-          lived.
+          {MEMORIAL.homeMessage}
         </p>
         <Link
           to="/brandon"

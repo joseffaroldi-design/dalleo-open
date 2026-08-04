@@ -1,17 +1,5 @@
-import {
-  Heart,
-  ScrollText,
-} from "lucide-react";
+import { ScrollText } from "lucide-react";
 import { PlaceholderPage } from "@/components/PlaceholderPage";
-
-export const Brandon = () => (
-  <PlaceholderPage
-    testId="brandon-page"
-    title="Brandon"
-    icon={Heart}
-    description="The story of Brandon Dalleo and the legacy behind this tournament — coming soon."
-  />
-);
 
 export const Rules = () => (
   <PlaceholderPage

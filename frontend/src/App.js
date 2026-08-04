@@ -9,8 +9,8 @@ import Teams from "@/pages/Teams";
 import TeamDetail from "@/pages/TeamDetail";
 import Schedule from "@/pages/Schedule";
 import Gallery from "@/pages/Gallery";
+import Brandon from "@/pages/Brandon";
 import {
-  Brandon,
   Rules,
 } from "@/pages/placeholders";
 
