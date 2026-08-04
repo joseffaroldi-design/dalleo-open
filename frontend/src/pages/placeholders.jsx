@@ -1,19 +1,9 @@
 import {
-  CalendarDays,
   Images,
   Heart,
   ScrollText,
 } from "lucide-react";
 import { PlaceholderPage } from "@/components/PlaceholderPage";
-
-export const Schedule = () => (
-  <PlaceholderPage
-    testId="schedule-page"
-    title="Schedule"
-    icon={CalendarDays}
-    description="The full tournament weekend schedule — tee times, events, and ceremonies — will be posted here."
-  />
-);
 
 export const Gallery = () => (
   <PlaceholderPage

@@ -27,11 +27,13 @@ Build the Dalleo Open Digital Clubhouse, a modern, mobile-first web app for the 
 
 - 2026-07-03 (Sprint 3): Public Teams experience — Teams page (header + 2-col card grid), team detail route /teams/:teamId (dedicated accessible route with back control, bad-id redirect), roster views with initials avatars and Captain labels, pre-announcement empty state via TEAMS_ANNOUNCED flag, compact homepage Teams preview (4 teams · 24 players + captain color row). Team identity centralized in src/data/teams.js (TEAMS with id/colorKey/name/captain/motto/roster, TEAM_VISUALS); leaderboard.js now derives team names/captains/colors from it — zero duplication, leaderboard behavior unchanged. Verified: all 4 detail views, all back/close controls, empty state toggle, no mobile/tablet overflow, leaderboard consistency, all routes, build passing.
 
+- 2026-07-04 (Sprint 4): Public Schedule experience — Tournament Schedule page (header, Happening Now current-event highlight, Friday/Saturday/Sunday day selector styled like the round selector, chronological timeline cards with time/title/description/location/status/note), statuses (Completed/Happening Now/Upcoming/Delayed/Updated) added to the shared StatusChip with text labels, unpublished empty state via SCHEDULE_PUBLISHED flag, homepage This Weekend section replaced with a compact schedule preview (current event + day/time/location + View Full Schedule link) fed by src/data/schedule.js. Verified: all 3 day tabs (4/6/5 events), current-event highlight on page + homepage from same data, empty-state toggle hides homepage section, no mobile/tablet overflow, all Sprint 1–3 routes/features intact, build passing.
+
 ## Backlog (future sprints — NOT built, awaiting approval)
 - P0: Live countdown to tournament date, real tournament date, real logo/hero photo/Brandon photo assets
-- P1: Real leaderboard/teams data via backend API + database (data files are API-ready swap points), full schedule content, gallery with uploads, Brandon memorial page content, rules content
+- P1: Real leaderboard/teams/schedule data via backend API + database (data files are API-ready swap points), gallery with uploads, Brandon memorial page content, rules content, auto-calculated current event from real times
 - P2: Admin dashboard, authentication, CMS/announcements management, push notifications, statistics, hole-by-hole scoring, draft board
 
 ## Next Tasks
 1. Obtain brand assets (logo, hero photo, Brandon photo) and tournament date
-2. Sprint 4 scoping with stakeholder approval (Schedule page content is the next untouched public page)
+2. Sprint 5 scoping with stakeholder approval (Gallery, Brandon, or Rules are the remaining placeholder pages)

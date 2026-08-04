@@ -7,8 +7,8 @@ import Home from "@/pages/Home";
 import Leaderboard from "@/pages/Leaderboard";
 import Teams from "@/pages/Teams";
 import TeamDetail from "@/pages/TeamDetail";
+import Schedule from "@/pages/Schedule";
 import {
-  Schedule,
   Gallery,
   Brandon,
   Rules,

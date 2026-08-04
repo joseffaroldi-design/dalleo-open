@@ -1,67 +1,57 @@
-import { PartyPopper, Flag, Medal } from "lucide-react";
+import { Link } from "react-router-dom";
+import { ArrowRight, MapPin } from "lucide-react";
+import { SCHEDULE_PUBLISHED, getCurrentEvent } from "@/data/schedule";
+import { StatusChip } from "@/components/leaderboard/StatusChip";
 
-const DAYS = [
-  {
-    day: "Friday",
-    event: "Draft Party",
-    icon: PartyPopper,
-    testId: "weekend-friday",
-  },
-  {
-    day: "Saturday",
-    event: "Tournament Round",
-    icon: Flag,
-    testId: "weekend-saturday",
-  },
-  {
-    day: "Sunday",
-    event: "Championship & Awards",
-    icon: Medal,
-    testId: "weekend-sunday",
-  },
-];
+export const WeekendPreview = () => {
+  const current = SCHEDULE_PUBLISHED ? getCurrentEvent() : null;
+  if (!current) return null;
+  const { day, event } = current;
 
-export const WeekendPreview = () => (
-  <section
-    data-testid="weekend-section"
-    aria-labelledby="weekend-title"
-    className="bg-forest"
-  >
-    <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6 sm:py-28">
-      <h2
-        id="weekend-title"
-        className="text-base font-bold uppercase tracking-[0.2em] text-gold md:text-lg"
-      >
-        This Weekend
-      </h2>
-      <p className="mt-3 max-w-xl text-3xl font-extrabold tracking-tight text-cream sm:text-4xl">
-        Three days. One unforgettable tournament.
-      </p>
-      <div className="mt-12 grid grid-cols-1 gap-5 md:grid-cols-3">
-        {DAYS.map(({ day, event, icon: Icon, testId }, i) => (
-          <div
-            key={day}
-            data-testid={testId}
-            className="rounded-3xl bg-forest-deep/60 p-7 ring-1 ring-cream/10 transition-colors duration-200 hover:ring-gold/40 sm:p-8"
-          >
-            <div className="flex items-center justify-between">
-              <span className="text-sm font-bold uppercase tracking-[0.2em] text-gold">
-                {day}
-              </span>
-              <span
-                aria-hidden="true"
-                className="flex h-11 w-11 items-center justify-center rounded-xl bg-cream/10 text-gold"
-              >
-                <Icon className="h-5 w-5" />
-              </span>
-            </div>
-            <p className="mt-8 text-2xl font-extrabold tracking-tight text-cream">
-              {event}
+  return (
+    <section
+      data-testid="weekend-section"
+      aria-labelledby="home-schedule-title"
+      className="bg-forest"
+    >
+      <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6 sm:py-28">
+        <div
+          data-testid="home-schedule-preview"
+          className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between"
+        >
+          <div>
+            <p className="flex flex-wrap items-center gap-3 text-sm font-bold uppercase tracking-[0.2em] text-gold">
+              Tournament Schedule
+              <StatusChip status={event.status} />
             </p>
-            <p className="mt-2 text-sm text-cream/50">Day {i + 1} of 3</p>
+            <h2
+              id="home-schedule-title"
+              data-testid="home-schedule-event"
+              className="mt-4 text-2xl font-extrabold tracking-tight text-cream sm:text-3xl"
+            >
+              {event.title}
+            </h2>
+            <p className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm font-semibold text-cream/60 sm:text-base">
+              <span data-testid="home-schedule-when" className="text-gold">
+                {day.label} &middot; {event.time}
+              </span>
+              <span aria-hidden="true">&middot;</span>
+              <span className="inline-flex items-center gap-1.5">
+                <MapPin className="h-4 w-4" aria-hidden="true" />
+                {event.location}
+              </span>
+            </p>
           </div>
-        ))}
+          <Link
+            to="/schedule"
+            data-testid="view-full-schedule-link"
+            className="inline-flex min-h-12 shrink-0 items-center justify-center gap-2 rounded-full bg-gold px-7 py-3 text-base font-extrabold text-forest-deep shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:bg-gold-soft hover:shadow-md"
+          >
+            View Full Schedule
+            <ArrowRight className="h-4 w-4" aria-hidden="true" />
+          </Link>
+        </div>
       </div>
-    </div>
-  </section>
-);
+    </section>
+  );
+};

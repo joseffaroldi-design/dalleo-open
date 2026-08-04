@@ -1,4 +1,4 @@
-import { Activity, CheckCircle2, Clock } from "lucide-react";
+import { Activity, CheckCircle2, Clock, Zap, AlertTriangle, RefreshCw } from "lucide-react";
 
 const VARIANTS = {
   live: {
@@ -20,6 +20,26 @@ const VARIANTS = {
     icon: Clock,
     label: "Upcoming",
     className: "bg-gold/15 text-gold-deep",
+  },
+  "happening-now": {
+    icon: Zap,
+    label: "Happening Now",
+    className: "bg-gold text-forest-deep",
+  },
+  completed: {
+    icon: CheckCircle2,
+    label: "Completed",
+    className: "bg-charcoal/10 text-charcoal/70",
+  },
+  delayed: {
+    icon: AlertTriangle,
+    label: "Delayed",
+    className: "bg-gold/15 text-gold-deep",
+  },
+  updated: {
+    icon: RefreshCw,
+    label: "Updated",
+    className: "bg-forest-mist text-forest",
   },
 };
 
