@@ -310,6 +310,15 @@ async def admin_put(domain: str, body: SaveInput, user=Depends(get_current_user)
     return {"ok": True}
 
 
+@api_router.get("/health")
+async def health():
+    try:
+        await db.command("ping")
+        return {"status": "ok"}
+    except Exception:
+        return {"status": "degraded"}
+
+
 @api_router.get("/")
 async def root():
     return {"message": "Dalleo Open API"}

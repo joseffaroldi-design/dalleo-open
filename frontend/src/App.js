@@ -1,4 +1,5 @@
 import "@/App.css";
+import { useEffect } from "react";
 import { BrowserRouter, Routes, Route, useLocation, Navigate } from "react-router-dom";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
@@ -22,9 +23,25 @@ import GalleryAdmin from "@/admin/GalleryAdmin";
 import ContentAdmin from "@/admin/ContentAdmin";
 import RulesAdmin from "@/admin/RulesAdmin";
 
+const PAGE_TITLES = [
+  [/^\/leaderboard/, "Live Leaderboard — Dalleo Open"],
+  [/^\/teams/, "Teams — Dalleo Open"],
+  [/^\/schedule/, "Tournament Schedule — Dalleo Open"],
+  [/^\/gallery/, "Gallery — Dalleo Open"],
+  [/^\/brandon/, "In Memory of Brandon Dalleo — Dalleo Open"],
+  [/^\/rules/, "Rules & Format — Dalleo Open"],
+  [/^\/admin/, "Organizer — Dalleo Open"],
+];
+
 const Shell = () => {
   const { pathname } = useLocation();
   const isAdmin = pathname.startsWith("/admin");
+
+  useEffect(() => {
+    const match = PAGE_TITLES.find(([pattern]) => pattern.test(pathname));
+    document.title = match ? match[1] : "Dalleo Open Digital Clubhouse";
+  }, [pathname]);
+
   return (
     <>
       <ScrollToTop />

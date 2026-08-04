@@ -39,11 +39,11 @@ Build the Dalleo Open Digital Clubhouse, a modern, mobile-first web app for the 
 
 - 2026-07-04 (Sprint 9): Production hardening (QA/security/release sweep, no new features) — Fixed: invalid routes rendered blank page (added catch-all redirect to Home); .env files were not git-ignored (added .env to .gitignore, confirmed git no longer tracks them); login lockout broken behind ingress because attempts were keyed by rotating source IP (rekeyed to email — 5 failures now locks for 15 min, verified); empty live-data pages showed blank areas (added restrained empty messages for teams/schedule/gallery/standings); broken gallery image URLs would show broken-image icons (onError falls back to placeholder tile); added prefers-reduced-motion CSS guard. Rotated JWT_SECRET and organizer password (old credentials invalidated, verified; new ones in test_credentials.md only). Verified: all 8 public routes + 8 admin sections, no console errors, no secrets in frontend src/bundle, tampered/invalid tokens rejected, unauth writes rejected, mobile 360px/390px/tablet zero overflow incl. media viewer dialog, empty states for every domain, mock fallback after DB wipe, build+lint passing (bundle ~412K).
 
-## Backlog (future sprints — NOT built, awaiting approval)
-- P0: Organizer enters real content via /admin, organizer-approved rules, real brand assets/media
-- P1: Media file uploads (object storage), refresh-token flow, automated test suite
-- P2: Memory submissions, push notifications, hole-by-hole scoring, draft board, audit history
+- 2026-07-04 (Sprint 10): Launch preparation — Sanitized /app/memory/test_credentials.md (password removed; secure reseed procedure documented); full-project secret sweep clean (no passwords/JWT values/tokens/mongo strings outside git-ignored backend/.env). Production hardening: CORS restricted to the frontend origin via env (verified at app layer — unknown origins get no ACAO header; wildcard seen via ingress is proxy-injected), added GET /api/health (status-only, no sensitive data). SEO foundation: per-route page titles, richer meta description, Open Graph + Twitter card tags, theme color, favicon.svg, og-image.svg placeholder, robots.txt (admin disallowed, sitemap placeholder), sitemap.xml with documented domain placeholders. Docs created: docs/LAUNCH_RUNBOOK.md (20-step ordered runbook), docs/OWNER_HANDOFF.md, docs/CONTENT_ENTRY_CHECKLIST.md, docs/OPERATIONS.md (asset map, backup/recovery via mongodump/provider snapshots, monitoring/restart procedures). Verified: all public routes with titles, admin login/editor/logout with rotated creds, invalid-route redirect, mobile no overflow, build passing with assets bundled, backend startup clean. No new product features.
+
+## Backlog (post-launch evaluation — NOT built)
+- Media file uploads (object storage), refresh tokens, automated test suite, memory submissions, notifications, hole-by-hole scoring, draft board, audit history
 
 ## Next Tasks
-1. Sprint 10 scoping with stakeholder approval (launch or content-entry sprint)
-2. Organizers load real content and approve rules before tournament weekend
+1. Owner: configure production env vars, deploy, connect domain (follow docs/LAUNCH_RUNBOOK.md)
+2. Owner: enter approved real content (docs/CONTENT_ENTRY_CHECKLIST.md) and approve rules

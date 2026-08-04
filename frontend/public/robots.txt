@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+
+# Add the production sitemap URL once the custom domain is configured:
+# Sitemap: https://YOUR-PRODUCTION-DOMAIN/sitemap.xml
