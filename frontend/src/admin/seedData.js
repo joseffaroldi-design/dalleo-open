@@ -1,4 +1,3 @@
-import { SCORING_STARTED, LEADERBOARD } from "@/data/leaderboard";
 import { TEAMS, TEAMS_ANNOUNCED } from "@/data/teams";
 import { SCHEDULE_PUBLISHED, SCHEDULE, DAYS } from "@/data/schedule";
 import { GALLERY_PUBLISHED, GALLERY_ITEMS } from "@/data/gallery";
@@ -15,14 +14,6 @@ export const SEED = {
       { id: "a2", title: "Team registration opens this summer", message: "Grab your playing partners early. Spots for the 8th Annual Dalleo Open will be limited.", date: "Sample announcement", priority: "normal", published: true },
       { id: "a3", title: "A weekend that gives back", message: "This year's tournament continues Brandon's legacy by supporting causes close to his heart.", date: "Sample announcement", priority: "normal", published: true },
     ],
-  }),
-  leaderboard: () => ({
-    scoringStarted: SCORING_STARTED,
-    roundLabel: LEADERBOARD.overall.meta.roundLabel,
-    status: LEADERBOARD.overall.meta.status,
-    statusLabel: LEADERBOARD.overall.meta.statusLabel,
-    updatedAt: LEADERBOARD.overall.meta.updatedAt,
-    standings: LEADERBOARD.overall.standings.map((s) => ({ teamId: s.colorKey, points: s.points, status: s.status })),
   }),
   teams: () => ({ published: TEAMS_ANNOUNCED, items: TEAMS.map((t) => ({ ...t, players: t.players.map((p) => ({ ...p })) })) }),
   schedule: () => ({

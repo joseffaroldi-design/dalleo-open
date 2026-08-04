@@ -8,7 +8,6 @@ import { STATUS_LABELS, computeStandings } from "@/data/scoring";
 
 const LINKS = [
   { to: "/admin/announcements", label: "Announcements", testId: "dash-link-announcements" },
-  { to: "/admin/leaderboard", label: "Leaderboard", testId: "dash-link-leaderboard" },
   { to: "/admin/scoring", label: "Scoring", testId: "dash-link-scoring" },
   { to: "/admin/champions", label: "Champions", testId: "dash-link-champions" },
   { to: "/admin/teams", label: "Teams", testId: "dash-link-teams" },

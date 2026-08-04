@@ -23,7 +23,6 @@ import AdminLogin from "@/admin/AdminLogin";
 import AdminLayout from "@/admin/AdminLayout";
 import Dashboard from "@/admin/Dashboard";
 import AnnouncementsAdmin from "@/admin/AnnouncementsAdmin";
-import LeaderboardAdmin from "@/admin/LeaderboardAdmin";
 import TeamsAdmin from "@/admin/TeamsAdmin";
 import ScheduleAdmin from "@/admin/ScheduleAdmin";
 import GalleryAdmin from "@/admin/GalleryAdmin";
@@ -88,7 +87,6 @@ const Shell = () => {
           <Route path="/admin" element={<AdminLayout />}>
             <Route index element={<Dashboard />} />
             <Route path="announcements" element={<AnnouncementsAdmin />} />
-            <Route path="leaderboard" element={<LeaderboardAdmin />} />
             <Route path="teams" element={<TeamsAdmin />} />
             <Route path="schedule" element={<ScheduleAdmin />} />
             <Route path="gallery" element={<GalleryAdmin />} />

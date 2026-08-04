@@ -117,7 +117,7 @@ class TestRegressionOtherDomains:
     """Ensure other public domains still respond 200."""
 
     @pytest.mark.parametrize("domain", [
-        "announcements", "leaderboard", "teams", "schedule", "gallery", "site", "rules",
+        "announcements", "teams", "schedule", "gallery", "site", "rules",
     ])
     def test_public_domain_ok(self, domain):
         r = requests.get(f"{BASE_URL}/api/public/{domain}")

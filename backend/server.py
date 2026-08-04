@@ -65,7 +65,7 @@ def get_object(path: str):
     return resp.content, resp.headers.get("Content-Type", "application/octet-stream")
 
 JWT_ALGORITHM = "HS256"
-DOMAINS = {"announcements", "leaderboard", "teams", "schedule", "gallery", "site", "rules", "champions", "scoring"}
+DOMAINS = {"announcements", "teams", "schedule", "gallery", "site", "rules", "champions", "scoring"}
 
 
 def jwt_secret() -> str:
@@ -348,21 +348,6 @@ class AnnouncementsDoc(BaseModel):
     items: List[Announcement] = []
 
 
-class StandingInput(BaseModel):
-    teamId: str = Field(min_length=1, max_length=40)
-    points: Optional[int] = Field(None, ge=0, le=9999)
-    status: Literal["live", "final", "upcoming"]
-
-
-class LeaderboardDoc(BaseModel):
-    scoringStarted: bool
-    roundLabel: str = Field(min_length=1, max_length=60)
-    status: Literal["live", "final", "upcoming"]
-    statusLabel: str = Field(min_length=1, max_length=30)
-    updatedAt: str = Field(min_length=1, max_length=60)
-    standings: List[StandingInput]
-
-
 class PlayerInput(BaseModel):
     name: str = Field(min_length=1, max_length=80)
     role: Optional[str] = Field(None, max_length=30)
@@ -561,7 +546,6 @@ class ScoringDoc(BaseModel):
 
 MODELS = {
     "announcements": AnnouncementsDoc,
-    "leaderboard": LeaderboardDoc,
     "teams": TeamsDoc,
     "schedule": ScheduleDoc,
     "gallery": GalleryDoc,
