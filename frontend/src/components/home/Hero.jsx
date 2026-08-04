@@ -1,25 +1,6 @@
 import { ImageIcon } from "lucide-react";
 import { useLiveData } from "@/data/useLiveData";
-
-const CountdownPlaceholder = () => (
-  <div
-    data-testid="countdown-placeholder"
-    aria-label="Countdown timer placeholder"
-    className="mt-10 flex items-center justify-center gap-3 sm:gap-4"
-  >
-    {["Days", "Hours", "Minutes", "Seconds"].map((unit) => (
-      <div
-        key={unit}
-        className="flex w-16 flex-col items-center rounded-2xl bg-cream/10 px-2 py-3 ring-1 ring-cream/15 sm:w-20 sm:py-4"
-      >
-        <span className="text-2xl font-extrabold text-gold sm:text-3xl">--</span>
-        <span className="mt-1 text-[10px] font-bold uppercase tracking-widest text-cream/60 sm:text-xs">
-          {unit}
-        </span>
-      </div>
-    ))}
-  </div>
-);
+import { Countdown } from "@/components/home/Countdown";
 
 export const Hero = () => {
   const site = useLiveData("site");
@@ -51,7 +32,7 @@ export const Hero = () => {
       >
         {site?.dateText ?? "Tournament dates to be announced"}
       </p>
-      <CountdownPlaceholder />
+      <Countdown />
     </div>
     <div className="mx-auto max-w-6xl px-4 pb-20 sm:px-6">
       <div

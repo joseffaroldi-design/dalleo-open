@@ -6,12 +6,11 @@ import { NAV_LINKS } from "@/constants/nav";
 import { useEffect } from "react";
 
 const linkClass = ({ isActive }) =>
-  `rounded-full px-4 py-2 text-sm font-semibold transition-colors duration-200 ${
+  `rounded-full px-3 py-2 text-sm font-semibold transition-colors duration-200 ${
     isActive
       ? "bg-forest text-cream"
       : "text-charcoal/80 hover:bg-forest-mist hover:text-forest"
   }`;
-
 export const Navbar = () => {
   const [open, setOpen] = useState(false);
   const { pathname } = useLocation();
