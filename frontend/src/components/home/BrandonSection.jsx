@@ -1,8 +1,11 @@
 import { Link } from "react-router-dom";
 import { Heart, ImageIcon } from "lucide-react";
 import { MEMORIAL } from "@/data/memorial";
+import { useLiveData } from "@/data/useLiveData";
 
-export const BrandonSection = () => (
+export const BrandonSection = () => {
+  const site = useLiveData("site");
+  return (
   <section
     data-testid="brandon-section"
     aria-labelledby="brandon-title"
@@ -30,7 +33,7 @@ export const BrandonSection = () => (
           More than a tournament.
         </h2>
         <p className="mt-6 text-base leading-relaxed text-charcoal/70">
-          {MEMORIAL.homeMessage}
+          {site?.homeMessage ?? MEMORIAL.homeMessage}
         </p>
         <Link
           to="/brandon"
@@ -42,4 +45,5 @@ export const BrandonSection = () => (
       </div>
     </div>
   </section>
-);
+  );
+};

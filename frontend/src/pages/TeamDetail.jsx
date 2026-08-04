@@ -1,10 +1,13 @@
 import { Link, Navigate, useParams } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
-import { TEAM_VISUALS, getTeamById, getInitials } from "@/data/teams";
+import { TEAMS, TEAM_VISUALS, getInitials } from "@/data/teams";
+import { useLiveData } from "@/data/useLiveData";
 
 export default function TeamDetail() {
   const { teamId } = useParams();
-  const team = getTeamById(teamId);
+  const live = useLiveData("teams");
+  const teams = live ? live.items : TEAMS;
+  const team = teams.find((t) => t.id === teamId);
 
   if (!team) return <Navigate to="/teams" replace />;
 

@@ -2,8 +2,11 @@ import { Link } from "react-router-dom";
 import { Instagram } from "lucide-react";
 import { Logo } from "@/components/Logo";
 import { NAV_LINKS } from "@/constants/nav";
+import { useLiveData } from "@/data/useLiveData";
 
-export const Footer = () => (
+export const Footer = () => {
+  const site = useLiveData("site");
+  return (
   <footer data-testid="site-footer" className="bg-forest-deep text-cream/80">
     <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6">
       <div className="flex flex-col gap-10 md:flex-row md:items-start md:justify-between">
@@ -13,7 +16,7 @@ export const Footer = () => (
             An annual golf tournament held in memory of Brandon Dalleo.
           </p>
           <a
-            href="https://www.instagram.com/"
+            href={site?.instagramUrl ?? "https://www.instagram.com/"}
             target="_blank"
             rel="noopener noreferrer"
             data-testid="footer-instagram-link"
@@ -43,4 +46,5 @@ export const Footer = () => (
       </div>
     </div>
   </footer>
-);
+  );
+};

@@ -1,9 +1,14 @@
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import { TEAMS, TEAMS_ANNOUNCED, TEAM_VISUALS, TOTAL_PLAYERS } from "@/data/teams";
+import { useLiveData } from "@/data/useLiveData";
 
 export const TeamsPreview = () => {
-  if (!TEAMS_ANNOUNCED) return null;
+  const live = useLiveData("teams");
+  const announced = live ? live.published : TEAMS_ANNOUNCED;
+  const teams = live ? live.items : TEAMS;
+  const totalPlayers = live ? live.items.reduce((n, t) => n + t.players.length, 0) : TOTAL_PLAYERS;
+  if (!announced) return null;
 
   return (
     <section
@@ -21,10 +26,10 @@ export const TeamsPreview = () => {
             data-testid="home-teams-count"
             className="mt-3 text-2xl font-extrabold tracking-tight text-charcoal sm:text-3xl"
           >
-            {TEAMS.length} teams &middot; {TOTAL_PLAYERS} players
+            {teams.length} teams &middot; {totalPlayers} players
           </h2>
           <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2">
-            {TEAMS.map((team) => (
+            {teams.map((team) => (
               <span
                 key={team.id}
                 className="inline-flex items-center gap-2 text-sm font-semibold text-charcoal/60"

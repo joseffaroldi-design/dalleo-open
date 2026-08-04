@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { GALLERY_PUBLISHED, GALLERY_ITEMS, getFeaturedItem } from "@/data/gallery";
+import { useLiveData } from "@/data/useLiveData";
 import { CategoryFilter } from "@/components/gallery/CategoryFilter";
 import { MediaCard } from "@/components/gallery/MediaCard";
 import { MediaViewer } from "@/components/gallery/MediaViewer";
@@ -9,16 +10,22 @@ import { GalleryEmptyState } from "@/components/gallery/GalleryEmptyState";
 export default function Gallery() {
   const [category, setCategory] = useState("all");
   const [viewerIndex, setViewerIndex] = useState(null);
+  const live = useLiveData("gallery");
+  const published = live ? live.published : GALLERY_PUBLISHED;
+  const allItems = useMemo(
+    () => (live ? live.items.filter((i) => i.published) : GALLERY_ITEMS),
+    [live]
+  );
 
   const visibleItems = useMemo(
     () =>
       category === "all"
-        ? GALLERY_ITEMS
-        : GALLERY_ITEMS.filter((i) => i.category === category),
-    [category]
+        ? allItems
+        : allItems.filter((i) => i.category === category),
+    [category, allItems]
   );
 
-  const featured = getFeaturedItem();
+  const featured = live ? allItems.find((i) => i.featured) ?? null : getFeaturedItem();
 
   const openItem = (id, list) => {
     const idx = list.findIndex((i) => i.id === id);
@@ -40,10 +47,10 @@ export default function Gallery() {
       </header>
 
       <div className="mt-10">
-        {GALLERY_PUBLISHED ? (
+        {published ? (
           <div className="flex flex-col gap-12">
             {featured && (
-              <FeaturedMemory item={featured} onOpen={(id) => openItem(id, GALLERY_ITEMS)} />
+              <FeaturedMemory item={featured} onOpen={(id) => openItem(id, allItems)} />
             )}
             <section data-testid="gallery-grid-section" aria-labelledby="gallery-grid-title">
               <h2 id="gallery-grid-title" className="sr-only">

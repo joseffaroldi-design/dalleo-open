@@ -1,13 +1,34 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { SCHEDULE_PUBLISHED, SCHEDULE, DAYS, getCurrentEvent } from "@/data/schedule";
+import { useLiveData } from "@/data/useLiveData";
 import { DaySelector } from "@/components/schedule/DaySelector";
 import { CurrentEventCard } from "@/components/schedule/CurrentEventCard";
 import { ScheduleTimeline } from "@/components/schedule/ScheduleTimeline";
 import { ScheduleEmptyState } from "@/components/schedule/ScheduleEmptyState";
 
 export default function Schedule() {
-  const current = SCHEDULE_PUBLISHED ? getCurrentEvent() : null;
-  const [dayId, setDayId] = useState(current?.day.id ?? "friday");
+  const live = useLiveData("schedule");
+  const { published, byDay, current } = useMemo(() => {
+    if (!live) {
+      return {
+        published: SCHEDULE_PUBLISHED,
+        byDay: SCHEDULE,
+        current: SCHEDULE_PUBLISHED ? getCurrentEvent() : null,
+      };
+    }
+    const grouped = { friday: [], saturday: [], sunday: [] };
+    [...live.events]
+      .sort((a, b) => a.sortKey.localeCompare(b.sortKey))
+      .forEach((e) => grouped[e.day]?.push(e));
+    const found = live.events.find((e) => e.isCurrent);
+    return {
+      published: live.published,
+      byDay: grouped,
+      current: found ? { day: DAYS.find((d) => d.id === found.day), event: found } : null,
+    };
+  }, [live]);
+  const [selectedDay, setSelectedDay] = useState(null);
+  const dayId = selectedDay ?? current?.day.id ?? "friday";
   const activeDay = DAYS.find((d) => d.id === dayId);
 
   return (
@@ -25,10 +46,10 @@ export default function Schedule() {
       </header>
 
       <div className="mt-10">
-        {SCHEDULE_PUBLISHED ? (
+        {published ? (
           <div className="flex flex-col gap-10">
             <CurrentEventCard current={current} />
-            <DaySelector value={dayId} onChange={setDayId} />
+            <DaySelector value={dayId} onChange={setSelectedDay} />
             <section data-testid="day-schedule" aria-labelledby="day-schedule-title">
               <h2
                 id="day-schedule-title"
@@ -37,7 +58,7 @@ export default function Schedule() {
                 {activeDay.label} &middot; {activeDay.tagline}
               </h2>
               <div className="mt-6">
-                <ScheduleTimeline events={SCHEDULE[dayId]} />
+                <ScheduleTimeline events={byDay[dayId] ?? []} />
               </div>
             </section>
           </div>

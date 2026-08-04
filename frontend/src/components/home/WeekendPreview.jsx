@@ -1,10 +1,16 @@
 import { Link } from "react-router-dom";
 import { ArrowRight, MapPin } from "lucide-react";
-import { SCHEDULE_PUBLISHED, getCurrentEvent } from "@/data/schedule";
+import { SCHEDULE_PUBLISHED, DAYS, getCurrentEvent } from "@/data/schedule";
 import { StatusChip } from "@/components/leaderboard/StatusChip";
+import { useLiveData } from "@/data/useLiveData";
 
 export const WeekendPreview = () => {
-  const current = SCHEDULE_PUBLISHED ? getCurrentEvent() : null;
+  const live = useLiveData("schedule");
+  let current = SCHEDULE_PUBLISHED ? getCurrentEvent() : null;
+  if (live) {
+    const found = live.events.find((e) => e.isCurrent);
+    current = live.published && found ? { day: DAYS.find((d) => d.id === found.day), event: found } : null;
+  }
   if (!current) return null;
   const { day, event } = current;
 

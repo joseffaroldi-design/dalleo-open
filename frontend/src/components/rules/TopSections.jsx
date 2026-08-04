@@ -1,7 +1,6 @@
 import { Info, CheckCircle2 } from "lucide-react";
-import { RULES } from "@/data/rules";
 
-export const DraftNotice = () => (
+export const DraftNotice = ({ text }) => (
   <div
     data-testid="draft-notice"
     role="status"
@@ -9,12 +8,12 @@ export const DraftNotice = () => (
   >
     <Info className="mt-0.5 h-5 w-5 shrink-0 text-gold-deep" aria-hidden="true" />
     <p className="text-sm font-semibold leading-relaxed text-gold-deep sm:text-base">
-      {RULES.draftNotice}
+      {text}
     </p>
   </div>
 );
 
-export const QuickReminders = () => (
+export const QuickReminders = ({ items }) => (
   <section
     data-testid="quick-reminders"
     aria-labelledby="quick-reminders-title"
@@ -27,7 +26,7 @@ export const QuickReminders = () => (
       Quick Reminders
     </h2>
     <ul className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2">
-      {RULES.quickReminders.map((reminder, i) => (
+      {items.map((reminder, i) => (
         <li
           key={reminder}
           data-testid={`reminder-${i + 1}`}
@@ -41,13 +40,13 @@ export const QuickReminders = () => (
   </section>
 );
 
-export const SectionNav = () => (
+export const SectionNav = ({ links }) => (
   <nav
     data-testid="section-nav"
     aria-label="Rules sections"
     className="flex flex-wrap gap-2"
   >
-    {RULES.sectionNav.map(({ id, label }) => (
+    {links.map(({ id, label }) => (
       <a
         key={id}
         href={`#${id}`}

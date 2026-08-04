@@ -35,11 +35,13 @@ Build the Dalleo Open Digital Clubhouse, a modern, mobile-first web app for the 
 
 - 2026-07-04 (Sprint 7): Rules & Format page (final placeholder page — all 7 routes now real pages) — header with edition, draft-content notice (visible until RULES_APPROVED), Quick Reminders forest card, 6-pill section anchor nav, Tournament Format (placeholder structure, no invented format), Scoring (fictional example values + confirmation note), Match Rules (8-topic accessible accordion), Player Conduct (6 welcoming principles), Tie-Breakers (3-step example marked awaiting confirmation), FAQ (6 accessible accordion Q&As pointing to Schedule/Leaderboard/organizers), unpublished state with Home/Schedule links. Content centralized in src/data/rules.js with RULES_PUBLISHED + RULES_APPROVED flags. placeholders.jsx deleted. Verified: all nav links, accordion aria-expanded toggle + keyboard Enter, both flag states (approved hides notice; unpublished state renders with links), no mobile/tablet overflow, homepage quick-nav + footer links, all Sprint 1–6 routes/features intact, build passing.
 
+- 2026-07-04 (Sprint 8): Organizer admin foundation + real-data layer — FastAPI/MongoDB backend (JWT auth, single organizer seeded from env, bcrypt, 12h tokens, 5-attempt/15-min lockout, per-domain pydantic validation, GET /api/public/{domain} public reads, GET/PUT /api/admin/{domain} protected writes; domains: announcements, leaderboard, teams, schedule, gallery, site, rules stored as single docs in site_content collection). React admin at /admin (login, dashboard with stats, 7 section editors, save bars with success/error states, two-step delete confirmations, mobile-friendly). Public pages fetch live data via react-query (useLiveData hook) and fall back to the existing mock data files when no saved record exists — no visual redesign. Homepage Sample badge hides when live announcements exist. Verified: login/failed login/logout, unauth redirect, protected-write rejection, leaderboard points edit reflected publicly (auto-sorted), team rename consistent across pages, schedule current-event change reflected on page + homepage, announcement add/publish on homepage, rules approval state, empty-DB fallback, mobile admin no overflow, build passing. Test data cleaned after verification (DB empty = mock fallback state).
+
 ## Backlog (future sprints — NOT built, awaiting approval)
-- P0: Organizer-approved rules (flip RULES_APPROVED), real tournament date, real brand assets (logo, photos, gallery media)
-- P1: Backend + database sprint — real data APIs replacing mock data files (teams, leaderboard, schedule, gallery, rules), admin content management, authentication
-- P2: Admin dashboard, score entry, memory submissions, media uploads/cloud storage, push notifications, statistics, hole-by-hole scoring, draft board
+- P0: Organizer-approved rules (flip approved in admin), real tournament content via admin editors, real brand assets/media
+- P1: Media file uploads (object storage) replacing URL-only gallery references, real countdown, refresh-token flow for longer organizer sessions
+- P2: Memory submissions (Share a Memory), announcements scheduling, push notifications, hole-by-hole scoring, draft board, audit history
 
 ## Next Tasks
-1. Sprint 8 scoping with stakeholder approval (likely: backend + admin foundation, or content replacement sprint)
-2. Collect organizer-approved rules, real rosters, real schedule, and media assets
+1. Sprint 9 scoping with stakeholder approval (launch hardening, uploads, or content entry)
+2. Organizers enter real content through /admin before tournament weekend

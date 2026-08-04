@@ -1,4 +1,5 @@
 import { ImageIcon } from "lucide-react";
+import { useLiveData } from "@/data/useLiveData";
 
 const CountdownPlaceholder = () => (
   <div
@@ -20,7 +21,9 @@ const CountdownPlaceholder = () => (
   </div>
 );
 
-export const Hero = () => (
+export const Hero = () => {
+  const site = useLiveData("site");
+  return (
   <section data-testid="hero-section" aria-labelledby="hero-title" className="bg-forest">
     <div className="mx-auto max-w-6xl px-4 pb-16 pt-16 text-center sm:px-6 sm:pt-24">
       <span
@@ -33,14 +36,14 @@ export const Hero = () => (
         data-testid="hero-memorial-line"
         className="text-sm font-bold uppercase tracking-[0.25em] text-gold"
       >
-        In Memory of Brandon Dalleo
+        {site?.heroSubtitle ?? "In Memory of Brandon Dalleo"}
       </p>
       <h1
         id="hero-title"
         data-testid="hero-title"
         className="mt-4 text-4xl font-extrabold tracking-tight text-cream sm:text-5xl lg:text-6xl"
       >
-        8th Annual Dalleo Open
+        {site?.edition ?? "8th Annual Dalleo Open"}
       </h1>
       <p
         data-testid="hero-date-placeholder"
@@ -62,4 +65,5 @@ export const Hero = () => (
       </div>
     </div>
   </section>
-);
+  );
+};

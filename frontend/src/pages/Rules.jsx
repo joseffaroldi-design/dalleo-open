@@ -1,38 +1,57 @@
 import { RULES, RULES_PUBLISHED, RULES_APPROVED } from "@/data/rules";
+import { useLiveData } from "@/data/useLiveData";
 import { RuleSection } from "@/components/rules/RuleSection";
 import { RuleAccordion } from "@/components/rules/RuleAccordion";
 import { DraftNotice, QuickReminders, SectionNav } from "@/components/rules/TopSections";
 import { RulesEmptyState } from "@/components/rules/RulesEmptyState";
 
+const fromLive = (live) => ({
+  header: { title: live.header.title, edition: live.edition, description: live.header.body },
+  draftNotice: live.draftNotice,
+  quickReminders: live.quickReminders,
+  sectionNav: RULES.sectionNav,
+  format: { intro: live.formatIntro, points: live.formatPoints, note: live.formatNote },
+  scoring: { note: live.scoringNote, rows: live.scoringRows },
+  matchRules: live.matchRules,
+  conduct: live.conduct,
+  tiebreakers: { note: live.tiebreakNote, steps: live.tiebreakSteps },
+  faq: live.faq,
+  unpublished: { title: live.unpublishedTitle, body: live.unpublishedBody },
+});
+
 export default function Rules() {
+  const live = useLiveData("rules");
+  const published = live ? live.published : RULES_PUBLISHED;
+  const approved = live ? live.approved : RULES_APPROVED;
+  const R = live ? fromLive(live) : RULES;
   return (
     <div data-testid="rules-page" className="mx-auto max-w-4xl px-4 py-14 sm:px-6 sm:py-20">
       <header className="max-w-2xl">
         <h1 className="text-4xl font-extrabold tracking-tight text-forest sm:text-5xl">
-          {RULES.header.title}
+          {R.header.title}
         </h1>
         <p className="mt-3 text-base font-semibold text-charcoal/60 sm:text-lg">
-          {RULES.header.edition}
+          {R.header.edition}
         </p>
         <p className="mt-2 text-base leading-relaxed text-charcoal/60">
-          {RULES.header.description}
+          {R.header.description}
         </p>
       </header>
 
       <div className="mt-10">
-        {RULES_PUBLISHED ? (
+        {published ? (
           <div className="flex flex-col gap-12 sm:gap-16">
-            {!RULES_APPROVED && <DraftNotice />}
-            <QuickReminders />
-            <SectionNav />
+            {!approved && <DraftNotice text={R.draftNotice} />}
+            <QuickReminders items={R.quickReminders} />
+            <SectionNav links={R.sectionNav} />
 
             <RuleSection id="format" title="Tournament Format" testId="section-format">
               <div className="rounded-3xl bg-white p-7 shadow-sm ring-1 ring-border sm:p-8">
                 <p className="text-base leading-relaxed text-charcoal/70">
-                  {RULES.format.intro}
+                  {R.format.intro}
                 </p>
                 <ul className="mt-6 space-y-3">
-                  {RULES.format.points.map((point, i) => (
+                  {R.format.points.map((point, i) => (
                     <li key={i} data-testid={`format-point-${i + 1}`} className="flex items-start gap-3">
                       <span aria-hidden="true" className="mt-2.5 h-2 w-2 shrink-0 rounded-full bg-gold" />
                       <span className="text-base font-semibold text-charcoal">{point}</span>
@@ -40,7 +59,7 @@ export default function Rules() {
                   ))}
                 </ul>
                 <p className="mt-6 rounded-2xl bg-gold/10 px-4 py-3 text-sm font-semibold text-gold-deep">
-                  {RULES.format.note}
+                  {R.format.note}
                 </p>
               </div>
             </RuleSection>
@@ -66,17 +85,17 @@ export default function Rules() {
                 ))}
               </div>
               <p className="mt-5 rounded-2xl bg-gold/10 px-4 py-3 text-sm font-semibold text-gold-deep">
-                {RULES.scoring.note}
+                {R.scoring.note}
               </p>
             </RuleSection>
 
             <RuleSection id="match-rules" title="Match Rules" testId="section-match-rules">
-              <RuleAccordion items={RULES.matchRules} testId="match-rules-accordion" />
+              <RuleAccordion items={R.matchRules} testId="match-rules-accordion" />
             </RuleSection>
 
             <RuleSection id="conduct" title="Player Conduct" testId="section-conduct">
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                {RULES.conduct.map((item, i) => (
+                {R.conduct.map((item, i) => (
                   <div
                     key={item.title}
                     data-testid={`conduct-item-${i + 1}`}
@@ -96,7 +115,7 @@ export default function Rules() {
             <RuleSection id="tiebreakers" title="Tie-Breakers" testId="section-tiebreakers">
               <div className="rounded-3xl bg-white p-7 shadow-sm ring-1 ring-border sm:p-8">
                 <ol className="space-y-4">
-                  {RULES.tiebreakers.steps.map((step, i) => (
+                  {R.tiebreakers.steps.map((step, i) => (
                     <li key={step} data-testid={`tiebreaker-${i + 1}`} className="flex items-center gap-4">
                       <span
                         aria-hidden="true"
@@ -109,17 +128,17 @@ export default function Rules() {
                   ))}
                 </ol>
                 <p className="mt-6 rounded-2xl bg-gold/10 px-4 py-3 text-sm font-semibold text-gold-deep">
-                  {RULES.tiebreakers.note}
+                  {R.tiebreakers.note}
                 </p>
               </div>
             </RuleSection>
 
             <RuleSection id="faq" title="Frequently Asked Questions" testId="section-faq">
-              <RuleAccordion items={RULES.faq} testId="faq-accordion" />
+              <RuleAccordion items={R.faq} testId="faq-accordion" />
             </RuleSection>
           </div>
         ) : (
-          <RulesEmptyState />
+          <RulesEmptyState title={R.unpublished.title} body={R.unpublished.body} />
         )}
       </div>
     </div>

@@ -34,6 +34,9 @@ export const MediaThumb = ({ item, aspect, className = "", iconClassName = "h-12
       className={`relative flex items-center justify-center overflow-hidden ${ASPECTS[aspect ?? item.aspect]} ${className}`}
       style={{ backgroundColor: scheme.bg }}
     >
+      {item.src && (
+        <img src={item.src} alt={item.alt} className="absolute inset-0 h-full w-full object-cover" />
+      )}
       <span
         aria-hidden="true"
         className="absolute -right-6 -top-6 h-24 w-24 rounded-full opacity-15"

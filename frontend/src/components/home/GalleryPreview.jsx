@@ -2,10 +2,15 @@ import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import { GALLERY_PUBLISHED, getLatestItems } from "@/data/gallery";
 import { MediaThumb } from "@/components/gallery/MediaThumb";
+import { useLiveData } from "@/data/useLiveData";
 
 export const GalleryPreview = () => {
-  if (!GALLERY_PUBLISHED) return null;
-  const latest = getLatestItems(3);
+  const live = useLiveData("gallery");
+  const published = live ? live.published : GALLERY_PUBLISHED;
+  const latest = live
+    ? [...live.items].filter((i) => i.published).sort((a, b) => b.order - a.order).slice(0, 3)
+    : getLatestItems(3);
+  if (!published || latest.length === 0) return null;
 
   return (
     <section

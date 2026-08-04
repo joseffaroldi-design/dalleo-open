@@ -1,11 +1,31 @@
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import { SCORING_STARTED, TEAM_VISUALS, getLeaderSummary } from "@/data/leaderboard";
+import { TEAMS } from "@/data/teams";
 import { StatusChip } from "@/components/leaderboard/StatusChip";
+import { useLiveData } from "@/data/useLiveData";
 
 export const LeaderboardPreview = () => {
-  const summary = getLeaderSummary("overall");
-  if (!SCORING_STARTED || !summary) return null;
+  const liveLb = useLiveData("leaderboard");
+  const liveTeams = useLiveData("teams");
+  let summary = getLeaderSummary("overall");
+  let started = SCORING_STARTED;
+  if (liveLb) {
+    started = liveLb.scoringStarted;
+    const teams = liveTeams?.items ?? TEAMS;
+    const byColor = Object.fromEntries(teams.map((t) => [t.colorKey, t]));
+    const rows = liveLb.standings
+      .filter((s) => s.points !== null && s.points !== undefined)
+      .sort((a, b) => b.points - a.points);
+    summary =
+      rows.length >= 2
+        ? {
+            leader: { ...rows[0], name: byColor[rows[0].colorKey]?.name ?? rows[0].colorKey },
+            lead: rows[0].points - rows[1].points,
+          }
+        : null;
+  }
+  if (!started || !summary) return null;
   const { leader, lead } = summary;
   const visual = TEAM_VISUALS[leader.colorKey];
 

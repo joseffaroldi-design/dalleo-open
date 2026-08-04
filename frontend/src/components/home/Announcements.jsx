@@ -1,4 +1,5 @@
 import { Megaphone } from "lucide-react";
+import { useLiveData } from "@/data/useLiveData";
 
 const SAMPLE_ANNOUNCEMENTS = [
   {
@@ -18,7 +19,15 @@ const SAMPLE_ANNOUNCEMENTS = [
   },
 ];
 
-export const Announcements = () => (
+export const Announcements = () => {
+  const live = useLiveData("announcements");
+  const items = live
+    ? live.items
+        .filter((a) => a.published)
+        .slice(0, 3)
+        .map((a) => ({ title: a.title, date: a.date, body: a.message, priority: a.priority }))
+    : SAMPLE_ANNOUNCEMENTS;
+  return (
   <section
     data-testid="announcements-section"
     aria-labelledby="announcements-title"
@@ -32,12 +41,19 @@ export const Announcements = () => (
         >
           Announcements
         </h2>
-        <span className="rounded-full bg-gold/15 px-4 py-1 text-xs font-bold uppercase tracking-widest text-gold-deep">
-          Sample
-        </span>
+        {!live && (
+          <span className="rounded-full bg-gold/15 px-4 py-1 text-xs font-bold uppercase tracking-widest text-gold-deep">
+            Sample
+          </span>
+        )}
       </div>
       <div className="mt-10 overflow-hidden rounded-3xl border border-border bg-cream shadow-sm">
-        {SAMPLE_ANNOUNCEMENTS.map((item, i) => (
+        {items.length === 0 ? (
+          <p className="p-8 text-center text-sm font-semibold text-charcoal/50">
+            No announcements right now — check back soon.
+          </p>
+        ) : (
+          items.map((item, i) => (
           <article
             key={item.title}
             data-testid={`announcement-card-${i + 1}`}
@@ -54,6 +70,11 @@ export const Announcements = () => (
             <div>
               <p className="text-xs font-bold uppercase tracking-widest text-charcoal/40">
                 {item.date}
+                {item.priority === "important" && (
+                  <span className="ml-2 rounded-full bg-gold px-2 py-0.5 text-[10px] normal-case tracking-normal text-forest-deep">
+                    Important
+                  </span>
+                )}
               </p>
               <h3 className="mt-1 text-lg font-extrabold tracking-tight text-charcoal">
                 {item.title}
@@ -63,8 +84,10 @@ export const Announcements = () => (
               </p>
             </div>
           </article>
-        ))}
+          ))
+        )}
       </div>
     </div>
   </section>
-);
+  );
+};

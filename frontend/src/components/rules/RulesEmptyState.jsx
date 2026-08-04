@@ -1,8 +1,7 @@
 import { Link } from "react-router-dom";
 import { ScrollText } from "lucide-react";
-import { RULES } from "@/data/rules";
 
-export const RulesEmptyState = () => (
+export const RulesEmptyState = ({ title, body }) => (
   <section
     data-testid="rules-empty-state"
     aria-labelledby="rules-empty-title"
@@ -18,10 +17,10 @@ export const RulesEmptyState = () => (
       id="rules-empty-title"
       className="text-2xl font-extrabold tracking-tight text-forest sm:text-3xl"
     >
-      {RULES.unpublished.title}
+      {title}
     </h2>
     <p className="mt-4 max-w-sm text-base leading-relaxed text-charcoal/60">
-      {RULES.unpublished.body}
+      {body}
     </p>
     <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
       <Link
