@@ -1,0 +1,49 @@
+{
+  "summary": "Full E2E validation of 2026 Tournament Scoring readiness. Backend pytest test_scoring.py 13/13 PASS (validation, auth, duplicates, simulated tournament, cleanup restore). Frontend @ mobile 390px viewport: (1) Login OK. (2) Teams admin: set startingHole/order/startingTime for all 8 real teams (martin=1..franklin=8, doell+breaud both hole 5 for pairing) — persistence confirmed via /api/public/teams. (3) Public /teams: 8 shotgun chips render with 'Shotgun start · Hole N · TIME'. (4) Public /schedule Saturday: pairings-section shows all holes; hole 5 shows Team Doell + Team Breaud with 'Paired together' badge. (5) /admin/scoring: status=Live saved; team-martin scores 4,3,5,4,4,3 entered with auto-advance to next hole after each save; score-flash 'Saved — Team Martin · Hole N: X' displays correctly; reload persists 6 scores. (6) Overwrite: existing hole1 score of 4 → enter 5 → score-existing shows 'A score of 4 already exists...Press Overwrite'; save button label flips to 'Overwrite'; second press confirms with flash 'Saved — Team Martin · Hole 1: 5'; public leaderboard martin hole 1 = 5. (7) Invalid: empty and 0 both disable score-save-button and render score-invalid message. (8) Public /leaderboard live: Team Foret #1 -6 18 strokes; Team Martin & Team White T2 E 24 strokes each (ties working); Thru counts correct (Thru 6); scorecard-toggle-martin expands scorecard-martin with par row (all 4s) + hole-martin-1..18; no horizontal overflow at 390px. (9) Progress matrix: matrix-boner-10 tap-to-jump moves entry card to boner/hole 10. (10) Mini standings show T-positions correctly. (11) Status=Final saved: /leaderboard champion-banner shows '2026 Dalleo Open Champion / Team Foret / 18 strokes · -6 · Captain Jacob Foret'. (12) Danger Zone reset-scores-button → reset-scores-confirm → scores cleared, status=not-started, leaderboard-empty-state restored. (13) Security: PUT /api/admin/scoring without auth returns 401. (14) Regression: /, /champions, /champions/2025, /rules, /brandon, /gallery, /draft, /committee all load with 0 console errors. FINAL DB STATE: scoring={status:not-started, scores:[]}, teams keep startingHole assignments 1..8 (with doell+breaud sharing hole 5) — per main-agent note this is acceptable ('tournament-day ready'). Team names/rosters/colors untouched.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [
+      {
+        "component": "App.js router",
+        "issue": "FIXED: /admin/scoring route was NOT registered in App.js — ScoringAdmin was imported but no <Route path='scoring'> under /admin. Direct URL /admin/scoring or clicking admin-nav-scoring redirected to '/' via the catch-all Navigate. Added the missing route; all subsequent scoring flows work end-to-end.",
+        "selector": "/app/frontend/src/App.js line 93-94",
+        "priority": "HIGH"
+      },
+      {
+        "component": "TeamDetail (/teams/:teamId)",
+        "issue": "Direct URL load (or hard refresh) of /teams/martin redirects to /teams because TeamDetail checks `if (!team) return <Navigate to='/teams' replace />` on first render BEFORE useLiveData resolves. The mock TEAMS fallback uses colorKey-based ids ('green','gold','white','black') which never match the real ids ('martin','white','foret',...), so the Navigate fires immediately. Navigating via <Link> from /teams works because React Query cache is already warm. Recommend: wait for `useLiveData` result (or use a loading state) before redirecting, e.g. `if (live !== null && !team) return <Navigate .../>` or show a loading skeleton while live===null.",
+        "selector": "/app/frontend/src/pages/TeamDetail.jsx line 10-12",
+        "priority": "MEDIUM"
+      }
+    ],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_scoring.py",
+    "/app/test_reports/pytest/scoring.xml"
+  ],
+  "action_items": [
+    "Verify the App.js Route fix I applied (added `<Route path='scoring' element={<ScoringAdmin />} />` under /admin) — the entire /admin/scoring feature was unreachable via URL/nav prior to this fix.",
+    "Fix TeamDetail race condition: don't Navigate('/teams') while `useLiveData('teams')` is still null; wait for live to resolve or show a loading state. Currently a direct-URL user hitting /teams/{id} bounces to the teams list.",
+    "(Optional UX) In ScoringAdmin, when selecting a team via score-team-*, consider resetting current hole to 1 (or first-unscored) instead of retaining the previously-viewed hole — during testing, switching from martin→white→foret carried the current hole forward and caused misaligned score entry across teams. Not blocking, but a common tournament-day footgun."
+  ],
+  "critical_code_review_comments": [
+    "App.js: missing route registration for ScoringAdmin was a silent bug (import was there, nav link was there, but the Route was missing). Recommend a lightweight test that navigates each admin nav link and asserts the target testid renders, to catch this class of regression.",
+    "TeamDetail.jsx race condition (see ui_bugs #2) — same pattern likely affects any detail page that depends on live data with a mock fallback that has different ids than the API.",
+    "ScoringAdmin: no team-switch hole reset (see action_items #3).",
+    "Matrix jump testid is `matrix-{teamId}-{hole}` (working) — good; also selecting via matrix does NOT change the currently selected team, only the hole. Consistent with spec ('tap to jump entry card to it')."
+  ],
+  "updated_files": [
+    "/app/frontend/src/App.js"
+  ],
+  "success_rate": {
+    "backend": "100% (13/13 pytest, security PUT-401 verified)",
+    "frontend": "~95% — all specified flows PASS after the App.js route fix; TeamDetail direct-URL redirect is the one outstanding UI bug"
+  },
+  "test_credentials": "Used joseffaroldi@yahoo.com / Test123 (from /app/memory/test_credentials.md) — login succeeded on /admin/login. Login page has no prefilled creds.",
+  "seed_data_creation": "Set 8 teams' startingHole=[1,2,3,4,5,5,7,8], order=[1..8], startingTime=[8:00..9:10] AM. Left assignments intact after test per main-agent note ('keep them assigned — tournament-day ready'). Scoring reset to not-started/empty via Danger Zone. No team names/rosters/colors touched.",
+  "retest_needed": true,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Backend scoring domain is solid — pytest test_scoring.py is the regression gate. Frontend /admin/scoring now reachable after App.js fix. Outstanding bug: TeamDetail.jsx should not Navigate away while useLiveData is still null (breaks /teams/:teamId direct URL). Final DB state: scoring={not-started,[]}, 8 teams keep hole assignments (doell & breaud share hole 5 to exercise pairing UI). Note: mini standings testid is `mini-row-{teamId}` (working). Public leaderboard rows do NOT use testid `stroke-row-*` — my selector for that was wrong, but standings render correctly (verified visually + via scorecard-toggle/hole-{teamId}-N testids)."
+}

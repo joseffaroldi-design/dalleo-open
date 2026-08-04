@@ -6,7 +6,9 @@ import { TeamsEmptyState } from "@/components/teams/TeamsEmptyState";
 export default function Teams() {
   const live = useLiveData("teams");
   const announced = live ? live.published : TEAMS_ANNOUNCED;
-  const teams = live ? live.items : TEAMS;
+  const teams = (live ? live.items : TEAMS)
+    .filter((t) => t.active !== false)
+    .sort((a, b) => (a.order ?? 99) - (b.order ?? 99));
   return (
     <div data-testid="teams-page" className="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-20">
       <header className="max-w-2xl">

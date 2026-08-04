@@ -5,6 +5,7 @@ import { DaySelector } from "@/components/schedule/DaySelector";
 import { CurrentEventCard } from "@/components/schedule/CurrentEventCard";
 import { ScheduleTimeline } from "@/components/schedule/ScheduleTimeline";
 import { ScheduleEmptyState } from "@/components/schedule/ScheduleEmptyState";
+import { PairingsSection } from "@/components/schedule/PairingsSection";
 
 export default function Schedule() {
   const live = useLiveData("schedule");
@@ -77,6 +78,7 @@ export default function Schedule() {
                 )}
               </div>
             </section>
+            {dayId === "saturday" && <PairingsSection />}
           </div>
         ) : (
           <ScheduleEmptyState />

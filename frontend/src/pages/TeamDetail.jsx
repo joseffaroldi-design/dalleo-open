@@ -1,5 +1,5 @@
 import { Link, Navigate, useParams } from "react-router-dom";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Flag } from "lucide-react";
 import { TEAMS, TEAM_VISUALS, getInitials } from "@/data/teams";
 import { useLiveData } from "@/data/useLiveData";
 
@@ -12,6 +12,9 @@ export default function TeamDetail() {
   if (!team) return <Navigate to="/teams" replace />;
 
   const visual = TEAM_VISUALS[team.colorKey];
+  const paired = team.startingHole
+    ? teams.filter((t) => t.id !== team.id && t.active !== false && t.startingHole === team.startingHole)
+    : [];
 
   return (
     <div data-testid="team-detail-page" className="mx-auto max-w-3xl px-4 py-14 sm:px-6 sm:py-20">
@@ -54,6 +57,44 @@ export default function TeamDetail() {
           &ldquo;{team.motto}&rdquo;
         </p>
       </header>
+
+      <section aria-labelledby="shotgun-title" className="mt-10">
+        <h2
+          id="shotgun-title"
+          className="text-base font-bold uppercase tracking-[0.2em] text-gold-deep md:text-lg"
+        >
+          Shotgun Start
+        </h2>
+        <div
+          data-testid="team-shotgun-card"
+          className="mt-6 flex items-center gap-4 rounded-2xl bg-white p-5 shadow-sm ring-1 ring-border"
+        >
+          <span
+            aria-hidden="true"
+            className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-forest font-display text-xl font-semibold text-gold"
+          >
+            {team.startingHole ?? <Flag className="h-5 w-5" />}
+          </span>
+          <div>
+            {team.startingHole ? (
+              <>
+                <p data-testid="team-starting-hole" className="text-base font-extrabold text-charcoal sm:text-lg">
+                  Starts on hole {team.startingHole}
+                  {team.startingTime ? ` · ${team.startingTime}` : ""}
+                </p>
+                <p className="text-sm font-semibold text-charcoal/50">
+                  Saturday, September 5, 2026
+                  {paired.length > 0 && ` · Paired with ${paired.map((t) => t.name).join(" & ")}`}
+                </p>
+              </>
+            ) : (
+              <p className="text-base font-extrabold text-charcoal/50">
+                Starting hole TBD — pairings announced closer to the tournament
+              </p>
+            )}
+          </div>
+        </div>
+      </section>
 
       <section aria-labelledby="roster-title" className="mt-10">
         <h2

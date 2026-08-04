@@ -13,7 +13,7 @@ from fastapi import FastAPI, APIRouter, HTTPException, Request, Depends
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from starlette.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
-from pydantic import BaseModel, Field, ValidationError
+from pydantic import BaseModel, Field, ValidationError, field_validator, model_validator
 
 mongo_url = os.environ["MONGO_URL"]
 client = AsyncIOMotorClient(mongo_url)
@@ -23,7 +23,7 @@ app = FastAPI()
 api_router = APIRouter(prefix="/api")
 
 JWT_ALGORITHM = "HS256"
-DOMAINS = {"announcements", "leaderboard", "teams", "schedule", "gallery", "site", "rules", "champions"}
+DOMAINS = {"announcements", "leaderboard", "teams", "schedule", "gallery", "site", "rules", "champions", "scoring"}
 
 
 def jwt_secret() -> str:
@@ -153,11 +153,16 @@ class TeamInput(BaseModel):
     captain: str = Field(min_length=1, max_length=80)
     motto: str = Field(min_length=1, max_length=200)
     players: List[PlayerInput]
+    startingHole: Optional[int] = Field(None, ge=1, le=18)
+    startingTime: Optional[str] = Field(None, max_length=20)
+    order: Optional[int] = Field(None, ge=1, le=99)
+    active: bool = True
+    photoUrl: Optional[str] = Field(None, max_length=500)
 
 
 class TeamsDoc(BaseModel):
     published: bool
-    items: List[TeamInput]
+    items: List[TeamInput] = Field(max_length=8)
 
 
 class EventInput(BaseModel):
@@ -297,6 +302,38 @@ class ChampionsDoc(BaseModel):
     records: List[RecordEntry]
 
 
+class HoleScore(BaseModel):
+    teamId: str = Field(min_length=1, max_length=40)
+    hole: int = Field(ge=1, le=18)
+    # Generous upper bound — one team score per hole, unusual-but-valid
+    # scramble scores must never be blocked.
+    strokes: int = Field(ge=1, le=30)
+
+
+class ScoringDoc(BaseModel):
+    status: Literal["not-started", "live", "final"]
+    par: List[int] = Field(min_length=18, max_length=18)
+    scores: List[HoleScore] = []
+    updatedAt: str = Field(default="", max_length=60)
+
+    @field_validator("par")
+    @classmethod
+    def par_values(cls, v):
+        if any(p < 3 or p > 6 for p in v):
+            raise ValueError("each hole par must be between 3 and 6")
+        return v
+
+    @model_validator(mode="after")
+    def unique_team_hole(self):
+        seen = set()
+        for s in self.scores:
+            key = (s.teamId, s.hole)
+            if key in seen:
+                raise ValueError(f"duplicate score for {s.teamId} on hole {s.hole}")
+            seen.add(key)
+        return self
+
+
 MODELS = {
     "announcements": AnnouncementsDoc,
     "leaderboard": LeaderboardDoc,
@@ -306,6 +343,7 @@ MODELS = {
     "site": SiteDoc,
     "rules": RulesDoc,
     "champions": ChampionsDoc,
+    "scoring": ScoringDoc,
 }
 
 
@@ -342,9 +380,12 @@ async def admin_put(domain: str, body: SaveInput, user=Depends(get_current_user)
         first = e.errors()[0] if e.errors() else {}
         loc = ".".join(str(p) for p in first.get("loc", []))
         raise HTTPException(status_code=422, detail=f"Invalid {domain} data: {loc} {first.get('msg', '')}".strip())
+    payload = validated.model_dump()
+    if domain == "scoring":
+        payload["updatedAt"] = datetime.now(timezone.utc).isoformat()
     await db.site_content.update_one(
         {"_id": domain},
-        {"$set": {"data": validated.model_dump(), "updated_at": datetime.now(timezone.utc).isoformat()}},
+        {"$set": {"data": payload, "updated_at": datetime.now(timezone.utc).isoformat()}},
         upsert=True,
     )
     return {"ok": True}

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, Users } from "lucide-react";
+import { ArrowRight, Flag, Users } from "lucide-react";
 import { TEAM_VISUALS } from "@/data/teams";
 
 export const TeamCard = ({ team }) => {
@@ -33,6 +33,23 @@ export const TeamCard = ({ team }) => {
       </h2>
       <p className="mt-1.5 text-sm font-semibold text-charcoal/60">
         Captain {team.captain}
+      </p>
+      <p className="mt-3">
+        {team.startingHole ? (
+          <span
+            data-testid={`team-hole-chip-${team.id}`}
+            className="inline-flex items-center gap-1.5 rounded-full bg-gold/15 px-3 py-1 text-xs font-bold text-gold-deep"
+          >
+            <Flag className="h-3.5 w-3.5" aria-hidden="true" />
+            Shotgun start · Hole {team.startingHole}
+            {team.startingTime ? ` · ${team.startingTime}` : ""}
+          </span>
+        ) : (
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-charcoal/5 px-3 py-1 text-xs font-bold text-charcoal/40">
+            <Flag className="h-3.5 w-3.5" aria-hidden="true" />
+            Starting hole TBD
+          </span>
+        )}
       </p>
       <p className="mt-4 flex-1 text-sm leading-relaxed text-charcoal/60">
         &ldquo;{team.motto}&rdquo;

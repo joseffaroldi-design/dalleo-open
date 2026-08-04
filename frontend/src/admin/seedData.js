@@ -74,4 +74,10 @@ export const SEED = {
     entries: CHAMPIONS.entries.map((e) => ({ ...e, members: [...e.members], moments: [...e.moments], awards: [...e.awards], stats: e.stats.map((s) => ({ ...s })) })),
     records: CHAMPIONS.records.map((r) => ({ ...r })),
   }),
+  scoring: () => ({
+    status: "not-started",
+    par: Array(18).fill(4),
+    scores: [],
+    updatedAt: "",
+  }),
 };

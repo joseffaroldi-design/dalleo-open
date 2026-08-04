@@ -32,7 +32,9 @@ export default function TeamsAdmin() {
   return (
     <div data-testid="teams-admin">
       <h1 className="text-2xl font-extrabold tracking-tight text-forest sm:text-3xl">Teams</h1>
-      <p className="mt-1 text-sm text-charcoal/60">Edit team identities and rosters. The first player listed is shown as Captain.</p>
+      <p className="mt-1 text-sm text-charcoal/60">
+        2026 tournament setup — exactly eight teams, four players each (captain first). Assign shotgun starting holes and times here; they appear on the public Teams and Schedule pages.
+      </p>
 
       <div className="mt-8 flex flex-col gap-6">
         <AdminSection title="Publication" testId="teams-publish-section">
@@ -59,7 +61,47 @@ export default function TeamsAdmin() {
               <Field label="Motto">
                 <TextInput data-testid={`team-motto-${team.id}`} value={team.motto} onChange={(e) => updateTeam(team.id, { motto: e.target.value })} />
               </Field>
+              <Field label="Starting hole (shotgun)" hint="1–18. Leave empty until pairings are set.">
+                <TextInput
+                  type="number"
+                  min="1"
+                  max="18"
+                  data-testid={`team-hole-${team.id}`}
+                  value={team.startingHole ?? ""}
+                  onChange={(e) => updateTeam(team.id, { startingHole: e.target.value === "" ? null : Number(e.target.value) })}
+                />
+              </Field>
+              <Field label="Starting time" hint='For example: "8:00 AM"'>
+                <TextInput
+                  data-testid={`team-start-time-${team.id}`}
+                  value={team.startingTime ?? ""}
+                  onChange={(e) => updateTeam(team.id, { startingTime: e.target.value || null })}
+                />
+              </Field>
+              <Field label="Display order" hint="Lower numbers appear first on public pages.">
+                <TextInput
+                  type="number"
+                  min="1"
+                  max="99"
+                  data-testid={`team-order-${team.id}`}
+                  value={team.order ?? ""}
+                  onChange={(e) => updateTeam(team.id, { order: e.target.value === "" ? null : Number(e.target.value) })}
+                />
+              </Field>
+              <Field label="Team logo / photo URL (optional)">
+                <TextInput
+                  data-testid={`team-photo-${team.id}`}
+                  value={team.photoUrl ?? ""}
+                  onChange={(e) => updateTeam(team.id, { photoUrl: e.target.value || null })}
+                />
+              </Field>
             </div>
+            <Toggle
+              label="Active (shown on public pages and scoring)"
+              testId={`team-active-${team.id}`}
+              checked={team.active !== false}
+              onChange={(v) => updateTeam(team.id, { active: v })}
+            />
             <Field label="Roster — one player per line" hint="First line becomes the Captain on the public page.">
               <TextArea
                 rows={Math.max(4, team.players.length + 1)}

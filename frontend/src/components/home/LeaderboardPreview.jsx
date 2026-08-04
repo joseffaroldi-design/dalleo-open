@@ -1,36 +1,24 @@
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
-import { SCORING_STARTED, TEAM_VISUALS, getLeaderSummary } from "@/data/leaderboard";
-import { TEAMS } from "@/data/teams";
+import { TEAM_VISUALS, TEAMS } from "@/data/teams";
 import { StatusChip } from "@/components/leaderboard/StatusChip";
 import { useLiveData } from "@/data/useLiveData";
-import { Reveal } from "@/components/motion/Reveal";
+import { computeStandings, formatToPar } from "@/data/scoring";
 
 export const LeaderboardPreview = () => {
-  const liveLb = useLiveData("leaderboard");
+  const scoring = useLiveData("scoring");
   const liveTeams = useLiveData("teams");
-  let summary = getLeaderSummary("overall");
-  let started = SCORING_STARTED;
-  if (liveLb) {
-    started = liveLb.scoringStarted;
-    const teams = liveTeams?.items ?? TEAMS;
-    const byId = Object.fromEntries(teams.map((t) => [t.id, t]));
-    const byColor = Object.fromEntries(teams.map((t) => [t.colorKey, t]));
-    const rows = liveLb.standings
-      .filter((s) => s.points !== null && s.points !== undefined)
-      .sort((a, b) => b.points - a.points);
-    const leadTeam = rows.length ? byId[rows[0].teamId] ?? byColor[rows[0].colorKey] : null;
-    summary =
-      rows.length >= 2
-        ? {
-            leader: { colorKey: leadTeam?.colorKey ?? "green", name: leadTeam?.name ?? "Team", points: rows[0].points },
-            lead: rows[0].points - rows[1].points,
-          }
-        : null;
-  }
-  if (!started || !summary) return null;
-  const { leader, lead } = summary;
-  const visual = TEAM_VISUALS[leader.colorKey];
+  if (!scoring || scoring.status === "not-started") return null;
+
+  const teams = (liveTeams?.items ?? TEAMS).filter((t) => t.active !== false);
+  const standings = computeStandings(scoring, teams);
+  const leader = standings.find((r) => r.position === 1);
+  if (!leader) return null;
+
+  const final = scoring.status === "final";
+  const runnersUp = standings.filter((r) => r.position !== 1);
+  const margin = leader.tied || !runnersUp.length ? 0 : runnersUp[0].total - leader.total;
+  const visual = TEAM_VISUALS[leader.team.colorKey] ?? TEAM_VISUALS.green;
 
   return (
     <section
@@ -38,13 +26,11 @@ export const LeaderboardPreview = () => {
       aria-labelledby="home-leaderboard-title"
       className="mx-auto max-w-6xl px-4 pb-6 sm:px-6 sm:pb-8"
     >
-      <Reveal>
       <div className="flex flex-col gap-6 rounded-3xl bg-forest p-7 shadow-md ring-1 ring-gold/40 sm:flex-row sm:items-center sm:justify-between sm:p-9">
         <div>
-          <p className="font-display text-sm italic text-gold-soft">Chapter 02 · The Standings</p>
-          <p className="mt-2 flex items-center gap-3 text-sm font-bold uppercase tracking-[0.2em] text-gold">
+          <p className="flex items-center gap-3 text-sm font-bold uppercase tracking-[0.2em] text-gold">
             Live Leaderboard
-            <StatusChip status="live" />
+            <StatusChip status={final ? "final" : "live"} label={final ? "Final" : "Live"} />
           </p>
           <h2
             id="home-leaderboard-title"
@@ -55,13 +41,17 @@ export const LeaderboardPreview = () => {
               className="h-6 w-6 rounded-full ring-2 ring-gold"
               style={{ backgroundColor: visual.dot }}
             />
-            {leader.name} leads by {lead}
+            {leader.tied
+              ? `${leader.team.name} tied at the top`
+              : margin > 0
+                ? `${leader.team.name} leads by ${margin}`
+                : `${leader.team.name} leads`}
           </h2>
           <p className="mt-2 text-sm font-semibold text-cream/60 sm:text-base">
             <span data-testid="home-preview-points" className="text-gold">
-              {leader.points} points
+              {formatToPar(leader.toPar)} · {leader.total} strokes
             </span>{" "}
-            · Round 2 in progress
+            · {final ? "Final result" : `Thru ${leader.thru} holes`}
           </p>
         </div>
         <Link
@@ -73,7 +63,6 @@ export const LeaderboardPreview = () => {
           <ArrowRight className="h-4 w-4" aria-hidden="true" />
         </Link>
       </div>
-      </Reveal>
     </section>
   );
 };

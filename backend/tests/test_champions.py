@@ -2,10 +2,13 @@
 import os
 import pytest
 import requests
+from dotenv import load_dotenv
+
+load_dotenv(os.path.join(os.path.dirname(__file__), "..", ".env"))
 
 BASE_URL = os.environ.get("REACT_APP_BACKEND_URL", "https://golf-memorial-hub.preview.emergentagent.com").rstrip("/")
-ADMIN_EMAIL = "joseffaroldi@yahoo.com"
-ADMIN_PASSWORD = "Test123"
+ADMIN_EMAIL = os.environ["ADMIN_EMAIL"]
+ADMIN_PASSWORD = os.environ["ADMIN_PASSWORD"]
 
 
 @pytest.fixture(scope="module")

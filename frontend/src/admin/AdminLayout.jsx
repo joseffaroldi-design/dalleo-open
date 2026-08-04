@@ -6,7 +6,8 @@ import { adminFetch, getToken, clearToken } from "@/lib/api";
 const SECTIONS = [
   { to: "/admin", label: "Dashboard", end: true, testId: "admin-nav-dashboard" },
   { to: "/admin/announcements", label: "Announcements", testId: "admin-nav-announcements" },
-  { to: "/admin/leaderboard", label: "Leaderboard", testId: "admin-nav-leaderboard" },
+  { to: "/admin/leaderboard", label: "Points (Legacy)", testId: "admin-nav-leaderboard" },
+  { to: "/admin/scoring", label: "Scoring", testId: "admin-nav-scoring" },
   { to: "/admin/champions", label: "Champions", testId: "admin-nav-champions" },
   { to: "/admin/teams", label: "Teams", testId: "admin-nav-teams" },
   { to: "/admin/schedule", label: "Schedule", testId: "admin-nav-schedule" },

@@ -4,11 +4,12 @@ import { fetchPublic } from "@/lib/api";
 import { TEAMS } from "@/data/teams";
 import { SCHEDULE, DAYS } from "@/data/schedule";
 import { GALLERY_ITEMS } from "@/data/gallery";
-import { LEADERBOARD } from "@/data/leaderboard";
+import { STATUS_LABELS, computeStandings } from "@/data/scoring";
 
 const LINKS = [
   { to: "/admin/announcements", label: "Announcements", testId: "dash-link-announcements" },
   { to: "/admin/leaderboard", label: "Leaderboard", testId: "dash-link-leaderboard" },
+  { to: "/admin/scoring", label: "Scoring", testId: "dash-link-scoring" },
   { to: "/admin/champions", label: "Champions", testId: "dash-link-champions" },
   { to: "/admin/teams", label: "Teams", testId: "dash-link-teams" },
   { to: "/admin/schedule", label: "Schedule", testId: "dash-link-schedule" },
@@ -28,21 +29,17 @@ export default function Dashboard() {
   const [stats, setStats] = useState(null);
 
   useEffect(() => {
-    Promise.all(["announcements", "leaderboard", "teams", "schedule", "gallery"].map(fetchPublic))
-      .then(([announcements, leaderboard, teams, schedule, gallery]) => {
+    Promise.all(["announcements", "scoring", "teams", "schedule", "gallery"].map(fetchPublic))
+      .then(([announcements, scoring, teams, schedule, gallery]) => {
         const teamList = teams?.items ?? TEAMS;
-        const lbStandings = leaderboard?.standings ?? LEADERBOARD.overall.standings;
-        const byId = Object.fromEntries(teamList.map((t) => [t.id, t]));
-        const byColor = Object.fromEntries(teamList.map((t) => [t.colorKey, t]));
-        const started = lbStandings.filter((s) => s.points !== null && s.points !== undefined);
-        const top = started.length ? [...started].sort((a, b) => b.points - a.points)[0] : null;
-        const topTeam = top ? byId[top.teamId] ?? byColor[top.colorKey] : null;
-        const leader = topTeam?.name ?? "Not started";
+        const standings = scoring ? computeStandings(scoring, teamList) : [];
+        const top = standings.find((r) => r.position === 1);
+        const leader = scoring && scoring.status !== "not-started" && top ? top.team.name : "Not started";
         const events = schedule?.events ?? DAYS.flatMap((d) => SCHEDULE[d.id]);
         const galleryItems = gallery?.items ?? GALLERY_ITEMS;
         const announcementsList = announcements?.items?.filter((a) => a.published) ?? [];
         setStats({
-          status: leaderboard?.statusLabel ?? LEADERBOARD.overall.meta.statusLabel,
+          status: STATUS_LABELS[scoring?.status] ?? "Not Started",
           leader,
           teams: teamList.length,
           events: events.length,
