@@ -53,6 +53,8 @@ Build the Dalleo Open Digital Clubhouse, a modern, mobile-first web app for the 
 
 - 2026-07-04 (Schedule experience upgrade): Upgraded the schedule to the official itinerary spec — automatic Upcoming/Current/Complete badges computed from the user's local time against real weekend dates (Sept 4/5/6, stored statuses completed/delayed/updated override the clock, checks every 60s); header now "Tournament Weekend Schedule / Never wonder where you're supposed to be. / September 4–6, 2026"; homepage "This Weekend" section shows the next 3 upcoming events (Breakfast, Player Arrival, Opening Remarks) with View Full Schedule; empty-day copy "official schedule coming soon"; added Breakfast (Sat 6:45 AM) and Post-Draft Celebration (Fri 9:30 PM) events (17 total); fixed edition text to 7th Annual in schedule data. data/schedule.js now exports TOURNAMENT_DAYS, eventStart, getAutoStatus, getNextEvents, STATUS_LABELS. Verified all 3 tabs, auto-badges, homepage preview from same data, mobile, build passing.
 
+- 2026-07-04 (Official rules): Owner supplied the official Dalleo Open rules — saved as the 8 Match Rules accordion topics (No Mulligans, No Gimmes, No Breakfast Balls, Out of Bounds, Re-Tee Rule, Unplayable Lies, Bushes & Trouble, Hole 13 Tradition 🍻) and flipped approved=true, so the public draft notice is gone. Edition label updated to 7th Annual. Scoring values remain inline-marked examples pending confirmation. Verified publicly: notice hidden, accordion renders all 8 rules with bodies.
+
 ## Backlog (post-launch evaluation — NOT built)
 - Media file uploads (object storage), refresh tokens, automated test suite, memory submissions, notifications, hole-by-hole scoring, draft board, audit history
 
