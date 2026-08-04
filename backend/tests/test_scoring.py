@@ -18,6 +18,10 @@ ADMIN_PASSWORD = os.environ["ADMIN_PASSWORD"]
 
 EMPTY_DOC = {"status": "not-started", "par": [4] * 18, "scores": [], "updatedAt": ""}
 
+# Both scoring test modules mutate the same shared scoring doc — force them
+# onto a single xdist worker so they never interleave.
+pytestmark = pytest.mark.xdist_group("scoring_doc")
+
 
 def make_scores(team_ids, totals):
     """18 scores per team summing to the given totals (par-4 baseline)."""
@@ -57,7 +61,7 @@ def team_ids():
 
 
 @pytest.fixture(scope="module")
-def snapshot(auth):
+def snapshot(auth, scoring_doc_lock):
     """Preserve the pre-test scoring doc; restore it after the module."""
     r = requests.get(f"{BASE_URL}/api/admin/scoring", headers=auth)
     assert r.status_code == 200
@@ -70,17 +74,22 @@ def snapshot(auth):
 class TestSimulatedTournament:
     TOTALS = [68, 71, 71, 73, 73, 74, 76, 78]  # winner 68, two pairs of ties
 
-    def test_full_round_persists(self, auth, team_ids, snapshot):
+    def seed_live_round(self, auth, team_ids):
+        """Each test seeds its own state — no cross-test ordering assumptions."""
         doc = {"status": "live", "par": [4] * 18, "scores": make_scores(team_ids, self.TOTALS), "updatedAt": ""}
         r = requests.put(f"{BASE_URL}/api/admin/scoring", headers=auth, json={"data": doc})
         assert r.status_code == 200, r.text
+
+    def test_full_round_persists(self, auth, team_ids, snapshot, scoring_doc_lock):
+        self.seed_live_round(auth, team_ids)
         r = requests.get(f"{BASE_URL}/api/public/scoring")
         saved = r.json()["data"]
         assert len(saved["scores"]) == 8 * 18
         assert saved["status"] == "live"
         assert saved["updatedAt"], "server should stamp updatedAt"
 
-    def test_winner_and_ties(self, auth, team_ids, snapshot):
+    def test_winner_and_ties(self, auth, team_ids, snapshot, scoring_doc_lock):
+        self.seed_live_round(auth, team_ids)
         r = requests.get(f"{BASE_URL}/api/public/scoring")
         scores = r.json()["data"]["scores"]
         totals = {t: sum(s["strokes"] for s in scores if s["teamId"] == t) for t in team_ids}
@@ -91,7 +100,8 @@ class TestSimulatedTournament:
         assert list(totals.values()).count(71) == 2, "expected a tie at 71"
         assert list(totals.values()).count(73) == 2, "expected a tie at 73"
 
-    def test_score_correction(self, auth, team_ids, snapshot):
+    def test_score_correction(self, auth, team_ids, snapshot, scoring_doc_lock):
+        self.seed_live_round(auth, team_ids)
         r = requests.get(f"{BASE_URL}/api/public/scoring")
         doc = r.json()["data"]
         target = team_ids[5]
@@ -109,7 +119,8 @@ class TestSimulatedTournament:
         pairs = [(s["teamId"], s["hole"]) for s in r.json()["data"]["scores"]]
         assert len(pairs) == len(set(pairs))
 
-    def test_final_status(self, auth, team_ids, snapshot):
+    def test_final_status(self, auth, team_ids, snapshot, scoring_doc_lock):
+        self.seed_live_round(auth, team_ids)
         r = requests.get(f"{BASE_URL}/api/public/scoring")
         doc = {**r.json()["data"], "status": "final"}
         r = requests.put(f"{BASE_URL}/api/admin/scoring", headers=auth, json={"data": doc})
@@ -170,7 +181,7 @@ class TestScoringSafety:
 
 
 class TestScoringCleanup:
-    def test_scores_reset_after_simulation(self, auth, snapshot):
+    def test_scores_reset_after_simulation(self, auth, snapshot, scoring_doc_lock):
         """Reset the scoring doc so the official tournament starts clean."""
         restore = snapshot if snapshot else EMPTY_DOC
         r = requests.put(f"{BASE_URL}/api/admin/scoring", headers=auth, json={"data": restore})

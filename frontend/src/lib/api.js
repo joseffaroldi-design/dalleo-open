@@ -48,3 +48,53 @@ export async function fetchPublic(domain) {
   const body = await res.json().catch(() => ({}));
   return body.data ?? null;
 }
+
+// ---------- Team captain scoring (per-team PIN) ----------
+const TEAM_TOKEN_KEY = "dalleo_team_token";
+const TEAM_INFO_KEY = "dalleo_team_info";
+
+export const getTeamToken = () => sessionStorage.getItem(TEAM_TOKEN_KEY);
+export const getTeamInfo = () => {
+  try {
+    return JSON.parse(sessionStorage.getItem(TEAM_INFO_KEY));
+  } catch {
+    return null;
+  }
+};
+export const setTeamSession = (token, team) => {
+  sessionStorage.setItem(TEAM_TOKEN_KEY, token);
+  sessionStorage.setItem(TEAM_INFO_KEY, JSON.stringify(team));
+};
+export const clearTeamSession = () => {
+  sessionStorage.removeItem(TEAM_TOKEN_KEY);
+  sessionStorage.removeItem(TEAM_INFO_KEY);
+};
+
+export async function teamLoginRequest(teamId, pin) {
+  const res = await fetch(`${API}/team-scoring/login`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ teamId, pin }),
+  });
+  const body = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(formatDetail(body.detail, "Login failed"));
+  return body;
+}
+
+export async function teamFetch(path, options = {}) {
+  const res = await fetch(`${API}${path}`, {
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...(getTeamToken() ? { Authorization: `Bearer ${getTeamToken()}` } : {}),
+      ...(options.headers || {}),
+    },
+  });
+  if (res.status === 401) {
+    clearTeamSession();
+    throw new Error("Session expired — please sign in again");
+  }
+  const body = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(formatDetail(body.detail, "Request failed"));
+  return body;
+}

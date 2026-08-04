@@ -110,6 +110,133 @@ async def me(user=Depends(get_current_user)):
 async def logout(user=Depends(get_current_user)):
     return {"ok": True}
 
+# ---------- Team captain scoring (per-team PIN, scoped tokens) ----------
+
+class TeamPinInput(BaseModel):
+    teamId: str = Field(min_length=1, max_length=40)
+    pin: str = Field(min_length=4, max_length=8, pattern=r"^\d{4,8}$")
+
+
+class TeamLoginInput(BaseModel):
+    teamId: str = Field(min_length=1, max_length=40)
+    pin: str = Field(min_length=4, max_length=8)
+
+
+class HoleScoreInput(BaseModel):
+    hole: int = Field(ge=1, le=18)
+    strokes: int = Field(ge=1, le=30)
+
+
+def create_team_token(team_id: str) -> str:
+    payload = {
+        "sub": f"team:{team_id}",
+        "type": "team",
+        "exp": datetime.now(timezone.utc) + timedelta(hours=12),
+    }
+    return jwt.encode(payload, jwt_secret(), algorithm=JWT_ALGORITHM)
+
+
+async def get_current_team(creds: HTTPAuthorizationCredentials = Depends(security)):
+    if not creds or not creds.credentials:
+        raise HTTPException(status_code=401, detail="Not authenticated")
+    try:
+        payload = jwt.decode(creds.credentials, jwt_secret(), algorithms=[JWT_ALGORITHM])
+        if payload.get("type") != "team":
+            raise HTTPException(status_code=401, detail="Invalid token type")
+    except jwt.ExpiredSignatureError:
+        raise HTTPException(status_code=401, detail="Session expired — please log in again")
+    except jwt.InvalidTokenError:
+        raise HTTPException(status_code=401, detail="Invalid token")
+    return payload["sub"].removeprefix("team:")
+
+
+@api_router.post("/team-scoring/login")
+async def team_login(input: TeamLoginInput):
+    teams = await read_domain("teams")
+    team = next((t for t in (teams or {}).get("items", []) if t["id"] == input.teamId), None)
+    identifier = f"pin:{input.teamId}"
+    attempts = await db.login_attempts.find_one({"identifier": identifier})
+    if attempts and attempts.get("locked_until"):
+        if datetime.now(timezone.utc) < datetime.fromisoformat(attempts["locked_until"]):
+            raise HTTPException(status_code=429, detail="Too many failed attempts. Try again in a few minutes.")
+    record = await db.team_pins.find_one({"teamId": input.teamId})
+    if not team or not record or not verify_password(input.pin, record["pin_hash"]):
+        count = (attempts or {}).get("count", 0) + 1
+        update = {"identifier": identifier, "count": count}
+        if count >= 5:
+            update["locked_until"] = (datetime.now(timezone.utc) + timedelta(minutes=15)).isoformat()
+            update["count"] = 0
+        await db.login_attempts.update_one({"identifier": identifier}, {"$set": update}, upsert=True)
+        raise HTTPException(status_code=401, detail="Invalid team or PIN")
+    await db.login_attempts.delete_one({"identifier": identifier})
+    return {"token": create_team_token(team["id"]), "team": {"id": team["id"], "name": team["name"]}}
+
+
+@api_router.get("/team-scoring/state")
+async def team_scoring_state(team_id: str = Depends(get_current_team)):
+    scoring = await read_domain("scoring")
+    teams = await read_domain("teams")
+    team = next((t for t in (teams or {}).get("items", []) if t["id"] == team_id), None)
+    if not team:
+        raise HTTPException(status_code=404, detail="Team not found")
+    doc = scoring or {"status": "not-started", "par": [4] * 18, "scores": [], "updatedAt": ""}
+    own = [s for s in doc.get("scores", []) if s["teamId"] == team_id]
+    return {
+        "data": {
+            "status": doc["status"],
+            "par": doc["par"],
+            "updatedAt": doc.get("updatedAt", ""),
+            "scores": own,
+            "team": {
+                "id": team["id"],
+                "name": team["name"],
+                "startingHole": team.get("startingHole"),
+            },
+        }
+    }
+
+
+@api_router.put("/team-scoring/hole")
+async def team_scoring_write(input: HoleScoreInput, team_id: str = Depends(get_current_team)):
+    scoring = await read_domain("scoring")
+    if not scoring or scoring["status"] != "live":
+        raise HTTPException(status_code=409, detail="Scoring is not open right now")
+    teams = await read_domain("teams")
+    if not any(t["id"] == team_id and t.get("active", True) for t in (teams or {}).get("items", [])):
+        raise HTTPException(status_code=404, detail="Team not found")
+    score = HoleScore(teamId=team_id, hole=input.hole, strokes=input.strokes).model_dump()
+    await db.site_content.update_one(
+        {"_id": "scoring"}, {"$pull": {"data.scores": {"teamId": team_id, "hole": input.hole}}}
+    )
+    await db.site_content.update_one(
+        {"_id": "scoring"},
+        {
+            "$push": {"data.scores": score},
+            "$set": {"data.updatedAt": datetime.now(timezone.utc).isoformat()},
+        },
+    )
+    return {"ok": True, "score": score}
+
+
+@api_router.get("/admin/team-pins")
+async def team_pins_status(user=Depends(get_current_user)):
+    cursor = db.team_pins.find({}, {"_id": 0, "teamId": 1})
+    return {"teamIds": [doc["teamId"] async for doc in cursor]}
+
+
+@api_router.put("/admin/team-pins")
+async def team_pins_set(input: TeamPinInput, user=Depends(get_current_user)):
+    teams = await read_domain("teams")
+    if not any(t["id"] == input.teamId for t in (teams or {}).get("items", [])):
+        raise HTTPException(status_code=404, detail="Team not found")
+    await db.team_pins.update_one(
+        {"teamId": input.teamId},
+        {"$set": {"teamId": input.teamId, "pin_hash": hash_password(input.pin), "updated_at": datetime.now(timezone.utc).isoformat()}},
+        upsert=True,
+    )
+    return {"ok": True}
+
+
 
 # ---------- Domain validation models ----------
 
@@ -423,6 +550,7 @@ logger = logging.getLogger(__name__)
 async def startup():
     await db.users.create_index("email", unique=True)
     await db.login_attempts.create_index("identifier")
+    await db.team_pins.create_index("teamId", unique=True)
     admin_email = os.environ["ADMIN_EMAIL"].strip().lower()
     admin_password = os.environ["ADMIN_PASSWORD"]
     existing = await db.users.find_one({"email": admin_email})

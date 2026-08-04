@@ -43,13 +43,22 @@ export const Footer = () => {
         <p data-testid="footer-copyright">
           &copy; {new Date().getFullYear()} Dalleo Open. All rights reserved.
         </p>
-        <Link
-          to="/admin/login"
-          data-testid="footer-organizer-link"
-          className="rounded-md py-1 font-semibold text-cream/40 transition-colors duration-200 hover:text-gold"
-        >
-          Organizer Login
-        </Link>
+        <div className="flex items-center gap-5">
+          <Link
+            to="/score"
+            data-testid="footer-captain-scoring-link"
+            className="rounded-md py-1 font-semibold text-cream/40 transition-colors duration-200 hover:text-gold"
+          >
+            Captain Scoring
+          </Link>
+          <Link
+            to="/admin/login"
+            data-testid="footer-organizer-link"
+            className="rounded-md py-1 font-semibold text-cream/40 transition-colors duration-200 hover:text-gold"
+          >
+            Organizer Login
+          </Link>
+        </div>
       </div>
     </div>
   </footer>

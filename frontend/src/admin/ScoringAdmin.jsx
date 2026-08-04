@@ -30,6 +30,15 @@ export default function ScoringAdmin() {
   const [flash, setFlash] = useState("");
   const [entryError, setEntryError] = useState("");
   const [resetArmed, setResetArmed] = useState(false);
+  const [pinsSet, setPinsSet] = useState([]);
+  const [pinDrafts, setPinDrafts] = useState({});
+  const [pinFlash, setPinFlash] = useState("");
+
+  useEffect(() => {
+    adminFetch("/admin/team-pins")
+      .then((res) => setPinsSet(res.teamIds ?? []))
+      .catch(() => {});
+  }, []);
 
   useEffect(() => {
     adminFetch("/admin/teams")
@@ -107,6 +116,24 @@ export default function ScoringAdmin() {
       setEntryError(e.message);
     } finally {
       setEntrySaving(false);
+    }
+  };
+
+  const savePin = async (id) => {
+    const pin = (pinDrafts[id] ?? "").trim();
+    if (!/^\d{4,8}$/.test(pin)) {
+      setPinFlash("");
+      setEntryError("PINs must be 4–8 digits");
+      return;
+    }
+    setEntryError("");
+    try {
+      await adminFetch("/admin/team-pins", { method: "PUT", body: JSON.stringify({ teamId: id, pin }) });
+      setPinsSet((list) => (list.includes(id) ? list : [...list, id]));
+      setPinDrafts((d) => ({ ...d, [id]: "" }));
+      setPinFlash(`PIN saved for ${activeTeams.find((t) => t.id === id)?.name ?? id} — share it privately with the captain`);
+    } catch (e) {
+      setEntryError(e.message);
     }
   };
 
@@ -339,6 +366,44 @@ export default function ScoringAdmin() {
               </label>
             ))}
           </div>
+        </AdminSection>
+
+        <AdminSection
+          title="Captain Scoring PINs"
+          description="Each captain signs in at /score (linked in the site footer) with their team name and this PIN to enter their own hole scores. PINs are stored hashed and can be reset anytime — share them privately before the round."
+          testId="captain-pins-section"
+        >
+          {pinFlash && (
+            <p data-testid="pin-flash" role="status" className="rounded-xl bg-forest-mist px-4 py-3 text-sm font-extrabold text-forest">
+              {pinFlash}
+            </p>
+          )}
+          {activeTeams.map((t) => (
+            <div key={t.id} className="flex items-end gap-3">
+              <div className="flex-1">
+                <Field label={t.name} hint={pinsSet.includes(t.id) ? "PIN set" : "No PIN yet"}>
+                  <TextInput
+                    type="password"
+                    inputMode="numeric"
+                    autoComplete="off"
+                    data-testid={`pin-input-${t.id}`}
+                    value={pinDrafts[t.id] ?? ""}
+                    onChange={(e) => setPinDrafts((d) => ({ ...d, [t.id]: e.target.value.replace(/\D/g, "").slice(0, 8) }))}
+                    placeholder="4–8 digits"
+                  />
+                </Field>
+              </div>
+              <button
+                type="button"
+                data-testid={`pin-save-${t.id}`}
+                onClick={() => savePin(t.id)}
+                disabled={(pinDrafts[t.id] ?? "").length < 4}
+                className="min-h-12 shrink-0 rounded-full bg-forest px-6 py-3 text-sm font-extrabold text-cream transition-colors duration-200 hover:bg-forest-soft disabled:opacity-50"
+              >
+                {pinsSet.includes(t.id) ? "Reset PIN" : "Set PIN"}
+              </button>
+            </div>
+          ))}
         </AdminSection>
 
         <AdminSection title="Danger Zone" testId="scoring-danger-section">
