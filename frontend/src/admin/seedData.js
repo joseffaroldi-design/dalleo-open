@@ -4,6 +4,7 @@ import { SCHEDULE_PUBLISHED, SCHEDULE, DAYS } from "@/data/schedule";
 import { GALLERY_PUBLISHED, GALLERY_ITEMS } from "@/data/gallery";
 import { MEMORIAL, MEMORIAL_PUBLISHED, SHARE_MEMORY_ENABLED } from "@/data/memorial";
 import { RULES, RULES_PUBLISHED, RULES_APPROVED } from "@/data/rules";
+import { CHAMPIONS } from "@/data/champions";
 
 // Editors start from the current public mock content the first time they are
 // opened (when no saved record exists yet). The first save creates the record.
@@ -66,5 +67,11 @@ export const SEED = {
     faq: RULES.faq.map((r) => ({ ...r })),
     unpublishedTitle: RULES.unpublished.title,
     unpublishedBody: RULES.unpublished.body,
+  }),
+  champions: () => ({
+    published: CHAMPIONS.published,
+    header: { ...CHAMPIONS.header },
+    entries: CHAMPIONS.entries.map((e) => ({ ...e, members: [...e.members], moments: [...e.moments], awards: [...e.awards], stats: e.stats.map((s) => ({ ...s })) })),
+    records: CHAMPIONS.records.map((r) => ({ ...r })),
   }),
 };

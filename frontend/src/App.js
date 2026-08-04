@@ -8,6 +8,8 @@ import { ScrollToTop } from "@/components/ScrollToTop";
 import { useLenis } from "@/hooks/useLenis";
 import Home from "@/pages/Home";
 import Leaderboard from "@/pages/Leaderboard";
+import Champions from "@/pages/Champions";
+import ChampionDetail from "@/pages/ChampionDetail";
 import Teams from "@/pages/Teams";
 import TeamDetail from "@/pages/TeamDetail";
 import Schedule from "@/pages/Schedule";
@@ -26,9 +28,11 @@ import ScheduleAdmin from "@/admin/ScheduleAdmin";
 import GalleryAdmin from "@/admin/GalleryAdmin";
 import ContentAdmin from "@/admin/ContentAdmin";
 import RulesAdmin from "@/admin/RulesAdmin";
+import ChampionsAdmin from "@/admin/ChampionsAdmin";
 
 const PAGE_TITLES = [
   [/^\/leaderboard/, "Live Leaderboard — Dalleo Open"],
+  [/^\/champions/, "Champions — Dalleo Open"],
   [/^\/teams/, "Teams — Dalleo Open"],
   [/^\/schedule/, "Tournament Schedule — Dalleo Open"],
   [/^\/gallery/, "Gallery — Dalleo Open"],
@@ -65,6 +69,8 @@ const Shell = () => {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/leaderboard" element={<Leaderboard />} />
+          <Route path="/champions" element={<Champions />} />
+          <Route path="/champions/:year" element={<ChampionDetail />} />
           <Route path="/teams" element={<Teams />} />
           <Route path="/teams/:teamId" element={<TeamDetail />} />
           <Route path="/schedule" element={<Schedule />} />
@@ -83,6 +89,7 @@ const Shell = () => {
             <Route path="gallery" element={<GalleryAdmin />} />
             <Route path="content" element={<ContentAdmin />} />
             <Route path="rules" element={<RulesAdmin />} />
+            <Route path="champions" element={<ChampionsAdmin />} />
           </Route>
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

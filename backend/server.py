@@ -23,7 +23,7 @@ app = FastAPI()
 api_router = APIRouter(prefix="/api")
 
 JWT_ALGORITHM = "HS256"
-DOMAINS = {"announcements", "leaderboard", "teams", "schedule", "gallery", "site", "rules"}
+DOMAINS = {"announcements", "leaderboard", "teams", "schedule", "gallery", "site", "rules", "champions"}
 
 
 def jwt_secret() -> str:
@@ -258,6 +258,45 @@ class RulesDoc(BaseModel):
     unpublishedBody: str = Field(min_length=1, max_length=400)
 
 
+class ChampionStat(BaseModel):
+    label: str = Field(min_length=1, max_length=60)
+    value: str = Field(min_length=1, max_length=60)
+
+
+class ChampionEntry(BaseModel):
+    year: int = Field(ge=2000, le=2100)
+    teamName: str = Field(min_length=1, max_length=80)
+    captain: str = Field(min_length=1, max_length=80)
+    members: List[str] = []
+    finalScore: str = Field(min_length=1, max_length=40)
+    margin: str = Field(default="", max_length=60)
+    mvp: str = Field(default="", max_length=80)
+    quote: str = Field(default="", max_length=300)
+    story: str = Field(min_length=1, max_length=1500)
+    moments: List[str] = []
+    awards: List[str] = []
+    stats: List[ChampionStat] = []
+    photoCaption: str = Field(default="", max_length=200)
+    published: bool = True
+    placeholder: bool = True
+
+
+class RecordEntry(BaseModel):
+    id: str = Field(min_length=1, max_length=60)
+    label: str = Field(min_length=1, max_length=80)
+    holder: str = Field(min_length=1, max_length=120)
+    value: str = Field(min_length=1, max_length=60)
+    year: str = Field(default="", max_length=20)
+    note: str = Field(default="", max_length=200)
+
+
+class ChampionsDoc(BaseModel):
+    published: bool
+    header: TextPair
+    entries: List[ChampionEntry]
+    records: List[RecordEntry]
+
+
 MODELS = {
     "announcements": AnnouncementsDoc,
     "leaderboard": LeaderboardDoc,
@@ -266,6 +305,7 @@ MODELS = {
     "gallery": GalleryDoc,
     "site": SiteDoc,
     "rules": RulesDoc,
+    "champions": ChampionsDoc,
 }
 
 
