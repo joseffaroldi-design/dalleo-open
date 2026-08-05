@@ -77,7 +77,7 @@ export const Hero = () => {
           initial={{ opacity: 0, y: 24, scale: 0.94 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ duration: 1.15, delay: 0.25, ease: EASE }}
-          className="mx-auto mt-8 max-w-sm sm:max-w-xl"
+          className="mx-auto mt-8 max-w-[537px] sm:max-w-[800px]"
         >
           <img
             src="/dalleo-logo-gold.png"
