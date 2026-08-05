@@ -71,13 +71,25 @@ export const Hero = () => {
           <span aria-hidden="true" className="h-px w-10 bg-gold/50 sm:w-16" />
         </motion.p>
 
+        <motion.p
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.9, delay: 0.3, ease: EASE }}
+          data-testid="hero-edition"
+          className="mt-4 flex items-center justify-center gap-4 font-display text-xl italic text-gold-soft sm:text-2xl"
+        >
+          <span aria-hidden="true" className="h-px w-8 bg-gold/40 sm:w-12" />
+          {editionLabel}
+          <span aria-hidden="true" className="h-px w-8 bg-gold/40 sm:w-12" />
+        </motion.p>
+
         <h1 id="hero-title" data-testid="hero-title" className="sr-only">
           {edition}
         </h1>
         <motion.div
           initial={{ opacity: 0, y: 24, scale: 0.94 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
-          transition={{ duration: 1.15, delay: 0.25, ease: EASE }}
+          transition={{ duration: 1.15, delay: 0.45, ease: EASE }}
           className="mx-auto mt-6 max-w-[537px] sm:max-w-[800px]"
         >
           <img
@@ -87,18 +99,6 @@ export const Hero = () => {
             className="w-full"
           />
         </motion.div>
-
-        <motion.p
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9, delay: 0.55, ease: EASE }}
-          data-testid="hero-edition"
-          className="mt-3 flex items-center justify-center gap-4 font-display text-xl italic text-gold-soft sm:text-2xl"
-        >
-          <span aria-hidden="true" className="h-px w-8 bg-gold/40 sm:w-12" />
-          {editionLabel}
-          <span aria-hidden="true" className="h-px w-8 bg-gold/40 sm:w-12" />
-        </motion.p>
 
         <motion.p
           initial={{ opacity: 0, y: 16 }}
