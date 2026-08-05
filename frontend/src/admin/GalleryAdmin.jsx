@@ -101,12 +101,14 @@ export default function GalleryAdmin() {
               <Field label="Source URL (optional)">
                 <TextInput data-testid="gal-src" value={editing.src} onChange={(e) => setEditing({ ...editing, src: e.target.value })} placeholder="https://…" />
               </Field>
-              <Field label="Or upload a photo">
+              <Field label={editing.type === "video" ? "Or upload a video" : "Or upload a photo"}>
                 <ImageUpload
                   testId="gal-upload"
                   value={editing.src ?? ""}
                   onChange={(url) => setEditing({ ...editing, src: url })}
                   previewClass="h-24 w-32"
+                  accept={editing.type === "video" ? "video/mp4,video/webm,video/quicktime" : "image/jpeg,image/png,image/webp,image/gif"}
+                  hint={editing.type === "video" ? "MP4/WebM/MOV up to 100 MB — plays right in the gallery." : "JPEG/PNG/WebP/GIF up to 12 MB."}
                 />
               </Field>
               <Field label="Photographer / source label (optional)">

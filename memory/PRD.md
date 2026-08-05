@@ -89,6 +89,8 @@ Build the Dalleo Open Digital Clubhouse, a modern, mobile-first web app for the 
 
 - 2026-08-05 (Real champion history): Trophy Wall placeholders replaced with the official roll of honor on BOTH environments — 2020 Sunny & Villa, 2021 Roger & Dismukes, 2022 Roger & Nate, 2023 Kaleb & Devin, 2024 Roger & Mark, 2025 Team Devin (Devin, Ross, Pittman, Josef). Pairs mapped as team names with first-named as captain; placeholder flags off, notice banner gone; scores "—" and stories marked as being collected; photos still open frames. Most Championships record set: Roger — 3 (2021/2022/2024, three different partners). 2026 stays open — added via admin after the tournament. Fallback data/champions.js mirrors the live wall. 39/39 tests pass.
 
+- 2026-08-05 (Video uploads + playback): Gallery cards fully editable with real media — upload endpoint now accepts MP4/WebM/MOV up to 100 MB (images still ≤12 MB); admin upload component shows video previews and per-type accept/hints; gallery thumbnails render uploaded videos as inline previews; the media viewer plays uploaded videos with native controls (viewer-video-player) instead of the "coming soon" note (external video links unchanged). Verified end-to-end: real MP4 upload → served as video/mp4 → attached to gallery card → playable in viewer → cleaned up; 39/39 tests pass. NOTE: needs redeploy for production (user was on production Gallery admin when requesting).
+
 ## Backlog (post-launch evaluation — NOT built)
 - Media file uploads (object storage), refresh tokens, automated test suite, memory submissions, notifications, hole-by-hole scoring, draft board, audit history
 

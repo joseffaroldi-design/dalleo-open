@@ -4,10 +4,11 @@ import { getToken } from "@/lib/api";
 
 // Reusable photo upload for admin editors. Uploads to object storage via
 // /api/admin/uploads and calls onChange with the public /api/files URL.
-export const ImageUpload = ({ label, hint, value, onChange, testId, previewClass = "h-24 w-24" }) => {
+export const ImageUpload = ({ label, hint, value, onChange, testId, previewClass = "h-24 w-24", accept = "image/jpeg,image/png,image/webp,image/gif" }) => {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const inputRef = useRef(null);
+  const isVideo = value ? /\.(mp4|webm|mov)(\?|$)/i.test(value) : accept.startsWith("video");
 
   const upload = async (e) => {
     const file = e.target.files?.[0];
@@ -39,7 +40,16 @@ export const ImageUpload = ({ label, hint, value, onChange, testId, previewClass
     <div>
       {label && <span className="text-sm font-bold text-charcoal">{label}</span>}
       <div className="mt-1.5 flex items-center gap-4">
-        {value ? (
+        {value && isVideo ? (
+          <video
+            src={value}
+            muted
+            playsInline
+            preload="metadata"
+            data-testid={`${testId}-preview`}
+            className={`rounded-xl bg-charcoal object-cover ring-1 ring-border ${previewClass}`}
+          />
+        ) : value ? (
           <img
             src={value}
             alt={label ?? "Uploaded photo"}
@@ -62,7 +72,7 @@ export const ImageUpload = ({ label, hint, value, onChange, testId, previewClass
             disabled={busy}
             className="min-h-11 rounded-full bg-forest px-5 py-2.5 text-sm font-extrabold text-cream transition-colors duration-200 hover:bg-forest-soft disabled:opacity-50"
           >
-            {busy ? "Uploading…" : value ? "Replace photo" : "Upload photo"}
+            {busy ? "Uploading…" : value ? (isVideo ? "Replace video" : "Replace photo") : isVideo ? "Upload video" : "Upload photo"}
           </button>
           {value && (
             <button
@@ -86,10 +96,10 @@ export const ImageUpload = ({ label, hint, value, onChange, testId, previewClass
       <input
         ref={inputRef}
         type="file"
-        accept="image/jpeg,image/png,image/webp,image/gif"
+        accept={accept}
         className="hidden"
         onChange={upload}
-        aria-label={label ?? "Upload image"}
+        aria-label={label ?? "Upload media"}
       />
     </div>
   );

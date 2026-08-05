@@ -28,6 +28,7 @@ export const MediaThumb = ({ item, aspect, className = "", iconClassName = "h-12
   const scheme = SCHEMES[item.order % SCHEMES.length];
   const Icon = CATEGORY_ICONS[item.category] ?? Images;
   const [imgError, setImgError] = useState(false);
+  const isUploadedVideo = item.type === "video" && (item.src ?? "").includes("/api/files/");
   return (
     <div
       role="img"
@@ -36,13 +37,23 @@ export const MediaThumb = ({ item, aspect, className = "", iconClassName = "h-12
       className={`relative flex items-center justify-center overflow-hidden ${ASPECTS[aspect ?? item.aspect]} ${className}`}
       style={{ backgroundColor: scheme.bg }}
     >
-      {item.src && !imgError && (
-        <img
+      {isUploadedVideo ? (
+        <video
           src={item.src}
-          alt={item.alt}
-          onError={() => setImgError(true)}
+          muted
+          playsInline
+          preload="metadata"
           className="absolute inset-0 h-full w-full object-cover"
         />
+      ) : (
+        item.src && !imgError && (
+          <img
+            src={item.src}
+            alt={item.alt}
+            onError={() => setImgError(true)}
+            className="absolute inset-0 h-full w-full object-cover"
+          />
+        )
       )}
       <span
         aria-hidden="true"

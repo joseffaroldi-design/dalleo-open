@@ -282,21 +282,27 @@ async def team_pins_set(input: TeamPinInput, user=Depends(get_current_user)):
 # ---------- Image uploads (organizer) ----------
 
 ALLOWED_IMAGE_TYPES = {"image/jpeg", "image/png", "image/webp", "image/gif"}
-MAX_UPLOAD_BYTES = 12 * 1024 * 1024
+ALLOWED_VIDEO_TYPES = {"video/mp4", "video/webm", "video/quicktime"}
+MAX_IMAGE_BYTES = 12 * 1024 * 1024
+MAX_VIDEO_BYTES = 100 * 1024 * 1024
 
 
 @api_router.post("/admin/uploads")
 async def upload_image(file: UploadFile = File(...), user=Depends(get_current_user)):
-    if file.content_type not in ALLOWED_IMAGE_TYPES:
-        raise HTTPException(status_code=422, detail="Only JPEG, PNG, WebP, or GIF images")
+    kind = "image" if file.content_type in ALLOWED_IMAGE_TYPES else "video" if file.content_type in ALLOWED_VIDEO_TYPES else None
+    if not kind:
+        raise HTTPException(status_code=422, detail="Only JPEG/PNG/WebP/GIF images or MP4/WebM/MOV videos")
     data = await file.read()
     if not data:
         raise HTTPException(status_code=422, detail="Empty file")
-    if len(data) > MAX_UPLOAD_BYTES:
-        raise HTTPException(status_code=422, detail="Image must be under 12 MB")
-    ext = file.filename.rsplit(".", 1)[-1].lower() if "." in (file.filename or "") else "jpg"
-    if ext not in ("jpg", "jpeg", "png", "webp", "gif"):
+    limit = MAX_IMAGE_BYTES if kind == "image" else MAX_VIDEO_BYTES
+    if len(data) > limit:
+        raise HTTPException(status_code=422, detail=f"File must be under {limit // (1024 * 1024)} MB")
+    ext = file.filename.rsplit(".", 1)[-1].lower() if "." in (file.filename or "") else ("jpg" if kind == "image" else "mp4")
+    if kind == "image" and ext not in ("jpg", "jpeg", "png", "webp", "gif"):
         ext = "jpg"
+    if kind == "video" and ext not in ("mp4", "webm", "mov"):
+        ext = "mp4"
     path = f"{APP_NAME}/uploads/{uuid.uuid4()}.{ext}"
     try:
         result = put_object(path, data, file.content_type)

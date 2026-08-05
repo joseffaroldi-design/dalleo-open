@@ -43,6 +43,7 @@ export const MediaViewer = ({ items, index, onClose, onNavigate }) => {
 
   const categoryLabel =
     GALLERY_CATEGORIES.find((c) => c.id === item.category)?.label ?? item.category;
+  const isUploadedVideo = item.type === "video" && (item.src ?? "").includes("/api/files/");
 
   return (
     <div
@@ -59,11 +60,22 @@ export const MediaViewer = ({ items, index, onClose, onNavigate }) => {
         onClick={(e) => e.stopPropagation()}
       >
         <div className="relative">
-          <MediaThumb
-            item={item}
-            className="max-h-[55vh] w-full"
-            iconClassName="h-20 w-20"
-          />
+          {isUploadedVideo ? (
+            <video
+              src={item.src}
+              controls
+              autoPlay
+              playsInline
+              data-testid="viewer-video-player"
+              className="max-h-[55vh] w-full bg-charcoal"
+            />
+          ) : (
+            <MediaThumb
+              item={item}
+              className="max-h-[55vh] w-full"
+              iconClassName="h-20 w-20"
+            />
+          )}
           <button
             ref={closeRef}
             type="button"
@@ -97,7 +109,7 @@ export const MediaViewer = ({ items, index, onClose, onNavigate }) => {
               {item.type === "video" ? "Video · " : ""}
               {categoryLabel} &middot; {item.year}
             </p>
-            {item.type === "video" && (
+            {item.type === "video" && !isUploadedVideo && (
               <p
                 data-testid="viewer-video-note"
                 className="mt-3 inline-block rounded-full bg-gold/15 px-4 py-1.5 text-xs font-bold text-gold-deep"
