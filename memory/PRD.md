@@ -1,5 +1,16 @@
 # Dalleo Open Digital Clubhouse — PRD
 
+## Operating Mode: VERSION 1.0 EXECUTION MODE (owner directive, 2026-08-05)
+**This project is FEATURE COMPLETE.** Objective: prepare the Digital Clubhouse for a successful tournament on Saturday, September 5, 2026. Role is quality assurance, refinement, and preparation — NOT expansion. No major new features unless essential for tournament day. No redesigning completed systems. No solving unobserved problems. Avoid feature creep.
+
+Decision filter — every proposed change must answer YES to: (1) Does this improve tournament day? OR (2) Does this improve the quality of the current experience? If neither, do not recommend it.
+
+Priorities: **P1 Tournament-day readiness** (verify scoring flow, leaderboard, admin dashboard, captain experience, mobile responsiveness, performance, navigation, accessibility, reliability) → **P2 Content completion** (team photos, pairings, schedule confirmation, memorial content, gallery content, final copy review — owner-supplied) → **P3 Visual polish** (consistency, typography, spacing, animation refinement, loading/empty states, error handling).
+
+Defer to Version 2.0 (record ideas, don't build): player profiles, social, fantasy, GPS, push notifications, advanced stats, major redesigns, large DB expansions, new navigation structures, experimental features. Post-tournament: evaluate with real-world observations (what players used, confusion points, delights, organizer struggles, unopened features, repeated requests) to guide V2.0.
+
+Success measure: when players arrive September 5, the app feels effortless, trustworthy, and memorable.
+
 ## Vision & Guiding Principles (owner's constitution — governs ALL decisions)
 This is NOT a golf tournament website. It is the **permanent digital home of the Dalleo Open**, an annual memorial tournament honoring Brandon Dalleo — a digital monument, not a sports website. Feel: the digital equivalent of Augusta National, ESPN, and an interactive museum combined. Timeless, emotional, premium, worthy of becoming a tradition. It should feel like something that has existed for decades and will keep growing for decades.
 
