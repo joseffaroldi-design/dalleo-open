@@ -97,6 +97,8 @@ Build the Dalleo Open Digital Clubhouse, a modern, mobile-first web app for the 
 
 - 2026-08-05 (Team photos on cards): Teams page cards now show the team's uploaded photo as a gold-ringed circle avatar in place of the color dot when photoUrl is set (dot remains the fallback); TeamDetail already shows the large photo. Verified with a live test photo then cleaned up; 39/39 tests pass. NOTE: code change — needs redeploy for production; photos themselves are set per team in admin Teams.
 
+- 2026-08-05 (Team card redesign per owner): TeamCard restructured — color top-border strip and color-name labels removed; new header is photo/dot avatar (h-14) with the team name beside it and captain underneath; players chip tightened to a count. Fallback dots remain for teams without photos. Verified visually; lint clean. NOTE: needs redeploy for production.
+
 ## Backlog (post-launch evaluation — NOT built)
 - Media file uploads (object storage), refresh tokens, automated test suite, memory submissions, notifications, hole-by-hole scoring, draft board, audit history
 

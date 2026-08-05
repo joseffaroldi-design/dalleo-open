@@ -9,41 +9,37 @@ export const TeamCard = ({ team }) => {
       to={`/teams/${team.id}`}
       data-testid={`team-card-${team.id}`}
       aria-label={`View ${team.name} roster, captained by ${team.captain}`}
-      className="group flex flex-col rounded-3xl border border-border border-t-4 bg-white p-7 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-lg active:translate-y-0 sm:p-8"
-      style={{ borderTopColor: visual.dot === "#FFFFFF" ? "#D8D5CE" : visual.dot }}
+      className="group flex flex-col rounded-3xl border border-border bg-white p-7 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-lg active:translate-y-0 sm:p-8"
     >
-      <div className="flex items-center justify-between gap-3">
-        <span className="inline-flex items-center gap-2.5">
-          {team.photoUrl ? (
-            <img
-              src={team.photoUrl}
-              alt={`${team.name} team photo`}
-              data-testid={`team-photo-${team.id}`}
-              className="h-11 w-11 rounded-full bg-forest-mist object-cover ring-2 ring-gold/60"
-            />
-          ) : (
-            <span
-              aria-hidden="true"
-              className="h-5 w-5 rounded-full ring-1 ring-charcoal/20"
-              style={{ backgroundColor: visual.dot }}
-            />
-          )}
-          <span className="text-xs font-bold uppercase tracking-widest text-charcoal/40">
-            {visual.label}
-          </span>
-        </span>
-        <span className="inline-flex items-center gap-1.5 rounded-full bg-forest-mist px-3 py-1 text-xs font-bold text-forest">
+      <div className="flex items-center gap-4">
+        {team.photoUrl ? (
+          <img
+            src={team.photoUrl}
+            alt={`${team.name} team photo`}
+            data-testid={`team-photo-${team.id}`}
+            className="h-14 w-14 shrink-0 rounded-full bg-forest-mist object-cover ring-2 ring-gold/60"
+          />
+        ) : (
+          <span
+            aria-hidden="true"
+            className="h-14 w-14 shrink-0 rounded-full ring-2 ring-gold/40"
+            style={{ backgroundColor: visual.dot }}
+          />
+        )}
+        <div className="min-w-0 flex-1">
+          <h2 className="truncate text-2xl font-extrabold tracking-tight text-charcoal">
+            {team.name}
+          </h2>
+          <p className="mt-0.5 text-sm font-semibold text-charcoal/60">
+            Captain {team.captain}
+          </p>
+        </div>
+        <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-forest-mist px-3 py-1 text-xs font-bold text-forest">
           <Users className="h-3.5 w-3.5" aria-hidden="true" />
-          {team.players.length} players
+          {team.players.length}
         </span>
       </div>
-      <h2 className="mt-5 text-2xl font-extrabold tracking-tight text-charcoal">
-        {team.name}
-      </h2>
-      <p className="mt-1.5 text-sm font-semibold text-charcoal/60">
-        Captain {team.captain}
-      </p>
-      <p className="mt-3">
+      <p className="mt-4">
         {team.startingHole ? (
           <span
             data-testid={`team-hole-chip-${team.id}`}
