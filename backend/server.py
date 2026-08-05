@@ -279,6 +279,31 @@ async def team_pins_set(input: TeamPinInput, user=Depends(get_current_user)):
     return {"ok": True}
 
 
+# ---------- Organizer accounts ----------
+
+class OrganizerInput(BaseModel):
+    email: str = Field(min_length=3, max_length=200)
+    password: str = Field(min_length=8, max_length=200)
+    name: str = Field(default="Organizer", max_length=100)
+
+
+@api_router.post("/admin/organizers")
+async def create_organizer(input: OrganizerInput, user=Depends(get_current_user)):
+    email = input.email.strip().lower()
+    if await db.users.find_one({"email": email}):
+        raise HTTPException(status_code=409, detail="An organizer with this email already exists")
+    doc = {
+        "email": email,
+        "password_hash": hash_password(input.password),
+        "name": input.name.strip() or "Organizer",
+        "role": "organizer",
+        "created_at": datetime.now(timezone.utc).isoformat(),
+    }
+    result = await db.users.insert_one(doc)
+    return {"id": str(result.inserted_id), "email": email, "name": doc["name"], "role": "organizer"}
+
+
+
 # ---------- Image uploads (organizer) ----------
 
 ALLOWED_IMAGE_TYPES = {"image/jpeg", "image/png", "image/webp", "image/gif"}
