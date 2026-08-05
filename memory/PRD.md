@@ -87,6 +87,8 @@ Build the Dalleo Open Digital Clubhouse, a modern, mobile-first web app for the 
 
 - 2026-08-05 (Tee boxes match rule): "Tee Boxes" added as the first Match Rules topic on both environments — "All teams play from the black tee boxes — par 72, 7,092 yards (course rating 74.3, slope 135)." Fallback updated to match.
 
+- 2026-08-05 (Real champion history): Trophy Wall placeholders replaced with the official roll of honor on BOTH environments — 2020 Sunny & Villa, 2021 Roger & Dismukes, 2022 Roger & Nate, 2023 Kaleb & Devin, 2024 Roger & Mark, 2025 Team Devin (Devin, Ross, Pittman, Josef). Pairs mapped as team names with first-named as captain; placeholder flags off, notice banner gone; scores "—" and stories marked as being collected; photos still open frames. Most Championships record set: Roger — 3 (2021/2022/2024, three different partners). 2026 stays open — added via admin after the tournament. Fallback data/champions.js mirrors the live wall. 39/39 tests pass.
+
 ## Backlog (post-launch evaluation — NOT built)
 - Media file uploads (object storage), refresh tokens, automated test suite, memory submissions, notifications, hole-by-hole scoring, draft board, audit history
 

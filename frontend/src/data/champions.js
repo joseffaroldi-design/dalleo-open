@@ -1,35 +1,27 @@
-// Champions fallback content — shown publicly until the organizer saves real
-// history via the admin dashboard. Every entry is marked placeholder: true and
-// the public page labels them as samples awaiting official records.
+// Champions fallback content — mirrors the live Trophy Wall (real champions
+// since 2020). The 2026 champion is added via the admin after the tournament.
 
-const placeholderStory = (ordinal, year) =>
-  `The story of the ${ordinal} Annual Dalleo Open (${year}) will be written here. Replace this text with the official championship recap — how the round unfolded, when the lead changed hands, and the shot everyone still talks about.`;
-
-const mkEntry = (year, ordinal) => ({
+const entry = (year, ordinal, teamName, captain, members) => ({
   year,
-  teamName: `Team ${["Fairway", "Bunker", "Fairway Green", "Gallery", "Clubhouse", "Caddie"][year - 2020]}`,
-  captain: "Captain Name",
-  members: ["Captain Name", "Player Two", "Player Three", "Player Four"],
-  finalScore: "Score TBD",
-  margin: "Margin TBD",
-  mvp: "To be announced",
-  quote: "A memorable quote from the winning team will live here.",
-  story: placeholderStory(ordinal, year),
-  moments: [
-    "A signature shot from the winning round will be recorded here.",
-    "The turning point of the day, as told by the champions.",
-    "The celebration moment that made it into tournament lore.",
-  ],
-  awards: ["Dalleo Open Champions", "Lowest Team Score"],
+  teamName,
+  captain,
+  members,
+  finalScore: "—",
+  margin: "",
+  mvp: "",
+  quote: "",
+  story: `The story of the ${ordinal} Annual Dalleo Open (${year}) championship is being collected — check back soon.`,
+  moments: [],
+  awards: ["Dalleo Open Champions"],
   stats: [
-    { label: "Final Score", value: "TBD" },
-    { label: "Winning Margin", value: "TBD" },
-    { label: "Team Size", value: "4 players" },
+    { label: "Final Score", value: "—" },
     { label: "Edition", value: `${ordinal} Annual` },
+    { label: "Team Size", value: `${members.length} players` },
   ],
   photoCaption: `${year} championship photo — coming soon`,
+  photoUrl: null,
   published: true,
-  placeholder: true,
+  placeholder: false,
 });
 
 export const CHAMPIONS = {
@@ -38,14 +30,19 @@ export const CHAMPIONS = {
     title: "Champions",
     body: "Every year earns a permanent place in tournament history. This is the Trophy Wall — the teams who lifted the Dalleo Open and the stories of how they did it.",
   },
-  entries: [2025, 2024, 2023, 2022, 2021, 2020].map((y) =>
-    mkEntry(y, ["6th", "5th", "4th", "3rd", "2nd", "1st"][2025 - y])
-  ),
+  entries: [
+    entry(2025, "6th", "Team Devin", "Devin", ["Devin", "Ross", "Pittman", "Josef"]),
+    entry(2024, "5th", "Roger & Mark", "Roger", ["Roger", "Mark"]),
+    entry(2023, "4th", "Kaleb & Devin", "Kaleb", ["Kaleb", "Devin"]),
+    entry(2022, "3rd", "Roger & Nate", "Roger", ["Roger", "Nate"]),
+    entry(2021, "2nd", "Roger & Dismukes", "Roger", ["Roger", "Dismukes"]),
+    entry(2020, "1st", "Sunny & Villa", "Sunny", ["Sunny", "Villa"]),
+  ],
   records: [
     { id: "rec-low-score", label: "Lowest Winning Score", holder: "Awaiting official records", value: "—", year: "", note: "The lowest team score ever to win the Dalleo Open." },
     { id: "rec-big-margin", label: "Largest Margin of Victory", holder: "Awaiting official records", value: "—", year: "", note: "The most dominant championship performance." },
     { id: "rec-closest", label: "Closest Finish", holder: "Awaiting official records", value: "—", year: "", note: "The tightest finish in tournament history." },
-    { id: "rec-most-titles", label: "Most Championships", holder: "Awaiting official records", value: "—", year: "", note: "The team or captain with the most titles." },
+    { id: "rec-most-titles", label: "Most Championships", holder: "Roger — 3 championships", value: "3", year: "2021 · 2022 · 2024", note: "Won with three different partners: Dismukes (2021), Nate (2022), Mark (2024)." },
     { id: "rec-most-apps", label: "Most Appearances", holder: "Awaiting official records", value: "—", year: "", note: "The player who has teed it up the most times." },
     { id: "rec-long-drive", label: "Longest Drive", holder: "Awaiting official records", value: "—", year: "", note: "The biggest tee shot ever recorded at the Dalleo Open." },
     { id: "rec-ctp", label: "Closest to the Pin", holder: "Awaiting official records", value: "—", year: "", note: "The finest approach shot on record." },
