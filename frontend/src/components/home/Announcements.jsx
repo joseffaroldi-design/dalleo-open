@@ -38,7 +38,7 @@ export const Announcements = () => {
       <Reveal>
       <div className="flex items-center justify-between gap-4">
         <div>
-          <p className="font-display text-sm italic text-gold-deep">Chapter 05 · The Bulletin</p>
+          <p className="font-display text-sm italic text-gold-deep">Chapter 03 · The Bulletin</p>
           <h2
             id="announcements-title"
             className="mt-2 text-base font-bold uppercase tracking-[0.2em] text-gold-deep md:text-lg"

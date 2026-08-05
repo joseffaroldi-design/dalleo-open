@@ -20,7 +20,7 @@ export const TeamsPreview = () => {
       <Reveal>
       <div className="flex flex-col gap-6 rounded-3xl bg-white p-7 shadow-sm ring-1 ring-border sm:flex-row sm:items-center sm:justify-between sm:p-9">
         <div>
-          <p className="font-display text-sm italic text-gold-deep">Chapter 03 · The Field</p>
+          <p className="font-display text-sm italic text-gold-deep">Chapter 01 · The Field</p>
           <p className="mt-2 text-sm font-bold uppercase tracking-[0.2em] text-gold-deep">
             Teams
           </p>

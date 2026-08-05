@@ -35,7 +35,7 @@ export const BrandonSection = () => {
       </Reveal>
       <Reveal delay={0.12}>
       <div>
-        <p className="font-display text-sm italic text-gold-deep">Chapter 07 · The Legacy</p>
+        <p className="font-display text-sm italic text-gold-deep">Chapter 05 · The Legacy</p>
         <p className="mt-2 inline-flex items-center gap-2 text-sm font-bold uppercase tracking-[0.2em] text-gold-deep">
           <Heart className="h-4 w-4" aria-hidden="true" />
           Remembering Brandon

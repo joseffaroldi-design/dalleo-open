@@ -26,7 +26,7 @@ export const WeekendPreview = () => {
           <Reveal>
           <div className="flex flex-wrap items-end justify-between gap-5">
             <div>
-              <p className="font-display text-sm italic text-gold-soft">Chapter 06 · The Weekend</p>
+              <p className="font-display text-sm italic text-gold-soft">Chapter 04 · The Weekend</p>
               <p className="mt-2 text-sm font-bold uppercase tracking-[0.2em] text-gold">
                 This Weekend
               </p>
