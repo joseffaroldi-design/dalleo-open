@@ -14,11 +14,20 @@ export const TeamCard = ({ team }) => {
     >
       <div className="flex items-center justify-between gap-3">
         <span className="inline-flex items-center gap-2.5">
-          <span
-            aria-hidden="true"
-            className="h-5 w-5 rounded-full ring-1 ring-charcoal/20"
-            style={{ backgroundColor: visual.dot }}
-          />
+          {team.photoUrl ? (
+            <img
+              src={team.photoUrl}
+              alt={`${team.name} team photo`}
+              data-testid={`team-photo-${team.id}`}
+              className="h-11 w-11 rounded-full bg-forest-mist object-cover ring-2 ring-gold/60"
+            />
+          ) : (
+            <span
+              aria-hidden="true"
+              className="h-5 w-5 rounded-full ring-1 ring-charcoal/20"
+              style={{ backgroundColor: visual.dot }}
+            />
+          )}
           <span className="text-xs font-bold uppercase tracking-widest text-charcoal/40">
             {visual.label}
           </span>

@@ -95,6 +95,8 @@ Build the Dalleo Open Digital Clubhouse, a modern, mobile-first web app for the 
 
 - 2026-08-05 (The Course page): New /course page approved by owner ("LA Tour", best-answer option) — forest hero with masked-reveal course name, facts pill (Black Tees · Par 72 · 7,092 Yards · Rating 74.3 · Slope 135), full 18-hole scorecard table (reads live scoring par — 36/36/72), "Good to Know" grid with 8 drafted topics (dress code, carts, practice, pace, phones, weather, food, photographer) all editable in the new admin Course section (TopicList reused from RulesAdmin). New "course" domain (CourseDoc: published/name/location/label/goodToKnow) seeded on preview; production's public page renders from the identical fallback until its backend gains the domain on next redeploy. Deep-forest "The Course" card links from the bottom of the Schedule page; leaderboard courseLabel now reads "LA Tour · Black Tees · …" on BOTH environments. No nav item added (9 links already) — reachable from Schedule + footer could add later. 39/39 tests pass, lint clean.
 
+- 2026-08-05 (Team photos on cards): Teams page cards now show the team's uploaded photo as a gold-ringed circle avatar in place of the color dot when photoUrl is set (dot remains the fallback); TeamDetail already shows the large photo. Verified with a live test photo then cleaned up; 39/39 tests pass. NOTE: code change — needs redeploy for production; photos themselves are set per team in admin Teams.
+
 ## Backlog (post-launch evaluation — NOT built)
 - Media file uploads (object storage), refresh tokens, automated test suite, memory submissions, notifications, hole-by-hole scoring, draft board, audit history
 
