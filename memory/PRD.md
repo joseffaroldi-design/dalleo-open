@@ -85,6 +85,8 @@ Build the Dalleo Open Digital Clubhouse, a modern, mobile-first web app for the 
 
 - 2026-08-05 (Official course scorecard): Black tees par applied everywhere — per-hole par [4,4,5,3,4,4,5,3,4 | 4,4,4,5,3,4,4,3,5] = 72 set on BOTH environments (to-par now exact), DEFAULT_PAR + seeds updated. New ScoringDoc.courseLabel shown on the public leaderboard header ("Black Tees · Par 72 · 7,092 Yards · Rating 74.3 · Slope 135") and editable in ScoringAdmin; courseLabel set on preview — production's older model ignored it until next redeploy (re-apply after). Test hygiene fix: test_captain_scoring teardown now snapshot-restores the real scoring baseline instead of resetting to all-4s. 39/39 tests pass; suite verified to preserve the par-72 doc.
 
+- 2026-08-05 (Tee boxes match rule): "Tee Boxes" added as the first Match Rules topic on both environments — "All teams play from the black tee boxes — par 72, 7,092 yards (course rating 74.3, slope 135)." Fallback updated to match.
+
 ## Backlog (post-launch evaluation — NOT built)
 - Media file uploads (object storage), refresh tokens, automated test suite, memory submissions, notifications, hole-by-hole scoring, draft board, audit history
 

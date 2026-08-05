@@ -43,6 +43,7 @@ export const RULES = {
     note: "The 2026 format is confirmed — an 8-team, four-person scramble championship.",
   },
   matchRules: [
+    { id: "tee-boxes", title: "Tee Boxes", body: "All teams play from the black tee boxes — par 72, 7,092 yards (course rating 74.3, slope 135)." },
     { id: "starting-times", title: "Starting Times", body: "Be at your assigned starting point before your scheduled time. Check the Schedule page for any updates." },
     { id: "late-arrivals", title: "Late Arrivals", body: "Let your captain know as soon as possible. Organizers will guide how play proceeds." },
     { id: "tee-order", title: "Tee Order", body: "Tee order for each round is shared by organizers before play begins." },
