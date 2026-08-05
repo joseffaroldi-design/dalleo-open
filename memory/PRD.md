@@ -1,5 +1,19 @@
 # Dalleo Open Digital Clubhouse — PRD
 
+## Vision & Guiding Principles (owner's constitution — governs ALL decisions)
+This is NOT a golf tournament website. It is the **permanent digital home of the Dalleo Open**, an annual memorial tournament honoring Brandon Dalleo — a digital monument, not a sports website. Feel: the digital equivalent of Augusta National, ESPN, and an interactive museum combined. Timeless, emotional, premium, worthy of becoming a tradition. It should feel like something that has existed for decades and will keep growing for decades.
+
+Core principles: mobile-first · extremely fast · beautiful typography · premium animations · editorial storytelling · live tournament experience · effortless administration · historical preservation · emotional storytelling · zero clutter · simple navigation · long-term scalability.
+
+Every year becomes a permanent chapter in the tournament's history.
+
+**Feature filter — do NOT build anything unless it answers YES to at least one:**
+1. Does it make tournament day better?
+2. Does it preserve Brandon's legacy?
+3. Will someone still appreciate this 20 years from now?
+
+Never add features simply because they are possible.
+
 ## Original Problem Statement
 Build the Dalleo Open Digital Clubhouse, a modern, mobile-first web app for the annual golf tournament held in memory of Brandon Dalleo. Premium, clean, welcoming, community-focused (Apple/Airbnb/PGA Tour polish). Delivered one sprint at a time with explicit approval gates.
 
