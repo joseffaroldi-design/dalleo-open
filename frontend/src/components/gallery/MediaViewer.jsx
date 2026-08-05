@@ -1,15 +1,19 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
 import { MediaThumb } from "@/components/gallery/MediaThumb";
-import { GALLERY_CATEGORIES } from "@/data/gallery";
+import { GALLERY_CATEGORIES, itemMedia, isUploadedVideoUrl } from "@/data/gallery";
 
 export const MediaViewer = ({ items, index, onClose, onNavigate }) => {
   const item = items[index];
   const dialogRef = useRef(null);
   const closeRef = useRef(null);
+  const [mediaIdx, setMediaIdx] = useState(0);
 
   const prev = () => onNavigate((index - 1 + items.length) % items.length);
   const next = () => onNavigate((index + 1) % items.length);
+
+  // Reset to the first photo/video whenever the item changes.
+  useEffect(() => setMediaIdx(0), [index]);
 
   useEffect(() => {
     const previouslyFocused = document.activeElement;
@@ -43,7 +47,9 @@ export const MediaViewer = ({ items, index, onClose, onNavigate }) => {
 
   const categoryLabel =
     GALLERY_CATEGORIES.find((c) => c.id === item.category)?.label ?? item.category;
-  const isUploadedVideo = item.type === "video" && (item.src ?? "").includes("/api/files/");
+  const media = itemMedia(item);
+  const current = media[Math.min(mediaIdx, media.length - 1)];
+  const currentIsVideo = isUploadedVideoUrl(current);
 
   return (
     <div
@@ -60,14 +66,23 @@ export const MediaViewer = ({ items, index, onClose, onNavigate }) => {
         onClick={(e) => e.stopPropagation()}
       >
         <div className="relative">
-          {isUploadedVideo ? (
+          {currentIsVideo ? (
             <video
-              src={item.src}
+              key={current}
+              src={current}
               controls
               autoPlay
               playsInline
               data-testid="viewer-video-player"
               className="max-h-[55vh] w-full bg-charcoal"
+            />
+          ) : current ? (
+            <img
+              key={current}
+              src={current}
+              alt={item.alt}
+              data-testid="viewer-image"
+              className="max-h-[55vh] w-full bg-forest-deep object-contain"
             />
           ) : (
             <MediaThumb
@@ -75,6 +90,34 @@ export const MediaViewer = ({ items, index, onClose, onNavigate }) => {
               className="max-h-[55vh] w-full"
               iconClassName="h-20 w-20"
             />
+          )}
+          {media.length > 1 && (
+            <div
+              data-testid="viewer-media-pager"
+              className="absolute bottom-3 left-1/2 flex -translate-x-1/2 items-center gap-3 rounded-full bg-charcoal/70 px-3 py-1.5"
+            >
+              <button
+                type="button"
+                data-testid="viewer-media-prev"
+                aria-label="Previous photo or video"
+                onClick={() => setMediaIdx((i) => (i - 1 + media.length) % media.length)}
+                className="flex h-8 w-8 items-center justify-center rounded-full text-cream transition-colors duration-200 hover:bg-cream/20"
+              >
+                <ChevronLeft className="h-5 w-5" />
+              </button>
+              <span data-testid="viewer-media-count" className="text-xs font-bold text-cream">
+                {mediaIdx + 1}/{media.length}
+              </span>
+              <button
+                type="button"
+                data-testid="viewer-media-next"
+                aria-label="Next photo or video"
+                onClick={() => setMediaIdx((i) => (i + 1) % media.length)}
+                className="flex h-8 w-8 items-center justify-center rounded-full text-cream transition-colors duration-200 hover:bg-cream/20"
+              >
+                <ChevronRight className="h-5 w-5" />
+              </button>
+            </div>
           )}
           <button
             ref={closeRef}
@@ -109,7 +152,7 @@ export const MediaViewer = ({ items, index, onClose, onNavigate }) => {
               {item.type === "video" ? "Video · " : ""}
               {categoryLabel} &middot; {item.year}
             </p>
-            {item.type === "video" && !isUploadedVideo && (
+            {item.type === "video" && media.length === 0 && (
               <p
                 data-testid="viewer-video-note"
                 className="mt-3 inline-block rounded-full bg-gold/15 px-4 py-1.5 text-xs font-bold text-gold-deep"

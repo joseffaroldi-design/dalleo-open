@@ -400,6 +400,7 @@ class GalleryItemInput(BaseModel):
     id: str = Field(min_length=1, max_length=60)
     type: Literal["image", "video"]
     src: Optional[str] = Field(None, max_length=500)
+    media: List[str] = Field(default_factory=list, max_length=12)
     caption: str = Field(min_length=1, max_length=120)
     description: str = Field(min_length=1, max_length=400)
     category: Literal["tournament", "draft-night", "teams", "awards", "memories"]
@@ -410,6 +411,14 @@ class GalleryItemInput(BaseModel):
     order: int = Field(0, ge=0, le=999)
     featured: bool = False
     published: bool = True
+
+
+    @field_validator("media")
+    @classmethod
+    def media_urls(cls, v):
+        if any(len(u) > 500 for u in v):
+            raise ValueError("media URLs must be under 500 characters")
+        return v
 
 
 class GalleryDoc(BaseModel):

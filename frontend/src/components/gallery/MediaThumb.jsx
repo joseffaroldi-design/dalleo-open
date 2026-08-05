@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Trophy, PartyPopper, Users, Medal, Heart, Images, Play } from "lucide-react";
+import { itemMedia, isUploadedVideoUrl } from "@/data/gallery";
 
 const CATEGORY_ICONS = {
   tournament: Trophy,
@@ -28,7 +29,9 @@ export const MediaThumb = ({ item, aspect, className = "", iconClassName = "h-12
   const scheme = SCHEMES[item.order % SCHEMES.length];
   const Icon = CATEGORY_ICONS[item.category] ?? Images;
   const [imgError, setImgError] = useState(false);
-  const isUploadedVideo = item.type === "video" && (item.src ?? "").includes("/api/files/");
+  const media = itemMedia(item);
+  const first = media[0];
+  const isVideo = isUploadedVideoUrl(first);
   return (
     <div
       role="img"
@@ -37,18 +40,18 @@ export const MediaThumb = ({ item, aspect, className = "", iconClassName = "h-12
       className={`relative flex items-center justify-center overflow-hidden ${ASPECTS[aspect ?? item.aspect]} ${className}`}
       style={{ backgroundColor: scheme.bg }}
     >
-      {isUploadedVideo ? (
+      {isVideo ? (
         <video
-          src={item.src}
+          src={first}
           muted
           playsInline
           preload="metadata"
           className="absolute inset-0 h-full w-full object-cover"
         />
       ) : (
-        item.src && !imgError && (
+        first && !imgError && (
           <img
-            src={item.src}
+            src={first}
             alt={item.alt}
             onError={() => setImgError(true)}
             className="absolute inset-0 h-full w-full object-cover"

@@ -4,7 +4,7 @@ import { getToken } from "@/lib/api";
 
 // Reusable photo upload for admin editors. Uploads to object storage via
 // /api/admin/uploads and calls onChange with the public /api/files URL.
-export const ImageUpload = ({ label, hint, value, onChange, testId, previewClass = "h-24 w-24", accept = "image/jpeg,image/png,image/webp,image/gif" }) => {
+export const ImageUpload = ({ label, hint, value, onChange, testId, previewClass = "h-24 w-24", accept = "image/jpeg,image/png,image/webp,image/gif", uploadText }) => {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const inputRef = useRef(null);
@@ -72,7 +72,7 @@ export const ImageUpload = ({ label, hint, value, onChange, testId, previewClass
             disabled={busy}
             className="min-h-11 rounded-full bg-forest px-5 py-2.5 text-sm font-extrabold text-cream transition-colors duration-200 hover:bg-forest-soft disabled:opacity-50"
           >
-            {busy ? "Uploading…" : value ? (isVideo ? "Replace video" : "Replace photo") : isVideo ? "Upload video" : "Upload photo"}
+            {busy ? "Uploading…" : value ? (isVideo ? "Replace video" : "Replace photo") : uploadText ?? (isVideo ? "Upload video" : "Upload photo")}
           </button>
           {value && (
             <button

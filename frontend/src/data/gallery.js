@@ -48,3 +48,10 @@ export const getFeaturedItem = () => GALLERY_ITEMS.find((i) => i.featured) ?? nu
 
 export const getLatestItems = (count = 3) =>
   [...GALLERY_ITEMS].sort((a, b) => b.order - a.order).slice(0, count);
+
+// Effective media list for an item — media array first, legacy single src as fallback.
+export const itemMedia = (item) =>
+  item.media?.length ? item.media : item.src ? [item.src] : [];
+
+export const isUploadedVideoUrl = (url) =>
+  (url ?? "").includes("/api/files/") && /\.(mp4|webm|mov)(\?|$)/i.test(url);

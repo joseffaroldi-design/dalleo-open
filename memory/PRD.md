@@ -91,6 +91,8 @@ Build the Dalleo Open Digital Clubhouse, a modern, mobile-first web app for the 
 
 - 2026-08-05 (Video uploads + playback): Gallery cards fully editable with real media — upload endpoint now accepts MP4/WebM/MOV up to 100 MB (images still ≤12 MB); admin upload component shows video previews and per-type accept/hints; gallery thumbnails render uploaded videos as inline previews; the media viewer plays uploaded videos with native controls (viewer-video-player) instead of the "coming soon" note (external video links unchanged). Verified end-to-end: real MP4 upload → served as video/mp4 → attached to gallery card → playable in viewer → cleaned up; 39/39 tests pass. NOTE: needs redeploy for production (user was on production Gallery admin when requesting).
 
+- 2026-08-05 (Multi-media gallery items): Each gallery card now holds up to 12 photos/videos — GalleryItemInput.media list (validated) with legacy src kept as cover/fallback; admin media manager (grid thumbs with remove + COVER tag on first, mixed photo/video upload, external URL add); thumbnails show first media + count badge (media-count-{id}); viewer pages through an item's media (viewer-media-prev/next/count) with native video playback, resetting per item. Verified end-to-end (photo+video on one card, pager 1/2→2/2) and cleaned up; 39/39 tests pass. NOTE: needs redeploy for production.
+
 ## Backlog (post-launch evaluation — NOT built)
 - Media file uploads (object storage), refresh tokens, automated test suite, memory submissions, notifications, hole-by-hole scoring, draft board, audit history
 
