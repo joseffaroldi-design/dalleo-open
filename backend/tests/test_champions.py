@@ -39,7 +39,7 @@ class TestPublicChampions:
         years = sorted([e["year"] for e in d["entries"]])
         assert years == [2020, 2021, 2022, 2023, 2024, 2025]
         for e in d["entries"]:
-            assert e["placeholder"] is True
+            assert e["placeholder"] is False  # real champion history since 2020
             assert e["teamName"]
             assert e["captain"]
             assert e["finalScore"]
@@ -83,7 +83,7 @@ class TestAdminChampions:
         d = unwrap(r)
         original_2025 = next(e for e in d["entries"] if e["year"] == 2025)
         original_name = original_2025["teamName"]
-        assert original_name == "Team Caddie"
+        assert original_name == "Team Devin"
 
         # Edit
         new_entries = [{**e, "teamName": "Team Backend Test"} if e["year"] == 2025 else e for e in d["entries"]]
@@ -106,7 +106,7 @@ class TestAdminChampions:
         rp2 = requests.get(f"{BASE_URL}/api/public/champions")
         dp2 = unwrap(rp2)
         e2025b = next(e for e in dp2["entries"] if e["year"] == 2025)
-        assert e2025b["teamName"] == "Team Caddie"
+        assert e2025b["teamName"] == "Team Devin"
 
     def test_admin_unauthorized(self):
         r = requests.get(f"{BASE_URL}/api/admin/champions")
