@@ -57,7 +57,7 @@ export const Hero = () => {
         DALLEO
       </motion.div>
 
-      <motion.div style={{ opacity: fade }} className="relative mx-auto max-w-6xl px-4 pb-14 pt-24 text-center sm:px-6 sm:pt-32">
+      <motion.div style={{ opacity: fade }} className="relative mx-auto max-w-6xl px-4 pb-10 pt-24 text-center sm:px-6 sm:pt-28">
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -77,7 +77,7 @@ export const Hero = () => {
           initial={{ opacity: 0, y: 24, scale: 0.94 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ duration: 1.15, delay: 0.25, ease: EASE }}
-          className="mx-auto mt-8 max-w-[537px] sm:max-w-[800px]"
+          className="mx-auto mt-6 max-w-[537px] sm:max-w-[800px]"
         >
           <img
             src="/dalleo-logo-gold.png"
@@ -92,7 +92,7 @@ export const Hero = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.9, delay: 0.7, ease: EASE }}
           data-testid="hero-date-placeholder"
-          className="mt-7 text-base font-semibold text-cream/70 sm:text-lg"
+          className="mt-2 text-base font-semibold text-cream/70 sm:text-lg"
         >
           {site?.dateText ?? "Tournament dates to be announced"}
         </motion.p>
@@ -106,7 +106,7 @@ export const Hero = () => {
         </motion.div>
       </motion.div>
 
-      <div className="relative mx-auto max-w-4xl px-4 pb-24 sm:px-6">
+      <div className="relative mx-auto max-w-4xl px-4 pb-16 sm:px-6">
         <motion.div
           initial={{ opacity: 0, y: 60, scale: 0.96 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}

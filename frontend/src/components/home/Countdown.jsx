@@ -23,7 +23,7 @@ export const Countdown = () => {
     <div
       data-testid="countdown-placeholder"
       aria-label="Countdown to the tournament"
-      className="mt-12 flex items-start justify-center"
+      className="mt-5 flex items-start justify-center"
     >
       {units.map(([unit, value], i) => (
         <div
