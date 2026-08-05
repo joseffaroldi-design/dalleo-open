@@ -6,6 +6,7 @@ import { CurrentEventCard } from "@/components/schedule/CurrentEventCard";
 import { ScheduleTimeline } from "@/components/schedule/ScheduleTimeline";
 import { ScheduleEmptyState } from "@/components/schedule/ScheduleEmptyState";
 import { PairingsSection } from "@/components/schedule/PairingsSection";
+import { CourseCard } from "@/components/schedule/CourseCard";
 
 export default function Schedule() {
   const live = useLiveData("schedule");
@@ -83,6 +84,7 @@ export default function Schedule() {
               </div>
             </section>
             {dayId === "saturday" && <PairingsSection />}
+            <CourseCard />
           </div>
         ) : (
           <ScheduleEmptyState />

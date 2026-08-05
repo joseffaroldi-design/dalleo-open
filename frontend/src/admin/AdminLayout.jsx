@@ -8,6 +8,7 @@ const SECTIONS = [
   { to: "/admin/announcements", label: "Announcements", testId: "admin-nav-announcements" },
   { to: "/admin/scoring", label: "Scoring", testId: "admin-nav-scoring" },
   { to: "/admin/gameday", label: "Game Day", testId: "admin-nav-gameday" },
+  { to: "/admin/course", label: "Course", testId: "admin-nav-course" },
   { to: "/admin/champions", label: "Champions", testId: "admin-nav-champions" },
   { to: "/admin/teams", label: "Teams", testId: "admin-nav-teams" },
   { to: "/admin/schedule", label: "Schedule", testId: "admin-nav-schedule" },

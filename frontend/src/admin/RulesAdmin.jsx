@@ -4,7 +4,7 @@ import {
   Toggle, SaveBar, ConfirmDelete,
 } from "@/admin/ui";
 
-const TopicList = ({ title, items, onChange, testId }) => {
+export const TopicList = ({ title, items, onChange, testId }) => {
   const update = (i, patch) => onChange(items.map((t, j) => (j === i ? { ...t, ...patch } : t)));
   return (
     <AdminSection title={title} testId={testId}>
