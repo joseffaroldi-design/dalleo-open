@@ -79,7 +79,7 @@ export const SCHEDULE = {
   ],
   sunday: [
     event("sun-1", "7:30 AM", "07:30", "Player Arrival", "Gates open for championship Sunday.", "Clubhouse", "upcoming"),
-    event("sun-2", "8:00 AM", "08:00", "Championship Round", "The final round to decide the 8th Annual Dalleo Open.", "First Tee", "upcoming"),
+    event("sun-2", "8:00 AM", "08:00", "Championship Round", "The final round to decide the 7th Annual Dalleo Open.", "First Tee", "upcoming"),
     event("sun-3", "12:30 PM", "12:30", "Score Verification", "Captains confirm final scores with tournament officials.", "Clubhouse", "upcoming"),
     event("sun-4", "1:00 PM", "13:00", "Awards Ceremony", "Trophy presentation and this year's honors.", "Awards Area", "upcoming"),
     event("sun-5", "1:30 PM", "13:30", "Closing Celebration", "Raise a glass to Brandon and another unforgettable weekend.", "Awards Area", "upcoming"),

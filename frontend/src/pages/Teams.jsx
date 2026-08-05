@@ -16,7 +16,7 @@ export default function Teams() {
           Teams
         </h1>
         <p className="mt-3 text-base font-semibold text-charcoal/60 sm:text-lg">
-          8th Annual Dalleo Open &middot; 2026
+          7th Annual Dalleo Open &middot; 2026
         </p>
         <p className="mt-2 text-base leading-relaxed text-charcoal/60">
           Meet this year&rsquo;s captains and tournament teams.

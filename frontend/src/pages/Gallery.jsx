@@ -39,7 +39,7 @@ export default function Gallery() {
           Gallery
         </h1>
         <p className="mt-3 text-base font-semibold text-charcoal/60 sm:text-lg">
-          8th Annual Dalleo Open &middot; 2026
+          7th Annual Dalleo Open &middot; 2026
         </p>
         <p className="mt-2 text-base leading-relaxed text-charcoal/60">
           Memories from the Dalleo Open, on and off the course.

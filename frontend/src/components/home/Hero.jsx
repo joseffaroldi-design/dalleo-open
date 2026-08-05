@@ -10,7 +10,8 @@ export const Hero = () => {
   const site = useLiveData("site");
   const sectionRef = useRef(null);
 
-  const edition = site?.edition ?? "8th Annual Dalleo Open";
+  const edition = site?.edition ?? "7th Annual Dalleo Open";
+  const editionLabel = edition.replace(/dalleo open/i, "").trim() || edition;
 
   // Scroll parallax — giant masthead word drifts as you leave the hero.
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start start", "end start"] });
@@ -86,6 +87,18 @@ export const Hero = () => {
             className="w-full"
           />
         </motion.div>
+
+        <motion.p
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.9, delay: 0.55, ease: EASE }}
+          data-testid="hero-edition"
+          className="mt-3 flex items-center justify-center gap-4 font-display text-xl italic text-gold-soft sm:text-2xl"
+        >
+          <span aria-hidden="true" className="h-px w-8 bg-gold/40 sm:w-12" />
+          {editionLabel}
+          <span aria-hidden="true" className="h-px w-8 bg-gold/40 sm:w-12" />
+        </motion.p>
 
         <motion.p
           initial={{ opacity: 0, y: 16 }}

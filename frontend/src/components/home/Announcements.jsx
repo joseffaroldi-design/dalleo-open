@@ -11,7 +11,7 @@ const SAMPLE_ANNOUNCEMENTS = [
   {
     title: "Team registration opens this summer",
     date: "Sample announcement",
-    body: "Grab your playing partners early. Spots for the 8th Annual Dalleo Open will be limited.",
+    body: "Grab your playing partners early. Spots for the 7th Annual Dalleo Open will be limited.",
   },
   {
     title: "A weekend that gives back",

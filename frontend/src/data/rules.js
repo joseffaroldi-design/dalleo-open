@@ -11,7 +11,7 @@ export const RULES_APPROVED = false;
 export const RULES = {
   header: {
     title: "Rules & Format",
-    edition: "8th Annual Dalleo Open · 2026",
+    edition: "7th Annual Dalleo Open · 2026",
     description: "Tournament format and the rules every player should know.",
   },
   draftNotice:

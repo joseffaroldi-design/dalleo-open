@@ -12,7 +12,7 @@ export const SEED = {
   announcements: () => ({
     items: [
       { id: "a1", title: "Draft Party details are coming together", message: "Friday night's Draft Party venue and start time will be revealed soon — stay tuned.", date: "Sample announcement", priority: "normal", published: true },
-      { id: "a2", title: "Team registration opens this summer", message: "Grab your playing partners early. Spots for the 8th Annual Dalleo Open will be limited.", date: "Sample announcement", priority: "normal", published: true },
+      { id: "a2", title: "Team registration opens this summer", message: "Grab your playing partners early. Spots for the 7th Annual Dalleo Open will be limited.", date: "Sample announcement", priority: "normal", published: true },
       { id: "a3", title: "A weekend that gives back", message: "This year's tournament continues Brandon's legacy by supporting causes close to his heart.", date: "Sample announcement", priority: "normal", published: true },
     ],
   }),
@@ -26,7 +26,7 @@ export const SEED = {
     items: GALLERY_ITEMS.map((i) => ({ ...i, published: true })),
   }),
   site: () => ({
-    edition: "8th Annual Dalleo Open",
+    edition: "7th Annual Dalleo Open",
     year: "2026",
     dateText: "Tournament dates to be announced",
     heroSubtitle: "In Memory of Brandon Dalleo",
