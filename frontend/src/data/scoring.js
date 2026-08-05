@@ -2,7 +2,8 @@
 // One team score per hole · 18 holes · lowest total team score wins.
 
 export const HOLES = Array.from({ length: 18 }, (_, i) => i + 1);
-export const DEFAULT_PAR = Array(18).fill(4);
+// Official course scorecard — Black tees, par 72 (out 36 / in 36).
+export const DEFAULT_PAR = [4, 4, 5, 3, 4, 4, 5, 3, 4, 4, 4, 4, 5, 3, 4, 4, 3, 5];
 
 export const STATUS_LABELS = {
   "not-started": "Not Started",

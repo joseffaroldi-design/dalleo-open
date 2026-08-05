@@ -62,7 +62,8 @@ export default function ScoringAdmin() {
 
   if (loading || !data || !teams) return <AdminLoading />;
 
-  const par = data.par?.length === 18 ? data.par : Array(18).fill(4);
+  const REAL_PAR = [4, 4, 5, 3, 4, 4, 5, 3, 4, 4, 4, 4, 5, 3, 4, 4, 3, 5];
+  const par = data.par?.length === 18 ? data.par : REAL_PAR;
   const team = activeTeams.find((t) => t.id === teamId);
   const standings = computeStandings(data, activeTeams);
   const scoresFor = (id) => data.scores.filter((s) => s.teamId === id).length;
@@ -170,6 +171,14 @@ export default function ScoringAdmin() {
               value={data.status}
               onChange={(e) => setData((d) => ({ ...d, status: e.target.value }))}
               options={STATUS_OPTIONS}
+            />
+          </Field>
+          <Field label="Course label (shown on the leaderboard)">
+            <TextInput
+              data-testid="scoring-course-label"
+              value={data.courseLabel ?? ""}
+              onChange={(e) => setData((d) => ({ ...d, courseLabel: e.target.value }))}
+              placeholder="Black Tees · Par 72 · 7,092 Yards · Rating 74.3 · Slope 135"
             />
           </Field>
         </AdminSection>
@@ -346,7 +355,7 @@ export default function ScoringAdmin() {
           </ol>
         </AdminSection>
 
-        <AdminSection title="Course Par" description="Default is par 4 on every hole (par 72). Adjust only if the course card says otherwise." testId="scoring-par-section">
+        <AdminSection title="Course Par" description="Official scorecard — Black tees, par 72. Adjust only if the course changes the setup." testId="scoring-par-section">
           <div className="grid grid-cols-6 gap-2 sm:grid-cols-9">
             {HOLES.map((h) => (
               <label key={h} className="block text-center">

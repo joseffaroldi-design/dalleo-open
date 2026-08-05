@@ -25,6 +25,7 @@ export default function Leaderboard() {
 
   const status = scoring?.status ?? "not-started";
   const par = scoring?.par?.length === 18 ? scoring.par : DEFAULT_PAR;
+  const courseLabel = scoring?.courseLabel ?? "";
   const standings = useMemo(() => computeStandings(scoring, teams), [scoring, teams]);
   const hasScores = standings.some((r) => r.thru > 0);
   const started = status !== "not-started" && hasScores;
@@ -42,6 +43,12 @@ export default function Leaderboard() {
           </h1>
           <p className="mt-3 text-base font-semibold text-charcoal/60 sm:text-lg">
             One round · 18 holes · Lowest team score wins
+            {courseLabel && (
+              <span data-testid="course-label" className="block text-sm font-bold text-gold-deep sm:inline">
+                <span aria-hidden="true" className="hidden sm:inline"> · </span>
+                {courseLabel}
+              </span>
+            )}
             {started && updated && (
               <span data-testid="leaderboard-updated" className="block text-sm text-charcoal/50 sm:inline">
                 <span aria-hidden="true" className="hidden sm:inline"> · </span>

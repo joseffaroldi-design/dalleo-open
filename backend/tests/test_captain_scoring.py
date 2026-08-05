@@ -37,12 +37,17 @@ def team_id():
     return r.json()["data"]["items"][0]["id"]
 
 
+_BEFORE = {}
+
+
 @pytest.fixture(scope="module")
 def pin_setup(admin, team_id, scoring_doc_lock):
     r = requests.put(f"{BASE_URL}/api/admin/team-pins", headers=admin, json={"teamId": team_id, "pin": PIN})
     assert r.status_code == 200, r.text
+    # Preserve the pre-test scoring doc; restore it in teardown.
+    _BEFORE["doc"] = requests.get(f"{BASE_URL}/api/admin/scoring", headers=admin).json()["data"]
     yield team_id
-    requests.put(f"{BASE_URL}/api/admin/scoring", headers=admin, json={"data": CLEAN})
+    requests.put(f"{BASE_URL}/api/admin/scoring", headers=admin, json={"data": _BEFORE["doc"] if _BEFORE["doc"] else CLEAN})
     # Clear PIN lockout counters so repeated suite runs never lock test teams.
     client = pymongo.MongoClient(os.environ["MONGO_URL"])
     client[os.environ["DB_NAME"]].login_attempts.delete_many({"identifier": {"$regex": "^pin:"}})
@@ -141,6 +146,10 @@ class TestCaptainScoring:
         assert r.status_code == 401
 
     def test_scores_reset_clean(self, admin, scoring_doc_lock):
-        requests.put(f"{BASE_URL}/api/admin/scoring", headers=admin, json={"data": CLEAN})
+        """Reset to the pre-test baseline so official data stays clean."""
+        baseline = _BEFORE.get("doc") or CLEAN
+        r = requests.put(f"{BASE_URL}/api/admin/scoring", headers=admin, json={"data": baseline})
+        assert r.status_code == 200, r.text
         data = requests.get(f"{BASE_URL}/api/public/scoring").json()["data"]
-        assert data["status"] == "not-started" and data["scores"] == []
+        assert data["scores"] == baseline["scores"]
+        assert data["status"] == baseline["status"]

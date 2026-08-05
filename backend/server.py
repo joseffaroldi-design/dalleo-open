@@ -515,6 +515,7 @@ class HoleScore(BaseModel):
 class ScoringDoc(BaseModel):
     status: Literal["not-started", "live", "final"]
     par: List[int] = Field(min_length=18, max_length=18)
+    courseLabel: str = Field(default="", max_length=120)
     scores: List[HoleScore] = []
     updatedAt: str = Field(default="", max_length=60)
 

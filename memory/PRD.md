@@ -83,6 +83,8 @@ Build the Dalleo Open Digital Clubhouse, a modern, mobile-first web app for the 
 
 - 2026-08-04 (Rules scoring removed + unpaired teams): Scoring section fully removed from Rules (page, admin editor, model ScoringRow/scoringNote/scoringRows, fallback, section nav) — consistent with the points removal. "All teams tee off from the black tee boxes" added as a format bullet on both environments; rules header text de-scored on both. All 8 teams' startingHole/startingTime cleared on BOTH environments — no pairings anywhere (TBD chips; pairings section auto-hidden). 39/39 tests pass. NOTE: production still shows the old Scoring section until redeploy (its data keeps the legacy fields for its old model; they drop on next save after deploy).
 
+- 2026-08-05 (Official course scorecard): Black tees par applied everywhere — per-hole par [4,4,5,3,4,4,5,3,4 | 4,4,4,5,3,4,4,3,5] = 72 set on BOTH environments (to-par now exact), DEFAULT_PAR + seeds updated. New ScoringDoc.courseLabel shown on the public leaderboard header ("Black Tees · Par 72 · 7,092 Yards · Rating 74.3 · Slope 135") and editable in ScoringAdmin; courseLabel set on preview — production's older model ignored it until next redeploy (re-apply after). Test hygiene fix: test_captain_scoring teardown now snapshot-restores the real scoring baseline instead of resetting to all-4s. 39/39 tests pass; suite verified to preserve the par-72 doc.
+
 ## Backlog (post-launch evaluation — NOT built)
 - Media file uploads (object storage), refresh tokens, automated test suite, memory submissions, notifications, hole-by-hole scoring, draft board, audit history
 

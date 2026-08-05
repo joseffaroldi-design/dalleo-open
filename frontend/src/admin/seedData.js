@@ -65,7 +65,8 @@ export const SEED = {
   }),
   scoring: () => ({
     status: "not-started",
-    par: Array(18).fill(4),
+    par: [4, 4, 5, 3, 4, 4, 5, 3, 4, 4, 4, 4, 5, 3, 4, 4, 3, 5],
+    courseLabel: "",
     scores: [],
     updatedAt: "",
   }),
