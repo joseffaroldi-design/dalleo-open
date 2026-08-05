@@ -7,12 +7,12 @@ export const Logo = ({ light = false }) => (
     aria-label="Dalleo Open — back to Home"
     className="inline-flex items-center gap-3 rounded-lg"
   >
-    <span
+    <img
+      src="/dalleo-flag.png"
+      alt=""
       aria-hidden="true"
-      className="flex h-10 w-10 items-center justify-center rounded-full bg-forest text-sm font-extrabold tracking-tight text-gold ring-2 ring-gold/70"
-    >
-      DO
-    </span>
+      className="h-9 w-auto rounded-full bg-cream p-1 ring-2 ring-gold/70"
+    />
     <span
       className={`text-lg font-extrabold tracking-tight ${
         light ? "text-cream" : "text-forest"

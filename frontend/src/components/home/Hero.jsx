@@ -3,7 +3,6 @@ import { motion, useMotionValue, useSpring, useScroll, useTransform } from "fram
 import { ImageIcon } from "lucide-react";
 import { useLiveData } from "@/data/useLiveData";
 import { Countdown } from "@/components/home/Countdown";
-import { MaskedLine } from "@/components/motion/Reveal";
 
 const EASE = [0.16, 1, 0.3, 1];
 
@@ -12,9 +11,6 @@ export const Hero = () => {
   const sectionRef = useRef(null);
 
   const edition = site?.edition ?? "8th Annual Dalleo Open";
-  const words = edition.split(" ");
-  const splitAt = Math.ceil(words.length / 2);
-  const lines = [words.slice(0, splitAt).join(" "), words.slice(splitAt).join(" ")].filter(Boolean);
 
   // Scroll parallax — giant masthead word drifts as you leave the hero.
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start start", "end start"] });
@@ -74,18 +70,22 @@ export const Hero = () => {
           <span aria-hidden="true" className="h-px w-10 bg-gold/50 sm:w-16" />
         </motion.p>
 
-        <h1
-          id="hero-title"
-          data-testid="hero-title"
-          className="mt-8 font-display text-[13vw] font-semibold leading-[0.98] tracking-tight text-cream sm:text-7xl lg:text-8xl"
-        >
-          <MaskedLine delay={0.25}>{lines[0]}</MaskedLine>
-          {lines[1] && (
-            <MaskedLine delay={0.38}>
-              <em className="italic text-gold-soft">{lines[1]}</em>
-            </MaskedLine>
-          )}
+        <h1 id="hero-title" data-testid="hero-title" className="sr-only">
+          {edition}
         </h1>
+        <motion.div
+          initial={{ opacity: 0, y: 24, scale: 0.94 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ duration: 1.15, delay: 0.25, ease: EASE }}
+          className="mx-auto mt-8 max-w-sm sm:max-w-xl"
+        >
+          <img
+            src="/dalleo-logo-gold.png"
+            alt="Dalleo Open — ESTD 2020 · Play Me!"
+            data-testid="hero-logo"
+            className="w-full"
+          />
+        </motion.div>
 
         <motion.p
           initial={{ opacity: 0, y: 16 }}

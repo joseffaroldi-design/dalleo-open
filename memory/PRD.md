@@ -99,6 +99,8 @@ Build the Dalleo Open Digital Clubhouse, a modern, mobile-first web app for the 
 
 - 2026-08-05 (Team card redesign per owner): TeamCard restructured — color top-border strip and color-name labels removed; new header is photo/dot avatar (h-14) with the team name beside it and captain underneath; players chip tightened to a count. Fallback dots remain for teams without photos. Verified visually; lint clean. NOTE: needs redeploy for production.
 
+- 2026-08-05 (Official logo): Owner's "ESTD 2020 · Dalleo Open · Play Me!" logo live — processed to transparent (white keyed out) with a gold variant for dark surfaces; homepage hero headline replaced by the gold logo (data-testid hero-logo, headline kept sr-only for a11y/tests), navbar monogram replaced by the flag crop in a cream ring, favicon + logo192/logo512 app icons replaced with the flag. Verified desktop + 390px. NOTE: needs redeploy for production.
+
 ## Backlog (post-launch evaluation — NOT built)
 - Media file uploads (object storage), refresh tokens, automated test suite, memory submissions, notifications, hole-by-hole scoring, draft board, audit history
 
