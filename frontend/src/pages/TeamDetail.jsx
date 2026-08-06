@@ -124,12 +124,21 @@ export default function TeamDetail() {
               data-testid={`player-row-${i + 1}`}
               className="flex items-center gap-4 rounded-2xl bg-white p-4 shadow-sm ring-1 ring-border sm:p-5"
             >
-              <span
-                aria-hidden="true"
-                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-forest-mist text-sm font-extrabold text-forest"
-              >
-                {getInitials(player.name)}
-              </span>
+              {player.photoUrl ? (
+                <img
+                  src={player.photoUrl}
+                  alt={`${player.name} player photo`}
+                  data-testid={`player-photo-${i + 1}`}
+                  className="h-11 w-11 shrink-0 rounded-full object-cover ring-1 ring-border"
+                />
+              ) : (
+                <span
+                  aria-hidden="true"
+                  className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-forest-mist text-sm font-extrabold text-forest"
+                >
+                  {getInitials(player.name)}
+                </span>
+              )}
               <span className="flex-1 text-base font-bold text-charcoal sm:text-lg">
                 {player.name}
               </span>

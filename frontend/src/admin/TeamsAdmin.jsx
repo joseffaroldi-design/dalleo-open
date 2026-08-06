@@ -22,13 +22,28 @@ export default function TeamsAdmin() {
 
   const playersText = (team) => team.players.map((p) => p.name).join("\n");
   const setPlayers = (id, text) => {
+    const prev = data.items.find((t) => t.id === id)?.players ?? [];
     const players = text
       .split("\n")
       .map((name) => name.trim())
       .filter(Boolean)
-      .map((name, i) => (i === 0 ? { name, role: "Captain" } : { name }));
+      .map((name, i) => ({
+        name,
+        ...(i === 0 ? { role: "Captain" } : {}),
+        ...(prev[i]?.photoUrl ? { photoUrl: prev[i].photoUrl } : {}),
+      }));
     updateTeam(id, { players });
   };
+
+  const setPlayerPhoto = (id, index, url) =>
+    setData((d) => ({
+      ...d,
+      items: d.items.map((t) =>
+        t.id === id
+          ? { ...t, players: t.players.map((p, i) => (i === index ? { ...p, photoUrl: url || null } : p)) }
+          : t
+      ),
+    }));
 
   return (
     <div data-testid="teams-admin">
@@ -111,6 +126,24 @@ export default function TeamsAdmin() {
                 value={playersText(team)}
                 onChange={(e) => setPlayers(team.id, e.target.value)}
               />
+            </Field>
+            <Field label="Player photos (optional)" hint="Shown in the circle next to each player's name on the team page.">
+              <ul className="flex flex-col gap-3">
+                {team.players.map((p, i) => (
+                  <li key={`${team.id}-player-${i}`} className="flex items-center gap-3">
+                    <span className="w-40 shrink-0 truncate text-sm font-bold text-charcoal">
+                      {p.name}
+                      {p.role === "Captain" && <span className="text-gold-deep"> · Captain</span>}
+                    </span>
+                    <ImageUpload
+                      testId={`player-photo-upload-${team.id}-${i + 1}`}
+                      value={p.photoUrl ?? ""}
+                      onChange={(url) => setPlayerPhoto(team.id, i, url)}
+                      previewClass="h-12 w-12 rounded-full"
+                    />
+                  </li>
+                ))}
+              </ul>
             </Field>
           </AdminSection>
         ))}

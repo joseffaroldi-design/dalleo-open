@@ -382,6 +382,7 @@ class AnnouncementsDoc(BaseModel):
 class PlayerInput(BaseModel):
     name: str = Field(min_length=1, max_length=80)
     role: Optional[str] = Field(None, max_length=30)
+    photoUrl: Optional[str] = Field(None, max_length=500)
 
 
 class TeamInput(BaseModel):
