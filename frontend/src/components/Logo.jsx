@@ -8,10 +8,10 @@ export const Logo = ({ light = false }) => (
     className="inline-flex items-center gap-3 rounded-lg"
   >
     <img
-      src="/dalleo-flag.png"
+      src="/dalleo-flag-mark.png"
       alt=""
       aria-hidden="true"
-      className="h-9 w-auto rounded-full bg-cream p-1 ring-2 ring-gold/70"
+      className="h-9 w-9 shrink-0 rounded-full bg-cream object-contain p-1 ring-2 ring-gold/70"
     />
     <span
       className={`text-lg font-extrabold tracking-tight ${
