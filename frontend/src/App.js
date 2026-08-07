@@ -16,6 +16,7 @@ import Course from "@/pages/Course";
 import Teams from "@/pages/Teams";
 import TeamDetail from "@/pages/TeamDetail";
 import Schedule from "@/pages/Schedule";
+import Announcements from "@/pages/Announcements";
 import Gallery from "@/pages/Gallery";
 import Brandon from "@/pages/Brandon";
 import Rules from "@/pages/Rules";
@@ -43,6 +44,7 @@ const PAGE_TITLES = [
   [/^\/course/, "The Course — Dalleo Open"],
   [/^\/teams/, "Teams — Dalleo Open"],
   [/^\/schedule/, "Tournament Schedule — Dalleo Open"],
+  [/^\/announcements/, "Announcements — Dalleo Open"],
   [/^\/gallery/, "Gallery — Dalleo Open"],
   [/^\/brandon/, "In Memory of Brandon Dalleo — Dalleo Open"],
   [/^\/rules/, "Rules & Format — Dalleo Open"],
@@ -84,6 +86,7 @@ const Shell = () => {
           <Route path="/teams" element={<Teams />} />
           <Route path="/teams/:teamId" element={<TeamDetail />} />
           <Route path="/schedule" element={<Schedule />} />
+          <Route path="/announcements" element={<Announcements />} />
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/brandon" element={<Brandon />} />
           <Route path="/rules" element={<Rules />} />

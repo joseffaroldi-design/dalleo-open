@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { fetchPublic } from "@/lib/api";
 
@@ -65,11 +66,13 @@ export const AnnouncementsTicker = () => {
   );
 
   return (
-    <div
+    <Link
+      to="/announcements"
       data-testid="announcements-ticker"
       role="region"
-      aria-label="Tournament announcements"
-      className="overflow-hidden border-b border-gold/20 bg-forest-deep py-2.5"
+      aria-label="Tournament announcements — tap to read all announcements"
+      title="Read all announcements"
+      className="block cursor-pointer overflow-hidden border-b border-gold/20 bg-forest-deep py-2.5 transition-colors duration-200 hover:bg-forest"
     >
       <div
         className={`flex min-h-5 w-max animate-ticker transition-opacity [transition-duration:400ms] hover:[animation-play-state:paused] ${
@@ -79,6 +82,6 @@ export const AnnouncementsTicker = () => {
         {row(false)}
         {row(true)}
       </div>
-    </div>
+    </Link>
   );
 };
