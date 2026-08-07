@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route, useLocation, Navigate } from "react-route
 import { MotionConfig, motion } from "framer-motion";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+import { InstallPrompt } from "@/components/InstallPrompt";
 import { ScrollToTop } from "@/components/ScrollToTop";
 import { useLenis } from "@/hooks/useLenis";
 import Home from "@/pages/Home";
@@ -106,6 +107,7 @@ const Shell = () => {
         </motion.div>
       </main>
       {!isAdmin && <Footer />}
+      {!isAdmin && <InstallPrompt />}
     </>
   );
 };
