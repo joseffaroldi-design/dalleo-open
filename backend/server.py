@@ -65,7 +65,7 @@ def get_object(path: str):
     return resp.content, resp.headers.get("Content-Type", "application/octet-stream")
 
 JWT_ALGORITHM = "HS256"
-DOMAINS = {"announcements", "teams", "schedule", "gallery", "site", "rules", "champions", "scoring", "course"}
+DOMAINS = {"announcements", "teams", "schedule", "gallery", "site", "rules", "champions", "scoring", "course", "committee"}
 
 
 def jwt_secret() -> str:
@@ -586,6 +586,21 @@ class CourseDoc(BaseModel):
     goodToKnow: List[Topic] = []
 
 
+class CommitteeMember(BaseModel):
+    name: str = Field(min_length=1, max_length=80)
+    titles: List[str] = Field(default=[], max_length=8)
+    years: Optional[str] = Field(None, max_length=60)
+    bio: Optional[str] = Field(None, max_length=600)
+    memory: Optional[str] = Field(None, max_length=300)
+    photoUrl: Optional[str] = Field(None, max_length=500)
+
+
+class CommitteeDoc(BaseModel):
+    title: str = Field(min_length=1, max_length=80)
+    intro: str = Field(default="", max_length=600)
+    members: List[CommitteeMember] = Field(default=[], max_length=24)
+
+
 MODELS = {
     "announcements": AnnouncementsDoc,
     "teams": TeamsDoc,
@@ -596,6 +611,7 @@ MODELS = {
     "champions": ChampionsDoc,
     "scoring": ScoringDoc,
     "course": CourseDoc,
+    "committee": CommitteeDoc,
 }
 
 

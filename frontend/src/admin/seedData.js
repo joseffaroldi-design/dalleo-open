@@ -5,6 +5,7 @@ import { MEMORIAL, MEMORIAL_PUBLISHED, SHARE_MEMORY_ENABLED } from "@/data/memor
 import { RULES, RULES_PUBLISHED, RULES_APPROVED } from "@/data/rules";
 import { CHAMPIONS } from "@/data/champions";
 import { COURSE } from "@/data/course";
+import { COMMITTEE } from "@/data/committee";
 
 // Editors start from the current public mock content the first time they are
 // opened (when no saved record exists yet). The first save creates the record.
@@ -70,6 +71,11 @@ export const SEED = {
     location: COURSE.location,
     label: COURSE.label,
     goodToKnow: COURSE.goodToKnow.map((t) => ({ ...t })),
+  }),
+  committee: () => ({
+    title: COMMITTEE.title,
+    intro: COMMITTEE.intro,
+    members: COMMITTEE.members.map((m) => ({ ...m, titles: [...m.titles] })),
   }),
   scoring: () => ({
     status: "not-started",

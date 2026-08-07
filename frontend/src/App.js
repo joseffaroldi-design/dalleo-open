@@ -28,6 +28,7 @@ import AnnouncementsAdmin from "@/admin/AnnouncementsAdmin";
 import TeamsAdmin from "@/admin/TeamsAdmin";
 import ScheduleAdmin from "@/admin/ScheduleAdmin";
 import GalleryAdmin from "@/admin/GalleryAdmin";
+import CommitteeAdmin from "@/admin/CommitteeAdmin";
 import ContentAdmin from "@/admin/ContentAdmin";
 import RulesAdmin from "@/admin/RulesAdmin";
 import ChampionsAdmin from "@/admin/ChampionsAdmin";
@@ -100,6 +101,7 @@ const Shell = () => {
             <Route path="champions" element={<ChampionsAdmin />} />
             <Route path="scoring" element={<ScoringAdmin />} />
             <Route path="gameday" element={<GameDayAdmin />} />
+            <Route path="committee" element={<CommitteeAdmin />} />
             <Route path="course" element={<CourseAdmin />} />
           </Route>
           <Route path="*" element={<Navigate to="/" replace />} />
