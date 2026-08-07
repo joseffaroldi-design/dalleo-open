@@ -95,7 +95,7 @@ module.exports = {
       },
       animation: {
         marquee: 'marquee 52s linear infinite',
-        ticker: 'marquee 40s linear infinite',
+        ticker: 'marquee 60s linear infinite',
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out'
       }
