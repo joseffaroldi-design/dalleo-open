@@ -10,8 +10,8 @@ import { BrandonSection } from "@/components/home/BrandonSection";
 export default function Home() {
   return (
     <div data-testid="home-page">
-      <AnnouncementsTicker />
       <LeaderboardPreview />
+      <AnnouncementsTicker />
       <Hero />
       <Marquee />
       <TeamsPreview />
