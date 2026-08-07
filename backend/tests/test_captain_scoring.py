@@ -129,6 +129,19 @@ class TestCaptainScoring:
         own = [s for s in saved if s["teamId"] == pin_setup and s["hole"] == 1]
         assert len(own) == 1 and own[0]["strokes"] == 6, "overwrite must replace, not duplicate"
 
+    def test_write_allowed_in_test_mode(self, admin, pin_setup, scoring_doc_lock):
+        # "test" status is a rehearsal mode — captain writes must work exactly like live
+        doc = {"status": "test", "par": [4] * 18, "scores": [], "updatedAt": ""}
+        r = requests.put(f"{BASE_URL}/api/admin/scoring", headers=admin, json={"data": doc})
+        assert r.status_code == 200, r.text
+        headers = captain_token(pin_setup)
+        r = requests.put(f"{BASE_URL}/api/team-scoring/hole", headers=headers, json={"hole": 1, "strokes": 4})
+        assert r.status_code == 200, r.text
+        saved = requests.get(f"{BASE_URL}/api/public/scoring").json()["data"]
+        assert saved["status"] == "test"
+        own = [s for s in saved["scores"] if s["teamId"] == pin_setup and s["hole"] == 1]
+        assert len(own) == 1 and own[0]["strokes"] == 4
+
     def test_write_validation(self, admin, pin_setup, scoring_doc_lock):
         doc = {"status": "live", "par": [4] * 18, "scores": [], "updatedAt": ""}
         requests.put(f"{BASE_URL}/api/admin/scoring", headers=admin, json={"data": doc})

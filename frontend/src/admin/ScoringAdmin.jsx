@@ -12,6 +12,7 @@ import { TEAM_VISUALS } from "@/data/teams";
 
 const STATUS_OPTIONS = [
   { value: "not-started", label: "Not Started" },
+  { value: "test", label: "Test (Rehearsal)" },
   { value: "live", label: "Live" },
   { value: "final", label: "Final" },
 ];
@@ -165,7 +166,7 @@ export default function ScoringAdmin() {
 
       <div className="mt-8 flex flex-col gap-6">
         <AdminSection title="Tournament Status" testId="scoring-status-section">
-          <Field label="Scoring status" hint="Set Live when the shotgun start begins, Final when all cards are in.">
+          <Field label="Scoring status" hint="Use Test to rehearse with captains before the big day (looks exactly like Live to visitors), Live at the shotgun start, Final when all cards are in.">
             <SelectInput
               data-testid="scoring-status"
               value={data.status}
@@ -428,7 +429,7 @@ export default function ScoringAdmin() {
                 disabled={entrySaving}
                 className="min-h-11 rounded-full bg-red-700 px-5 py-2.5 text-sm font-bold text-white"
               >
-                Confirm — clear all scores
+                {data.status === "test" ? "Confirm — clear test scores" : "Confirm — clear all scores"}
               </button>
               <button
                 type="button"
@@ -446,7 +447,7 @@ export default function ScoringAdmin() {
               onClick={() => setResetArmed(true)}
               className="min-h-11 rounded-full bg-red-700/10 px-5 py-2.5 text-sm font-bold text-red-700 transition-colors duration-200 hover:bg-red-700/20"
             >
-              Clear all scores
+              {data.status === "test" ? "Clear test scores & return to Not Started" : "Clear all scores"}
             </button>
           )}
         </AdminSection>

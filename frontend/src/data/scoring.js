@@ -9,6 +9,8 @@ export const STATUS_LABELS = {
   "not-started": "Not Started",
   live: "Live",
   final: "Final",
+  // Rehearsal mode — publicly indistinguishable from Live by design.
+  test: "Live",
 };
 
 // Build per-team aggregates from a scoring doc.

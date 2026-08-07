@@ -241,7 +241,7 @@ async def team_scoring_state(team_id: str = Depends(get_current_team)):
 @api_router.put("/team-scoring/hole")
 async def team_scoring_write(input: HoleScoreInput, team_id: str = Depends(get_current_team)):
     scoring = await read_domain("scoring")
-    if not scoring or scoring["status"] != "live":
+    if not scoring or scoring["status"] not in ("live", "test"):
         raise HTTPException(status_code=409, detail="Scoring is not open right now")
     teams = await read_domain("teams")
     if not any(t["id"] == team_id and t.get("active", True) for t in (teams or {}).get("items", [])):
@@ -554,7 +554,7 @@ class HoleScore(BaseModel):
 
 
 class ScoringDoc(BaseModel):
-    status: Literal["not-started", "live", "final"]
+    status: Literal["not-started", "live", "final", "test"]
     par: List[int] = Field(min_length=18, max_length=18)
     courseLabel: str = Field(default="", max_length=120)
     scores: List[HoleScore] = []

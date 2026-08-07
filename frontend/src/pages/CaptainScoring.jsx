@@ -197,7 +197,7 @@ const TeamScorecard = ({ team, onSignOut }) => {
         </button>
       </div>
 
-      {state.status !== "live" ? (
+      {!["live", "test"].includes(state.status) ? (
         <div
           data-testid="captain-status-notice"
           className="mt-8 flex flex-col items-center rounded-3xl bg-white p-10 text-center shadow-sm ring-1 ring-border"

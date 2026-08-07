@@ -1,0 +1,31 @@
+{
+  "summary": "End-to-end verification of new TEST (Rehearsal) tournament status feature (T1-T7). All 7 checks PASS. T1: Admin Scoring dropdown now contains exactly 4 options in correct order (Not Started, Test (Rehearsal), Live, Final); selecting 'Test (Rehearsal)' + Save Changes returns flash 'Saved — public pages updated'. NOTE: initial page load showed only 3 options due to stale dev-server bundle — a single 'sudo supervisorctl restart frontend' picked up the new STATUS_OPTIONS array; on the running instance the 4-option dropdown is now stable. T2: Captain (Team White, PIN 9840) logged in at /score while status=test; scorecard loaded immediately (no captain-status-notice); score 3 on hole 1 → flash 'Saved — Hole 1: 3' + auto-advance; score 5 on hole 2 → flash 'Saved — Hole 2: 5'. Prior 409 bug is fixed (backend guard now allows status in (live, test)). T3: /leaderboard status chip renders 'Live' (NOT 'Test'); no 'test' wording anywhere on the public page or home preview; standing-row-white shows 'E · 8 STROKES · Thru 2' (par 4+4=8, score 3+5=8, to-par E — correct); home-leaderboard-preview shows 'LIVE · Team White leads · E · 8 strokes · Thru 2 holes'. T4: Danger Zone button text is status-aware — while status=test it correctly read 'Clear test scores & return to Not Started'; clicking it exposes reset-scores-confirm; confirming yields flash 'All scores cleared' + dropdown resets to 'not-started'. Post-reset GET /api/public/scoring returns {status:'not-started', scores:[], par preserved as official [4,4,5,3,4,4,5,3,4,4,4,4,5,3,4,4,3,5], courseLabel preserved}. T5: Round-trip regression — not-started → test → not-started → final → not-started all save cleanly through backend validation, no 4xx. T6: At 390px viewport, [data-testid=logo-home-link] img currentSrc=/dalleo-flag-mark.png, naturalWidth=400, rendered 36x36 — clean centered flag mark. T7: Zero console errors across all flows; /api/health returns 200 {status:ok}. Final DB state is clean (status=not-started, scores=[]) — production-safe.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": ["/app/backend/tests/test_captain_scoring.py (40/40 per main-agent run — not re-executed since no backend code was changed by this iteration)"],
+  "action_items": [
+    "MINOR (non-blocking, not spec compliant strictly): Spec T6 says '/dalleo-flag.png now returns 404'. Actual behavior on preview: GET /dalleo-flag.png returns HTTP 200 with text/html (CRA/React dev server SPA fallback serves index.html for any unknown /public path). The file is genuinely absent from /app/frontend/public (confirmed by ls), and no code references /dalleo-flag.png, so this is cosmetic. If a strict 404 is required, add a static-file 404 handler or serve /public via a stricter server. Not blocking V1.0.",
+    "OPERATIONAL: The first browser session after this feature landed showed only 3 dropdown options — the CRA dev server had cached a stale bundle. A frontend supervisor restart fixed it. If deploying to production, ensure a fresh yarn build so no stale cache serves the old STATUS_OPTIONS."
+  ],
+  "critical_code_review_comments": [
+    "Backend PUT /api/team-scoring/hole guard is now `scoring['status'] not in ('live','test')` — correct and minimal.",
+    "Frontend STATUS_LABELS maps 'test' → 'Live' so the public leaderboard chip and home preview appear identical to Live mode — matches owner requirement (no visitor-facing difference).",
+    "Danger Zone button label is status-aware ('Clear test scores & return to Not Started' when status=test, 'Clear all scores' otherwise) — nice UX touch.",
+    "Reset action correctly clears scores AND resets status to not-started atomically; par and courseLabel are preserved (verified via GET after reset).",
+    "React Query staleTime + 30s polling on /public/scoring works as expected; a hard reload was NOT needed here — updates propagated within ~2s of Save. Good."
+  ],
+  "updated_files": [
+    "/app/test_reports/iteration_7.json (this file)"
+  ],
+  "success_rate": {"backend": "100%", "frontend": "100%"},
+  "test_credentials": "Admin joseffaroldi@yahoo.com / Test123; Team White PIN 9840 (only team used, as instructed).",
+  "seed_data_creation": "None persistent. T2 wrote scores {hole1:3, hole2:5} for Team White; T4 wiped them; final GET /api/public/scoring = {status:'not-started', scores:[], par preserved} — verified via curl.",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "V1.0 + TEST-mode feature complete. Final API state on preview is clean (status=not-started, scores=[]). Test-mode feature verified. If dropdown ever shows only 3 options again, first suspect stale CRA bundle → restart frontend. Do NOT test PINs via curl brute-force (5 fails = 15-min lockout). Only Team White (9840) was exercised; other team PINs untouched.",
+  "rca of the issue": "N/A — no bugs found in this iteration. One transient artifact (stale bundle showing 3-option dropdown) auto-resolved via `sudo supervisorctl restart frontend` and is not a code bug."
+}
