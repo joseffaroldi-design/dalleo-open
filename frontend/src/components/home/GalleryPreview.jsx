@@ -22,7 +22,7 @@ export const GalleryPreview = () => {
       <Reveal>
       <div className="flex items-end justify-between gap-4">
         <div>
-          <p className="font-display text-sm italic text-gold-deep">Chapter 02 · The Memories</p>
+          <p className="font-display text-sm italic text-gold-deep">Chapter 03 · The Memories</p>
           <h2
             id="home-gallery-title"
             className="mt-2 text-base font-bold uppercase tracking-[0.2em] text-gold-deep md:text-lg"
