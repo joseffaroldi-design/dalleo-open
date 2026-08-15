@@ -1,6 +1,5 @@
 import { Hero } from "@/components/home/Hero";
 import { Marquee } from "@/components/Marquee";
-import { AnnouncementsTicker } from "@/components/home/AnnouncementsTicker";
 import { LeaderboardPreview } from "@/components/home/LeaderboardPreview";
 import { TeamsPreview } from "@/components/home/TeamsPreview";
 import { GalleryPreview } from "@/components/home/GalleryPreview";
@@ -11,7 +10,6 @@ export default function Home() {
   return (
     <div data-testid="home-page">
       <LeaderboardPreview />
-      <AnnouncementsTicker />
       <Hero />
       <Marquee />
       <TeamsPreview />
