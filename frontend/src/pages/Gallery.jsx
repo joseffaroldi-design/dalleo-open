@@ -33,7 +33,7 @@ export default function Gallery() {
   };
 
   return (
-    <div data-testid="gallery-page" className="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-20">
+    <div data-testid="gallery-page" className="mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-14">
       <header className="max-w-2xl">
         <h1 className="text-4xl font-extrabold tracking-tight text-forest sm:text-5xl">
           Gallery
@@ -46,9 +46,9 @@ export default function Gallery() {
         </p>
       </header>
 
-      <div className="mt-10">
+      <div className="mt-7 sm:mt-8">
         {published ? (
-          <div className="flex flex-col gap-12">
+          <div className="flex flex-col gap-8 sm:gap-10">
             {featured && (
               <FeaturedMemory item={featured} onOpen={(id) => openItem(id, allItems)} />
             )}
@@ -58,13 +58,13 @@ export default function Gallery() {
               </h2>
               <CategoryFilter value={category} onChange={setCategory} />
               {visibleItems.length === 0 ? (
-                <p data-testid="gallery-empty-live" className="mt-8 rounded-3xl bg-white p-10 text-center text-sm font-semibold text-charcoal/50 shadow-sm ring-1 ring-border">
+                <p data-testid="gallery-empty-live" className="mt-6 rounded-3xl bg-white p-8 text-center text-sm font-semibold text-charcoal/50 shadow-sm ring-1 ring-border sm:p-10">
                   No media in this category yet — check back soon.
                 </p>
               ) : (
               <ul
                 data-testid="media-grid"
-                className="mt-8 columns-2 gap-4 sm:columns-3 lg:columns-4"
+                className="mt-6 columns-2 gap-4 sm:columns-3 lg:columns-4"
               >
                 {visibleItems.map((item) => (
                   <MediaCard key={item.id} item={item} onOpen={(id) => openItem(id, visibleItems)} />
