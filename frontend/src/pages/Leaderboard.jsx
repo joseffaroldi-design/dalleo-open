@@ -38,8 +38,8 @@ export default function Leaderboard() {
   const updated = formatUpdatedAt(scoring?.updatedAt);
 
   return (
-    <div data-testid="leaderboard-page" className="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-20">
-      <header className="flex flex-wrap items-end justify-between gap-5">
+    <div data-testid="leaderboard-page" className="mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-14">
+      <header className="flex flex-wrap items-end justify-between gap-4 sm:gap-5">
         <div>
           <p className="font-display text-sm italic text-gold-deep">Four-Person Scramble Championship</p>
           <h1 className="mt-2 text-4xl font-extrabold tracking-tight text-forest sm:text-5xl">
@@ -70,14 +70,14 @@ export default function Leaderboard() {
         )}
       </header>
 
-      <div className="mt-10">
+      <div className="mt-7 sm:mt-8">
         {started ? (
-          <div className="flex flex-col gap-12">
+          <div className="flex flex-col gap-8 sm:gap-10">
             {final && leader && (
               <Reveal>
                 <div
                   data-testid="champion-banner"
-                  className="flex flex-col items-center gap-4 rounded-3xl bg-forest-deep p-8 text-center ring-1 ring-gold/40 sm:p-10"
+                  className="flex flex-col items-center gap-3 rounded-3xl bg-forest-deep p-7 text-center ring-1 ring-gold/40 sm:gap-4 sm:p-9"
                 >
                   <span aria-hidden="true" className="flex h-16 w-16 items-center justify-center rounded-full bg-gold/10 text-gold ring-2 ring-gold/60">
                     <Trophy className="h-8 w-8" />
