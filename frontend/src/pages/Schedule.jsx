@@ -48,7 +48,7 @@ export default function Schedule() {
   const activeDay = DAYS.find((d) => d.id === dayId);
 
   return (
-    <div data-testid="schedule-page" className="mx-auto max-w-4xl px-4 py-14 sm:px-6 sm:py-20">
+    <div data-testid="schedule-page" className="mx-auto max-w-4xl px-4 py-10 sm:px-6 sm:py-14">
       <header className="max-w-2xl">
         <h1 className="text-4xl font-extrabold tracking-tight text-forest sm:text-5xl">
           Tournament Weekend Schedule
@@ -61,9 +61,9 @@ export default function Schedule() {
         </p>
       </header>
 
-      <div className="mt-10">
+      <div className="mt-7 sm:mt-8">
         {published ? (
-          <div className="flex flex-col gap-10">
+          <div className="flex flex-col gap-7 sm:gap-8">
             <CurrentEventCard current={current} />
             {visibleDays.length > 1 && <DaySelector value={dayId} onChange={setSelectedDay} days={visibleDays} />}
             <section data-testid="day-schedule" aria-labelledby="day-schedule-title">
@@ -73,9 +73,9 @@ export default function Schedule() {
               >
                 {activeDay.label} &middot; {activeDay.tagline}
               </h2>
-              <div className="mt-6">
+              <div className="mt-4 sm:mt-5">
                 {(byDay[dayId] ?? []).length === 0 ? (
-                  <p data-testid="schedule-empty-live" className="rounded-2xl bg-white p-8 text-center text-sm font-semibold text-charcoal/50 shadow-sm ring-1 ring-border">
+                  <p data-testid="schedule-empty-live" className="rounded-2xl bg-white p-7 text-center text-sm font-semibold text-charcoal/50 shadow-sm ring-1 ring-border sm:p-8">
                     No events scheduled for this day yet — official schedule coming soon.
                   </p>
                 ) : (
