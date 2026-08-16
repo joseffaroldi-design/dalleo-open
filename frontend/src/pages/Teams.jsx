@@ -10,7 +10,7 @@ export default function Teams() {
     .filter((t) => t.active !== false)
     .sort((a, b) => (a.order ?? 99) - (b.order ?? 99));
   return (
-    <div data-testid="teams-page" className="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-20">
+    <div data-testid="teams-page" className="mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-14">
       <header className="max-w-2xl">
         <h1 className="text-4xl font-extrabold tracking-tight text-forest sm:text-5xl">
           Teams
@@ -22,16 +22,16 @@ export default function Teams() {
           Meet this year&rsquo;s captains and tournament teams.
         </p>
       </header>
-      <div className="mt-10">
+      <div className="mt-7 sm:mt-8">
         {announced ? (
           teams.length === 0 ? (
-            <p data-testid="teams-empty-live" className="rounded-3xl bg-white p-10 text-center text-sm font-semibold text-charcoal/50 shadow-sm ring-1 ring-border">
+            <p data-testid="teams-empty-live" className="rounded-3xl bg-white p-8 text-center text-sm font-semibold text-charcoal/50 shadow-sm ring-1 ring-border sm:p-10">
               Rosters are being finalized — check back soon.
             </p>
           ) : (
           <div
             data-testid="teams-grid"
-            className="grid grid-cols-1 gap-5 sm:grid-cols-2"
+            className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5"
           >
             {teams.map((team) => (
               <TeamCard key={team.id} team={team} />
