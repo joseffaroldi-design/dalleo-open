@@ -53,12 +53,12 @@ export const Hero = () => {
       <motion.div
         aria-hidden="true"
         style={{ y: wordY, x: wordX }}
-        className="text-outline-cream pointer-events-none absolute inset-x-0 top-16 select-none text-center font-display text-[24vw] font-black leading-none tracking-tight sm:top-8"
+        className="text-outline-cream pointer-events-none absolute inset-x-0 top-14 select-none text-center font-display text-[24vw] font-black leading-none tracking-tight sm:top-8"
       >
         DALLEO
       </motion.div>
 
-      <motion.div style={{ opacity: fade }} className="relative mx-auto max-w-6xl px-4 pb-10 pt-24 text-center sm:px-6 sm:pt-28">
+      <motion.div style={{ opacity: fade }} className="relative mx-auto max-w-6xl px-4 pb-8 pt-20 text-center sm:px-6 sm:pb-9 sm:pt-24">
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -76,7 +76,7 @@ export const Hero = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.9, delay: 0.3, ease: EASE }}
           data-testid="hero-edition"
-          className="mt-4 flex items-center justify-center gap-4 font-display text-xl italic text-gold-soft sm:text-2xl"
+          className="mt-3 flex items-center justify-center gap-4 font-display text-xl italic text-gold-soft sm:text-2xl"
         >
           <span aria-hidden="true" className="h-px w-8 bg-gold/40 sm:w-12" />
           {editionLabel}
@@ -90,7 +90,7 @@ export const Hero = () => {
           initial={{ opacity: 0, y: 24, scale: 0.94 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ duration: 1.15, delay: 0.45, ease: EASE }}
-          className="mx-auto mt-6 max-w-[537px] sm:max-w-[800px]"
+          className="mx-auto mt-4 max-w-[537px] sm:mt-5 sm:max-w-[800px]"
         >
           <img
             src="/dalleo-logo-gold.png"
@@ -105,7 +105,7 @@ export const Hero = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.9, delay: 0.7, ease: EASE }}
           data-testid="hero-date-placeholder"
-          className="mt-2 text-base font-semibold text-cream/70 sm:text-lg"
+          className="mt-1 text-base font-semibold text-cream/70 sm:mt-2 sm:text-lg"
         >
           {site?.dateText ?? "Tournament dates to be announced"}
         </motion.p>
@@ -119,7 +119,7 @@ export const Hero = () => {
         </motion.div>
       </motion.div>
 
-      <div className="relative mx-auto max-w-4xl px-4 pb-16 sm:px-6">
+      <div className="relative mx-auto max-w-4xl px-4 pb-10 sm:px-6 sm:pb-12">
         <motion.div
           initial={{ opacity: 0, y: 60, scale: 0.96 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -152,7 +152,7 @@ export const Hero = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.6, duration: 1 }}
-        className="pointer-events-none absolute bottom-6 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 sm:flex"
+        className="pointer-events-none absolute bottom-4 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 sm:flex"
       >
         <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-cream/40">Scroll</span>
         <motion.span
