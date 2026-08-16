@@ -8,9 +8,9 @@ export const Footer = () => {
   const site = useLiveData("site");
   return (
   <footer data-testid="site-footer" className="bg-forest-deep text-cream/80">
-    <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6">
-      <div className="flex flex-col gap-10 md:flex-row md:items-start md:justify-between">
-        <div className="space-y-4">
+    <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-12">
+      <div className="flex flex-col gap-8 md:flex-row md:items-start md:justify-between md:gap-10">
+        <div className="space-y-3.5">
           <Logo light />
           <p className="max-w-xs text-sm leading-relaxed text-cream/60">
             An annual golf tournament held in memory of Brandon Dalleo.
@@ -26,7 +26,7 @@ export const Footer = () => {
             <Instagram className="h-5 w-5" />
           </a>
         </div>
-        <nav aria-label="Footer" className="grid grid-cols-2 gap-x-12 gap-y-3 sm:grid-cols-3">
+        <nav aria-label="Footer" className="grid grid-cols-2 gap-x-10 gap-y-2.5 sm:grid-cols-3 sm:gap-x-12">
           {NAV_LINKS.map(({ to, label, testId }) => (
             <Link
               key={to}
@@ -39,7 +39,7 @@ export const Footer = () => {
           ))}
         </nav>
       </div>
-      <div className="mt-12 flex flex-wrap items-center justify-between gap-3 border-t border-cream/10 pt-6 text-center text-xs text-cream/50 sm:text-left">
+      <div className="mt-8 flex flex-wrap items-center justify-between gap-3 border-t border-cream/10 pt-5 text-center text-xs text-cream/50 sm:mt-10 sm:text-left">
         <p data-testid="footer-copyright">
           &copy; {new Date().getFullYear()} Dalleo Open. All rights reserved.
         </p>
