@@ -1,7 +1,8 @@
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { Trophy } from "lucide-react";
 import { TEAMS } from "@/data/teams";
 import { useLiveData } from "@/data/useLiveData";
+import { trackEvent } from "@/lib/analytics";
 import {
   DEFAULT_PAR,
   STATUS_LABELS,
@@ -18,6 +19,9 @@ export default function Leaderboard() {
   const scoring = useLiveData("scoring");
   const liveTeams = useLiveData("teams");
 
+  useEffect(() => {
+    trackEvent("leaderboard_view");
+  }, []);
   const teams = useMemo(() => {
     const items = (liveTeams ? liveTeams.items : TEAMS).filter((t) => t.active !== false);
     return [...items].sort((a, b) => (a.order ?? 99) - (b.order ?? 99));

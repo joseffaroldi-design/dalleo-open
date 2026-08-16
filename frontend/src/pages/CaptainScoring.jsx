@@ -7,6 +7,7 @@ import {
 } from "@/lib/api";
 import { TEAM_VISUALS } from "@/data/teams";
 import { HOLES } from "@/data/scoring";
+import { trackEvent } from "@/lib/analytics";
 
 // ---------- Login: pick team + enter captain PIN ----------
 const CaptainLogin = ({ teams, onLogin }) => {
@@ -23,6 +24,7 @@ const CaptainLogin = ({ teams, onLogin }) => {
     try {
       const res = await teamLoginRequest(teamId, pin);
       setTeamSession(res.token, res.team);
+      trackEvent("captain_login", { team_id: res.team.id });
       onLogin(res.team);
     } catch (err) {
       setError(err.message);
@@ -152,6 +154,7 @@ const TeamScorecard = ({ team, onSignOut }) => {
     setFlash("");
     try {
       await teamFetch("/team-scoring/hole", { method: "PUT", body: JSON.stringify({ hole, strokes: parsed }) });
+      trackEvent("score_submitted", { team_id: team.id, hole });
       setFlash(`Saved — Hole ${hole}: ${parsed}`);
       setArmed(false);
       await load();

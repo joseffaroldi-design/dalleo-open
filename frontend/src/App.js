@@ -2,6 +2,7 @@ import "@/App.css";
 import { useEffect } from "react";
 import { BrowserRouter, Routes, Route, useLocation, Navigate } from "react-router-dom";
 import { MotionConfig, motion } from "framer-motion";
+import { trackPageView } from "@/lib/analytics";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { InstallPrompt } from "@/components/InstallPrompt";
@@ -62,6 +63,7 @@ const Shell = () => {
   useEffect(() => {
     const match = PAGE_TITLES.find(([pattern]) => pattern.test(pathname));
     document.title = match ? match[1] : "Dalleo Open Digital Clubhouse";
+    trackPageView(pathname);
   }, [pathname]);
 
   return (

@@ -1,13 +1,20 @@
+import { useEffect } from "react";
 import { Link, Navigate, useParams } from "react-router-dom";
 import { ArrowLeft, Flag } from "lucide-react";
 import { TEAMS, TEAM_VISUALS, getInitials } from "@/data/teams";
 import { useLiveData } from "@/data/useLiveData";
+import { trackEvent } from "@/lib/analytics";
 
 export default function TeamDetail() {
   const { teamId } = useParams();
   const live = useLiveData("teams");
   const teams = live ? live.items : TEAMS;
   const team = teams.find((t) => t.id === teamId);
+
+  const resolvedTeamId = team?.id;
+  useEffect(() => {
+    if (resolvedTeamId) trackEvent("team_view", { team_id: resolvedTeamId });
+  }, [resolvedTeamId]);
 
   // Wait for live data before redirecting — mock fallback ids differ from real ones.
   if (live && !team) return <Navigate to="/teams" replace />;
