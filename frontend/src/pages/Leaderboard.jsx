@@ -71,14 +71,16 @@ export default function Leaderboard() {
         )}
       </header>
 
-      {started && !final && (
+      {status !== "final" && (
         <Link
           to="/score"
           data-testid="captain-signin-banner"
           className="mt-6 flex items-center justify-between gap-4 rounded-2xl bg-forest px-5 py-4 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md"
         >
           <span className="text-sm font-bold text-cream sm:text-base">
-            Captains — sign in to enter your team's scores
+            {started
+              ? "Captains — sign in to enter your team's scores"
+              : "Captains — sign in to get ready for Saturday's round"}
           </span>
           <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-gold px-4 py-2 text-sm font-extrabold text-forest-deep">
             Sign In
