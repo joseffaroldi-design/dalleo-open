@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#1F4E3D"/>
+  <circle cx="600" cy="200" r="70" fill="#153326" stroke="#C9A227" stroke-width="4"/>
+  <text x="600" y="216" font-family="Arial, sans-serif" font-size="44" font-weight="bold" fill="#C9A227" text-anchor="middle">DO</text>
+  <text x="600" y="340" font-family="Arial, sans-serif" font-size="34" font-weight="bold" fill="#C9A227" text-anchor="middle" letter-spacing="6">IN MEMORY OF BRANDON DALLEO</text>
+  <text x="600" y="420" font-family="Arial, sans-serif" font-size="64" font-weight="bold" fill="#FAF8F4" text-anchor="middle">Dalleo Open</text>
+  <text x="600" y="480" font-family="Arial, sans-serif" font-size="28" fill="#FAF8F4" opacity="0.7" text-anchor="middle">Digital Clubhouse</text>
+</svg>

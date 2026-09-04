@@ -1,0 +1,91 @@
+import { useMemo, useState } from "react";
+import { GALLERY_PUBLISHED, GALLERY_ITEMS, getFeaturedItem } from "@/data/gallery";
+import { useLiveData } from "@/data/useLiveData";
+import { CategoryFilter } from "@/components/gallery/CategoryFilter";
+import { MediaCard } from "@/components/gallery/MediaCard";
+import { MediaViewer } from "@/components/gallery/MediaViewer";
+import { FeaturedMemory } from "@/components/gallery/FeaturedMemory";
+import { GalleryEmptyState } from "@/components/gallery/GalleryEmptyState";
+
+export default function Gallery() {
+  const [category, setCategory] = useState("all");
+  const [viewerIndex, setViewerIndex] = useState(null);
+  const live = useLiveData("gallery");
+  const published = live ? live.published : GALLERY_PUBLISHED;
+  const allItems = useMemo(
+    () => (live ? live.items.filter((i) => i.published) : GALLERY_ITEMS),
+    [live]
+  );
+
+  const visibleItems = useMemo(
+    () =>
+      category === "all"
+        ? allItems
+        : allItems.filter((i) => i.category === category),
+    [category, allItems]
+  );
+
+  const featured = live ? allItems.find((i) => i.featured) ?? null : getFeaturedItem();
+
+  const openItem = (id, list) => {
+    const idx = list.findIndex((i) => i.id === id);
+    if (idx >= 0) setViewerIndex({ list, idx });
+  };
+
+  return (
+    <div data-testid="gallery-page" className="mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-14">
+      <header className="max-w-2xl">
+        <h1 className="text-4xl font-extrabold tracking-tight text-forest sm:text-5xl">
+          Gallery
+        </h1>
+        <p className="mt-3 text-base font-semibold text-charcoal/60 sm:text-lg">
+          7th Annual Dalleo Open &middot; 2026
+        </p>
+        <p className="mt-2 text-base leading-relaxed text-charcoal/60">
+          Memories from the Dalleo Open, on and off the course.
+        </p>
+      </header>
+
+      <div className="mt-7 sm:mt-8">
+        {published ? (
+          <div className="flex flex-col gap-8 sm:gap-10">
+            {featured && (
+              <FeaturedMemory item={featured} onOpen={(id) => openItem(id, allItems)} />
+            )}
+            <section data-testid="gallery-grid-section" aria-labelledby="gallery-grid-title">
+              <h2 id="gallery-grid-title" className="sr-only">
+                Media gallery
+              </h2>
+              <CategoryFilter value={category} onChange={setCategory} />
+              {visibleItems.length === 0 ? (
+                <p data-testid="gallery-empty-live" className="mt-6 rounded-3xl bg-white p-8 text-center text-sm font-semibold text-charcoal/50 shadow-sm ring-1 ring-border sm:p-10">
+                  No media in this category yet — check back soon.
+                </p>
+              ) : (
+              <ul
+                data-testid="media-grid"
+                className="mt-6 columns-2 gap-4 sm:columns-3 lg:columns-4"
+              >
+                {visibleItems.map((item) => (
+                  <MediaCard key={item.id} item={item} onOpen={(id) => openItem(id, visibleItems)} />
+                ))}
+              </ul>
+              )}
+            </section>
+          </div>
+        ) : (
+          <GalleryEmptyState />
+        )}
+      </div>
+
+      {viewerIndex && (
+        <MediaViewer
+          items={viewerIndex.list}
+          index={viewerIndex.idx}
+          onClose={() => setViewerIndex(null)}
+          onNavigate={(idx) => setViewerIndex({ list: viewerIndex.list, idx })}
+        />
+      )}
+    </div>
+  );
+}

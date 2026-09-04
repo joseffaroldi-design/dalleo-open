@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Replace YOUR-PRODUCTION-DOMAIN with the real domain before launch (see docs/LAUNCH_RUNBOOK.md). -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://YOUR-PRODUCTION-DOMAIN/</loc></url>
+  <url><loc>https://YOUR-PRODUCTION-DOMAIN/leaderboard</loc></url>
+  <url><loc>https://YOUR-PRODUCTION-DOMAIN/teams</loc></url>
+  <url><loc>https://YOUR-PRODUCTION-DOMAIN/schedule</loc></url>
+  <url><loc>https://YOUR-PRODUCTION-DOMAIN/gallery</loc></url>
+  <url><loc>https://YOUR-PRODUCTION-DOMAIN/brandon</loc></url>
+  <url><loc>https://YOUR-PRODUCTION-DOMAIN/rules</loc></url>
+</urlset>

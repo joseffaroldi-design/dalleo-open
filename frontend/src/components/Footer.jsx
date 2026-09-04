@@ -1,0 +1,81 @@
+import { Link } from "react-router-dom";
+import { Instagram } from "lucide-react";
+import { Logo } from "@/components/Logo";
+import { NAV_LINKS } from "@/constants/nav";
+import { useLiveData } from "@/data/useLiveData";
+
+const hasInstagramProfile = (url) => {
+  if (!url) return false;
+
+  try {
+    const parsed = new URL(url);
+    const path = parsed.pathname.replace(/\/+$/, "");
+    return /(^|\.)instagram\.com$/i.test(parsed.hostname) && path.length > 0;
+  } catch {
+    return false;
+  }
+};
+
+export const Footer = () => {
+  const site = useLiveData("site");
+  const instagramUrl = site?.instagramUrl;
+  return (
+  <footer data-testid="site-footer" className="bg-forest-deep text-cream/80">
+    <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-12">
+      <div className="flex flex-col gap-8 md:flex-row md:items-start md:justify-between md:gap-10">
+        <div className="space-y-3.5">
+          <Logo light />
+          <p className="max-w-xs text-sm leading-relaxed text-cream/60">
+            An annual golf tournament held in memory of Brandon Dalleo.
+          </p>
+          {hasInstagramProfile(instagramUrl) && (
+            <a
+              href={instagramUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              data-testid="footer-instagram-link"
+              aria-label="Dalleo Open on Instagram"
+              className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-cream/10 text-gold transition-colors duration-200 hover:bg-gold hover:text-forest-deep"
+            >
+              <Instagram className="h-5 w-5" />
+            </a>
+          )}
+        </div>
+        <nav aria-label="Footer" className="grid grid-cols-2 gap-x-10 gap-y-1 sm:grid-cols-3 sm:gap-x-12">
+          {NAV_LINKS.map(({ to, label, testId }) => (
+            <Link
+              key={to}
+              to={to}
+              data-testid={`footer-${testId}`}
+              className="flex min-h-11 items-center rounded-md text-sm font-semibold text-cream/70 transition-colors duration-200 hover:text-gold"
+            >
+              {label}
+            </Link>
+          ))}
+        </nav>
+      </div>
+      <div className="mt-8 flex flex-wrap items-center justify-between gap-3 border-t border-cream/10 pt-5 text-center text-xs text-cream/50 sm:mt-10 sm:text-left">
+        <p data-testid="footer-copyright">
+          &copy; {new Date().getFullYear()} Dalleo Open. All rights reserved.
+        </p>
+        <div className="flex items-center gap-5">
+          <Link
+            to="/score"
+            data-testid="footer-captain-scoring-link"
+            className="flex min-h-11 items-center rounded-md font-semibold text-cream/40 transition-colors duration-200 hover:text-gold"
+          >
+            Captain Scoring
+          </Link>
+          <Link
+            to="/admin/login"
+            data-testid="footer-organizer-link"
+            className="flex min-h-11 items-center rounded-md font-semibold text-cream/40 transition-colors duration-200 hover:text-gold"
+          >
+            Organizer Login
+          </Link>
+        </div>
+      </div>
+    </div>
+  </footer>
+  );
+};
