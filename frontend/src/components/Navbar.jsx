@@ -16,7 +16,7 @@ const scoreLinkClass = ({ isActive }) =>
   `inline-flex min-h-11 items-center justify-center rounded-full px-4 py-2 text-sm font-extrabold transition-all duration-200 ${
     isActive
       ? "bg-forest text-gold shadow-sm"
-      : "bg-gold text-forest-deep shadow-sm hover:-translate-y-0.5 hover:bg-gold-light hover:shadow-md"
+      : "bg-gold text-forest-deep shadow-sm hover:-translate-y-0.5 hover:bg-gold-soft hover:shadow-md"
   }`;
 
 export const Navbar = () => {
