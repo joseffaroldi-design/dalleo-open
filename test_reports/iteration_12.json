@@ -1,0 +1,16 @@
+{
+  "summary": "Read-only production retest of iteration_11 CRITICAL regression (1A/1B tee-side labels). All 4 checks PASS on https://dalleoopen.com. C1: homepage pairings strip (desktop 1440 + mobile 390) shows '1A Martin', '1B White', then 13 Franklin, 14 Berner, 15 Breaud, 16 Doell, 17 Boner, 18 Foret. C2: /schedule Shotgun Start Pairings card shows Team Martin with 1A and Team White with 1B plus 'Paired together'; page text contains '1A' and '1B'. C3: /teams/martin shows '1A' badge and 'Starts on hole 1A · 8:00 AM'; /teams/white shows '1B' badge and 'Starts on hole 1B · 8:00 AM'. C4: curl https://dalleoopen.com/api/public/teams returns startingHoleLabel='1A' for martin and '1B' for white. No console/page errors on any of the three production pages. Regression is RESOLVED.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {"ui_bugs": [], "integration_issues": [], "design_issues": []},
+  "test_report_links": [],
+  "action_items": [],
+  "critical_code_review_comments": [],
+  "updated_files": [],
+  "success_rate": {"backend": "100%", "frontend": "100%"},
+  "test_credentials": "none needed - read-only public pages",
+  "seed_data_creation": "",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "iteration_11 regression on production (1A/1B tee-side labels missing) is fully resolved as of this retest. Both the /api/public/teams API and all three affected pages (/, /schedule, /teams/martin, /teams/white) show the labels correctly on desktop 1440 and mobile 390. No further action required for this feature.",
+  "rca of the issue": "Original RCA (from main agent, confirmed by this retest): the pre-redeploy production backend's TeamInput Pydantic model did not include the startingHoleLabel field, so when the labels were first written via the API, they were silently stripped at write-time. Fix: main agent redeployed the label-aware backend and re-applied martin=1A, white=1B via /api/admin. This retest confirms both the API payload and the rendered UI now expose 1A/1B correctly."
+}
