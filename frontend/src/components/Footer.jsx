@@ -4,8 +4,21 @@ import { Logo } from "@/components/Logo";
 import { NAV_LINKS } from "@/constants/nav";
 import { useLiveData } from "@/data/useLiveData";
 
+const hasInstagramProfile = (url) => {
+  if (!url) return false;
+
+  try {
+    const parsed = new URL(url);
+    const path = parsed.pathname.replace(/\/+$/, "");
+    return /(^|\.)instagram\.com$/i.test(parsed.hostname) && path.length > 0;
+  } catch {
+    return false;
+  }
+};
+
 export const Footer = () => {
   const site = useLiveData("site");
+  const instagramUrl = site?.instagramUrl;
   return (
   <footer data-testid="site-footer" className="bg-forest-deep text-cream/80">
     <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-12">
@@ -15,16 +28,18 @@ export const Footer = () => {
           <p className="max-w-xs text-sm leading-relaxed text-cream/60">
             An annual golf tournament held in memory of Brandon Dalleo.
           </p>
-          <a
-            href={site?.instagramUrl ?? "https://www.instagram.com/"}
-            target="_blank"
-            rel="noopener noreferrer"
-            data-testid="footer-instagram-link"
-            aria-label="Dalleo Open on Instagram"
-            className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-cream/10 text-gold transition-colors duration-200 hover:bg-gold hover:text-forest-deep"
-          >
-            <Instagram className="h-5 w-5" />
-          </a>
+          {hasInstagramProfile(instagramUrl) && (
+            <a
+              href={instagramUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              data-testid="footer-instagram-link"
+              aria-label="Dalleo Open on Instagram"
+              className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-cream/10 text-gold transition-colors duration-200 hover:bg-gold hover:text-forest-deep"
+            >
+              <Instagram className="h-5 w-5" />
+            </a>
+          )}
         </div>
         <nav aria-label="Footer" className="grid grid-cols-2 gap-x-10 gap-y-1 sm:grid-cols-3 sm:gap-x-12">
           {NAV_LINKS.map(({ to, label, testId }) => (
