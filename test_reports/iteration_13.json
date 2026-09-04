@@ -44,7 +44,7 @@
   "updated_files": [],
   "success_rate": {"backend": "N/A (frontend-only)", "frontend": "100% (20/20 checks)"},
   "seed_data_creation": "None — verification only, zero mutations",
-  "test_credentials": "Admin joseffaroldi@yahoo.com / Test123 used for READ-ONLY dashboard verification only.",
+  "test_credentials": "REDACTED — credentials are intentionally not stored in repository files. Rotate any credential previously exposed in Git history.",
   "retest_needed": false,
   "should_main_agent_self_test": false,
   "context_for_next_testing_agent": "Branch reconcile_040926_0143 verified PASS on preview at 2026-01/Sept-04 pre-tournament. Only Footer.jsx, Navbar.jsx, TeamsPreview.jsx changed on frontend. If merged, no follow-up frontend regression expected. Note: /admin/game-day URL redirected to / — verify actual Game Day admin path from admin dashboard menu next time.",
