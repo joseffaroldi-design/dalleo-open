@@ -1,5 +1,6 @@
 import { useEffect, useMemo } from "react";
-import { Trophy } from "lucide-react";
+import { Link } from "react-router-dom";
+import { ArrowRight, Trophy } from "lucide-react";
 import { TEAMS } from "@/data/teams";
 import { useLiveData } from "@/data/useLiveData";
 import { trackEvent } from "@/lib/analytics";
@@ -69,6 +70,22 @@ export default function Leaderboard() {
           />
         )}
       </header>
+
+      {started && !final && (
+        <Link
+          to="/score"
+          data-testid="captain-signin-banner"
+          className="mt-6 flex items-center justify-between gap-4 rounded-2xl bg-forest px-5 py-4 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md"
+        >
+          <span className="text-sm font-bold text-cream sm:text-base">
+            Captains — sign in to enter your team's scores
+          </span>
+          <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-gold px-4 py-2 text-sm font-extrabold text-forest-deep">
+            Sign In
+            <ArrowRight className="h-4 w-4" aria-hidden="true" />
+          </span>
+        </Link>
+      )}
 
       <div className="mt-7 sm:mt-8">
         {started ? (
