@@ -5,7 +5,7 @@ export const Logo = ({ light = false }) => (
     to="/"
     data-testid="logo-home-link"
     aria-label="Dalleo Open — back to Home"
-    className="inline-flex items-center gap-3 rounded-lg"
+    className="inline-flex min-h-11 items-center gap-3 rounded-lg py-1"
   >
     <img
       src="/dalleo-flag-mark.png"

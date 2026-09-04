@@ -26,13 +26,13 @@ export const Footer = () => {
             <Instagram className="h-5 w-5" />
           </a>
         </div>
-        <nav aria-label="Footer" className="grid grid-cols-2 gap-x-10 gap-y-2.5 sm:grid-cols-3 sm:gap-x-12">
+        <nav aria-label="Footer" className="grid grid-cols-2 gap-x-10 gap-y-1 sm:grid-cols-3 sm:gap-x-12">
           {NAV_LINKS.map(({ to, label, testId }) => (
             <Link
               key={to}
               to={to}
               data-testid={`footer-${testId}`}
-              className="rounded-md py-1 text-sm font-semibold text-cream/70 transition-colors duration-200 hover:text-gold"
+              className="flex min-h-11 items-center rounded-md text-sm font-semibold text-cream/70 transition-colors duration-200 hover:text-gold"
             >
               {label}
             </Link>
@@ -47,14 +47,14 @@ export const Footer = () => {
           <Link
             to="/score"
             data-testid="footer-captain-scoring-link"
-            className="rounded-md py-1 font-semibold text-cream/40 transition-colors duration-200 hover:text-gold"
+            className="flex min-h-11 items-center rounded-md font-semibold text-cream/40 transition-colors duration-200 hover:text-gold"
           >
             Captain Scoring
           </Link>
           <Link
             to="/admin/login"
             data-testid="footer-organizer-link"
-            className="rounded-md py-1 font-semibold text-cream/40 transition-colors duration-200 hover:text-gold"
+            className="flex min-h-11 items-center rounded-md font-semibold text-cream/40 transition-colors duration-200 hover:text-gold"
           >
             Organizer Login
           </Link>
