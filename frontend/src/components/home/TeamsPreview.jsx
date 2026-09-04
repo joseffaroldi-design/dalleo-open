@@ -31,7 +31,10 @@ export const TeamsPreview = () => {
           >
             {teams.length} teams &middot; {totalPlayers} players
           </h2>
-          <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2">
+          <p className="mt-4 text-xs font-bold uppercase tracking-[0.2em] text-charcoal/50">
+            The Captains
+          </p>
+          <div className="mt-2 flex flex-wrap items-center gap-x-5 gap-y-2">
             {teams.map((team) => (
               <span
                 key={team.id}
