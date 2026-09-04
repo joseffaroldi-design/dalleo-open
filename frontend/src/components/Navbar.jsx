@@ -11,6 +11,14 @@ const linkClass = ({ isActive }) =>
       ? "bg-forest text-cream"
       : "text-charcoal/80 hover:bg-forest-mist hover:text-forest"
   }`;
+
+const scoreLinkClass = ({ isActive }) =>
+  `inline-flex min-h-11 items-center justify-center rounded-full px-4 py-2 text-sm font-extrabold transition-all duration-200 ${
+    isActive
+      ? "bg-forest text-gold shadow-sm"
+      : "bg-gold text-forest-deep shadow-sm hover:-translate-y-0.5 hover:bg-gold-light hover:shadow-md"
+  }`;
+
 export const Navbar = () => {
   const [open, setOpen] = useState(false);
   const { pathname } = useLocation();
@@ -35,18 +43,34 @@ export const Navbar = () => {
               {label}
             </NavLink>
           ))}
+          <NavLink
+            to="/score"
+            data-testid="nav-link-score"
+            className={scoreLinkClass}
+          >
+            Score
+          </NavLink>
         </div>
-        <button
-          type="button"
-          data-testid="mobile-menu-button"
-          aria-expanded={open}
-          aria-controls="mobile-nav"
-          aria-label={open ? "Close menu" : "Open menu"}
-          onClick={() => setOpen((v) => !v)}
-          className="flex h-11 w-11 items-center justify-center rounded-xl text-forest transition-colors duration-200 hover:bg-forest-mist md:hidden"
-        >
-          {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-        </button>
+        <div className="flex items-center gap-2 md:hidden">
+          <NavLink
+            to="/score"
+            data-testid="nav-link-score-mobile"
+            className={scoreLinkClass}
+          >
+            Score
+          </NavLink>
+          <button
+            type="button"
+            data-testid="mobile-menu-button"
+            aria-expanded={open}
+            aria-controls="mobile-nav"
+            aria-label={open ? "Close menu" : "Open menu"}
+            onClick={() => setOpen((v) => !v)}
+            className="flex h-11 w-11 items-center justify-center rounded-xl text-forest transition-colors duration-200 hover:bg-forest-mist"
+          >
+            {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+          </button>
+        </div>
       </nav>
       {open && (
         <div
