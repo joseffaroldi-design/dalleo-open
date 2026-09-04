@@ -6,44 +6,53 @@ const STORAGE_KEY = "dalleo_gameday_checklist";
 
 const SECTIONS = [
   {
-    title: "Before Saturday",
+    title: "Night Before — Ten Quiet Minutes",
     items: [
-      { id: "pins", text: "All 8 captain PINs shared privately with each captain", link: { to: "/admin/scoring", label: "Scoring → Captain PINs" } },
-      { id: "link", text: "Captains have the scoring link: /score (footer of the site)" },
-      { id: "charged", text: "Organizer phone charged + logged in at /admin" },
+      { id: "pins", text: "All 8 captain PINs shared privately with each captain", link: { to: "/admin/scoring", label: "Scoring → Team PINs" } },
+      { id: "rehearsal", text: "Rehearsal: Scoring status → Test, one captain enters one practice score, watch it land on the leaderboard", link: { to: "/admin/scoring", label: "Scoring admin" } },
+      { id: "rehearsal-reset", text: "One tap: Clear test scores & return to Not Started" },
+      { id: "charged", text: "Organizer phone charged (bring the battery pack) + logged in at /admin" },
     ],
   },
   {
-    title: "Tournament Morning — Gennaro's",
+    title: "7:30 AM — Arrive at LA Tour",
     items: [
-      { id: "pairings", text: "Enter official hole assignments for all 8 teams", link: { to: "/admin/teams", label: "Teams admin" } },
+      { id: "smoke-test", text: "Smoke test: one captain opens dalleoopen.com/score, picks their team, enters their PIN — scorecard opens on their starting hole", link: { to: "/score", label: "Open /score" } },
+      { id: "pin-lookup", text: "Forgot a PIN? They're all in Scoring → Team PINs", link: { to: "/admin/scoring", label: "Scoring → Team PINs" } },
       { id: "schedule-check", text: "Public Schedule shows the right times and pairings", link: { to: "/schedule", label: "View Schedule" } },
     ],
   },
   {
-    title: "8:30 AM — Shotgun Start",
+    title: "7:55 AM — The One Switch",
     items: [
-      { id: "go-live", text: "Scoring status set to Live + Save Changes", link: { to: "/admin/scoring", label: "Scoring admin" } },
-      { id: "verify-live", text: "Public leaderboard shows Live standings", link: { to: "/leaderboard", label: "View Leaderboard" } },
+      { id: "go-live", text: "Scoring status → Live + Save Changes", link: { to: "/admin/scoring", label: "Scoring admin" } },
+      { id: "verify-live", text: "Leaderboard has taken over the homepage and shows Live standings", link: { to: "/", label: "View Homepage" } },
+    ],
+  },
+  {
+    title: "8:00 AM — Shotgun Start · During the Round",
+    items: [
       { id: "first-scores", text: "First captain scores coming in after opening holes" },
-    ],
-  },
-  {
-    title: "During the Round",
-    items: [
       { id: "matrix", text: "Watch the progress matrix for missing scores", link: { to: "/admin/scoring", label: "Scoring admin" } },
-      { id: "corrections", text: "Fix any mis-entered scores (overwrite confirms first)" },
-      { id: "standings", text: "Spot-check live standings and ties on the leaderboard" },
+      { id: "corrections", text: "Phone trouble? You can enter or fix any team's score yourself (overwrite confirms first)" },
     ],
   },
   {
-    title: "After the Round",
+    title: "Last Card In — Crown the Champion",
     items: [
       { id: "complete-cards", text: "Every team shows 18/18 holes in the progress matrix" },
-      { id: "final", text: "Scoring status set to Final + Save Changes" },
-      { id: "champion", text: "Champion banner live on the public leaderboard", link: { to: "/leaderboard", label: "View Leaderboard" } },
+      { id: "final", text: "Scoring status → Final + Save Changes — standings lock, winner crowned" },
+      { id: "champion", text: "Pull up the leaderboard for the announcement", link: { to: "/leaderboard", label: "View Leaderboard" } },
       { id: "record", text: "Save a screenshot of the final standings" },
-      { id: "trophy", text: "Later: add the 2026 winner to the Trophy Wall", link: { to: "/admin/champions", label: "Champions admin" } },
+    ],
+  },
+  {
+    title: "This Week — Write the 7th Chapter",
+    items: [
+      { id: "trophy", text: "Add the 2026 winner to the Trophy Wall with a photo and a line about the day", link: { to: "/admin/champions", label: "Champions admin" } },
+      { id: "gallery", text: "Upload the day's photos and videos to the Gallery", link: { to: "/admin/gallery", label: "Gallery admin" } },
+      { id: "results-post", text: "Post a results announcement (rolls to the homepage)", link: { to: "/admin/announcements", label: "Announcements admin" } },
+      { id: "analytics", text: "Check GA4 — see how many people followed along" },
     ],
   },
 ];
@@ -71,7 +80,7 @@ export default function GameDayAdmin() {
         <div>
           <h1 className="text-2xl font-extrabold tracking-tight text-forest sm:text-3xl">Game Day Checklist</h1>
           <p className="mt-1 text-sm text-charcoal/60">
-            Saturday, September 5, 2026 — tap items as you complete them. Progress saves on this phone.
+            Saturday, September 5, 2026 — LA Tour · Shotgun start 8:00 AM · tap items as you complete them. Progress saves on this phone.
           </p>
         </div>
         <div className="flex items-center gap-3">
