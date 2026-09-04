@@ -1,5 +1,6 @@
 import { Hero } from "@/components/home/Hero";
 import { Marquee } from "@/components/Marquee";
+import { PairingsStrip } from "@/components/home/PairingsStrip";
 import { LeaderboardPreview } from "@/components/home/LeaderboardPreview";
 import { TeamsPreview } from "@/components/home/TeamsPreview";
 import { Announcements } from "@/components/home/Announcements";
@@ -13,6 +14,7 @@ export default function Home() {
       <LeaderboardPreview />
       <Hero />
       <Marquee />
+      <PairingsStrip />
       <TeamsPreview />
       <Announcements />
       <GalleryPreview />

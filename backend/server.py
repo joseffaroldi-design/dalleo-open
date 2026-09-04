@@ -393,6 +393,7 @@ class TeamInput(BaseModel):
     motto: str = Field(min_length=1, max_length=200)
     players: List[PlayerInput]
     startingHole: Optional[int] = Field(None, ge=1, le=18)
+    startingHoleLabel: Optional[str] = Field(None, max_length=10)
     startingTime: Optional[str] = Field(None, max_length=20)
     order: Optional[int] = Field(None, ge=1, le=99)
     active: bool = True

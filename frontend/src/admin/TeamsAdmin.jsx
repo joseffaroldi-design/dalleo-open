@@ -77,14 +77,18 @@ export default function TeamsAdmin() {
               <Field label="Motto">
                 <TextInput data-testid={`team-motto-${team.id}`} value={team.motto} onChange={(e) => updateTeam(team.id, { motto: e.target.value })} />
               </Field>
-              <Field label="Starting hole (shotgun)" hint="1–18. Leave empty until pairings are set.">
+              <Field label="Starting hole (shotgun)" hint='1–18, with an optional A/B side — for example: "1A". Leave empty until pairings are set.'>
                 <TextInput
-                  type="number"
-                  min="1"
-                  max="18"
                   data-testid={`team-hole-${team.id}`}
-                  value={team.startingHole ?? ""}
-                  onChange={(e) => updateTeam(team.id, { startingHole: e.target.value === "" ? null : Number(e.target.value) })}
+                  value={team.startingHoleLabel ?? (team.startingHole ?? "")}
+                  onChange={(e) => {
+                    const v = e.target.value.trim().toUpperCase();
+                    if (!v) return updateTeam(team.id, { startingHole: null, startingHoleLabel: null });
+                    const m = v.match(/^(\d{1,2})([AB])?$/);
+                    const n = m ? parseInt(m[1], 10) : NaN;
+                    if (!m || n < 1 || n > 18) return;
+                    updateTeam(team.id, { startingHole: n, startingHoleLabel: m[2] ? `${n}${m[2]}` : null });
+                  }}
                 />
               </Field>
               <Field label="Starting time" hint='For example: "8:00 AM"'>

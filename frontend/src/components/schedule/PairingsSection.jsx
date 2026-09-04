@@ -40,6 +40,11 @@ export const PairingsSection = () => {
               {byHole[h].map((t) => (
                 <p key={t.id} className="text-sm font-extrabold text-charcoal">
                   {t.name}
+                  {t.startingHoleLabel && (
+                    <span className="ml-2 rounded-full bg-gold/20 px-2 py-0.5 text-[10px] font-extrabold text-gold-deep">
+                      {t.startingHoleLabel}
+                    </span>
+                  )}
                   <span className="ml-2 text-xs font-semibold text-charcoal/50">Capt. {t.captain}</span>
                 </p>
               ))}

@@ -91,13 +91,13 @@ export default function TeamDetail() {
             aria-hidden="true"
             className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-forest font-display text-xl font-semibold text-gold"
           >
-            {team.startingHole ?? <Flag className="h-5 w-5" />}
+            {team.startingHoleLabel ?? team.startingHole ?? <Flag className="h-5 w-5" />}
           </span>
           <div>
             {team.startingHole ? (
               <>
                 <p data-testid="team-starting-hole" className="text-base font-extrabold text-charcoal sm:text-lg">
-                  Starts on hole {team.startingHole}
+                  Starts on hole {team.startingHoleLabel ?? team.startingHole}
                   {team.startingTime ? ` · ${team.startingTime}` : ""}
                 </p>
                 <p className="text-sm font-semibold text-charcoal/50">
