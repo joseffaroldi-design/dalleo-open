@@ -17,6 +17,8 @@ export const TeamCard = ({ team }) => {
             src={team.photoUrl}
             alt={`${team.name} team photo`}
             data-testid={`team-photo-${team.id}`}
+            loading="lazy"
+            decoding="async"
             className="h-14 w-14 shrink-0 rounded-full bg-forest-mist object-cover ring-2 ring-gold/60"
           />
         ) : (

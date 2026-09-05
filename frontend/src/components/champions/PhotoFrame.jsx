@@ -9,6 +9,8 @@ export const PhotoFrame = ({ caption, testId, aspect = "aspect-[4/3]", className
         src={src}
         alt={caption}
         data-testid={testId}
+        loading="lazy"
+        decoding="async"
         className={`spotlight-frame ${aspect} w-full rounded-t-[999px] border border-gold/40 object-cover ${className}`}
       />
     );

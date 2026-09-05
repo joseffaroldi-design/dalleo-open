@@ -54,6 +54,8 @@ export const MediaThumb = ({ item, aspect, className = "", iconClassName = "h-12
             src={first}
             alt={item.alt}
             onError={() => setImgError(true)}
+            loading="lazy"
+            decoding="async"
             className="absolute inset-0 h-full w-full object-cover"
           />
         )

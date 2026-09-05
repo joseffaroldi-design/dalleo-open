@@ -13,6 +13,8 @@ const MemberCard = ({ member, index }) => (
           src={member.photoUrl}
           alt={`Photo of ${member.name}`}
           data-testid={`member-avatar-${index + 1}`}
+          loading="lazy"
+          decoding="async"
           className="h-14 w-14 shrink-0 rounded-full object-cover ring-2 ring-gold/60"
         />
       ) : (

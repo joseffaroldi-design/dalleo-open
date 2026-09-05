@@ -96,6 +96,8 @@ export const Hero = () => {
             src="/dalleo-logo-gold.png"
             alt="Dalleo Open — ESTD 2020 · Play Me!"
             data-testid="hero-logo"
+            fetchpriority="high"
+            decoding="async"
             className="w-full"
           />
         </motion.div>

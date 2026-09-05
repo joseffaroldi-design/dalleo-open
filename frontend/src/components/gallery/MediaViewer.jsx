@@ -82,6 +82,7 @@ export const MediaViewer = ({ items, index, onClose, onNavigate }) => {
               src={current}
               alt={item.alt}
               data-testid="viewer-image"
+              decoding="async"
               className="max-h-[55vh] w-full bg-forest-deep object-contain"
             />
           ) : (
