@@ -2,7 +2,6 @@ import { useCallback, useRef } from "react";
 import { motion, useMotionValue, useSpring, useScroll, useTransform } from "framer-motion";
 import { ImageIcon } from "lucide-react";
 import { useLiveData } from "@/data/useLiveData";
-import { Countdown } from "@/components/home/Countdown";
 
 const EASE = [0.16, 1, 0.3, 1];
 
@@ -13,12 +12,10 @@ export const Hero = () => {
   const edition = site?.edition ?? "7th Annual Dalleo Open";
   const editionLabel = edition.replace(/dalleo open/i, "").trim() || edition;
 
-  // Scroll parallax — giant masthead word drifts as you leave the hero.
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start start", "end start"] });
   const wordY = useTransform(scrollYProgress, [0, 1], [0, 140]);
   const fade = useTransform(scrollYProgress, [0, 0.75], [1, 0]);
 
-  // Mouse parallax — subtle 3D drift on the masthead word and photo frame.
   const mx = useMotionValue(0);
   const my = useMotionValue(0);
   const sx = useSpring(mx, { stiffness: 50, damping: 20 });
@@ -84,7 +81,7 @@ export const Hero = () => {
         </motion.p>
 
         <h1 id="hero-title" data-testid="hero-title" className="sr-only">
-          {edition}
+          2026 Dalleo Open Champions — Team Martin
         </h1>
         <motion.div
           initial={{ opacity: 0, y: 24, scale: 0.94 }}
@@ -100,22 +97,29 @@ export const Hero = () => {
           />
         </motion.div>
 
-        <motion.p
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9, delay: 0.7, ease: EASE }}
-          data-testid="hero-date-placeholder"
-          className="mt-1 text-base font-semibold text-cream/70 sm:mt-2 sm:text-lg"
-        >
-          {site?.dateText ?? "Tournament dates to be announced"}
-        </motion.p>
-
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9, delay: 0.85, ease: EASE }}
+          transition={{ duration: 0.9, delay: 0.7, ease: EASE }}
+          className="mt-3"
         >
-          <Countdown />
+          <p className="text-xs font-bold uppercase tracking-[0.28em] text-cream/55">2026 Champions</p>
+          <p className="mt-2 font-display text-4xl font-bold text-cream sm:text-6xl">Team Martin</p>
+          <p className="mt-2 text-base font-semibold text-gold-soft sm:text-lg">69 · −3 · Won by 2 strokes</p>
+          <p data-testid="hero-date-placeholder" className="mt-3 text-sm font-semibold text-cream/60 sm:text-base">
+            September 5, 2026 · LA Tour
+          </p>
+          <div className="mx-auto mt-5 flex max-w-md items-center justify-center gap-6 border-y border-cream/10 py-4 text-center">
+            <div>
+              <p className="font-display text-2xl font-bold text-gold">144 / 144</p>
+              <p className="mt-1 text-[10px] font-bold uppercase tracking-[0.2em] text-cream/45">Scores Captured</p>
+            </div>
+            <div className="h-10 w-px bg-cream/10" aria-hidden="true" />
+            <div>
+              <p className="font-display text-2xl font-bold text-gold">Final</p>
+              <p className="mt-1 text-[10px] font-bold uppercase tracking-[0.2em] text-cream/45">Tournament Status</p>
+            </div>
+          </div>
         </motion.div>
       </motion.div>
 
@@ -137,11 +141,11 @@ export const Hero = () => {
             <div
               data-testid="hero-image-placeholder"
               role="img"
-              aria-label="Hero image placeholder — tournament photo coming soon"
+              aria-label="2026 championship photo coming soon"
               className="spotlight-frame flex aspect-[4/3] w-full flex-col items-center justify-center gap-3 rounded-t-[999px] border border-gold/40 bg-forest text-cream/50 sm:aspect-[16/9]"
             >
               <ImageIcon className="h-10 w-10" aria-hidden="true" />
-              <span className="text-sm font-semibold">Tournament photo coming soon</span>
+              <span className="text-sm font-semibold">2026 championship photo coming soon</span>
             </div>
           )}
         </motion.div>
