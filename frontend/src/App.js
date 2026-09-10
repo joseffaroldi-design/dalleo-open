@@ -12,7 +12,6 @@ import Home from "@/pages/Home";
 import Leaderboard from "@/pages/Leaderboard";
 import Champions from "@/pages/Champions";
 import ChampionDetail from "@/pages/ChampionDetail";
-import CaptainScoring from "@/pages/CaptainScoring";
 import Course from "@/pages/Course";
 import Teams from "@/pages/Teams";
 import TeamDetail from "@/pages/TeamDetail";
@@ -39,17 +38,17 @@ import GameDayAdmin from "@/admin/GameDayAdmin";
 import CourseAdmin from "@/admin/CourseAdmin";
 
 const PAGE_TITLES = [
-  [/^\/leaderboard/, "Live Leaderboard — Dalleo Open"],
+  [/^\/leaderboard/, "Final Results — 2026 Dalleo Open"],
   [/^\/champions/, "Champions — Dalleo Open"],
-  [/^\/score/, "Captain Scoring — Dalleo Open"],
-  [/^\/course/, "The Course — Dalleo Open"],
-  [/^\/teams/, "Teams — Dalleo Open"],
-  [/^\/schedule/, "Tournament Schedule — Dalleo Open"],
-  [/^\/announcements/, "Announcements — Dalleo Open"],
-  [/^\/gallery/, "Gallery — Dalleo Open"],
+  [/^\/score/, "Final Results — 2026 Dalleo Open"],
+  [/^\/course/, "2026 Championship Course — Dalleo Open"],
+  [/^\/teams/, "2026 Field — Dalleo Open"],
+  [/^\/schedule/, "2026 Tournament Weekend — Dalleo Open"],
+  [/^\/announcements/, "2026 Tournament Bulletin — Dalleo Open"],
+  [/^\/gallery/, "2026 Gallery — Dalleo Open"],
   [/^\/brandon/, "In Memory of Brandon Dalleo — Dalleo Open"],
-  [/^\/rules/, "Rules & Format — Dalleo Open"],
-  [/^\/draft/, "2026 Draft — Dalleo Open"],
+  [/^\/rules/, "Official 2026 Rules — Dalleo Open"],
+  [/^\/draft/, "2026 Final Draft Board — Dalleo Open"],
   [/^\/committee/, "Committee & Leadership — Dalleo Open"],
   [/^\/admin/, "Organizer — Dalleo Open"],
 ];
@@ -62,7 +61,7 @@ const Shell = () => {
 
   useEffect(() => {
     const match = PAGE_TITLES.find(([pattern]) => pattern.test(pathname));
-    document.title = match ? match[1] : "Dalleo Open Digital Clubhouse";
+    document.title = match ? match[1] : "2026 Dalleo Open — Team Martin Champions";
     trackPageView(pathname);
   }, [pathname]);
 
@@ -83,7 +82,7 @@ const Shell = () => {
           <Route path="/leaderboard" element={<Leaderboard />} />
           <Route path="/champions" element={<Champions />} />
           <Route path="/champions/:year" element={<ChampionDetail />} />
-          <Route path="/score" element={<CaptainScoring />} />
+          <Route path="/score" element={<Navigate to="/leaderboard" replace />} />
           <Route path="/course" element={<Course />} />
           <Route path="/teams" element={<Teams />} />
           <Route path="/teams/:teamId" element={<TeamDetail />} />
@@ -119,16 +118,12 @@ const Shell = () => {
   );
 };
 
-function App() {
+export default function App() {
   return (
     <MotionConfig reducedMotion="user">
-      <div className="App">
-        <BrowserRouter>
-          <Shell />
-        </BrowserRouter>
-      </div>
+      <BrowserRouter>
+        <Shell />
+      </BrowserRouter>
     </MotionConfig>
   );
 }
-
-export default App;
