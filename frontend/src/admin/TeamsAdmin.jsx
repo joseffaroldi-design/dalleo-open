@@ -119,7 +119,7 @@ export default function TeamsAdmin() {
                     const m = v.match(/^(\d{1,2})([AB])?$/);
                     const n = m ? parseInt(m[1], 10) : NaN;
                     if (!m || n < 1 || n > 18) return;
-                    updateTeam(id, { startingHole: n, startingHoleLabel: m[2] ? `${n}${m[2]}` : null });
+                    updateTeam(team.id, { startingHole: n, startingHoleLabel: m[2] ? `${n}${m[2]}` : null });
                   }}
                 />
               </Field>
