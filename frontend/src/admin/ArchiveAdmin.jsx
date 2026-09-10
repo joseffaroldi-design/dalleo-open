@@ -29,7 +29,7 @@ export default function ArchiveAdmin() {
   const load = async () => {
     setError("");
     try {
-      setState(await adminFetch("/admin/tournament-years"));
+      setState(await adminFetch("/admin/tournaments/years"));
     } catch (e) {
       setError(e.message);
     }
@@ -48,7 +48,7 @@ export default function ArchiveAdmin() {
   const archiveCurrent = async () => {
     setWorking(true); setError(""); setMessage("");
     try {
-      await adminFetch("/admin/tournament-years/archive", {
+      await adminFetch("/admin/tournaments/archive", {
         method: "POST",
         body: JSON.stringify({ year: currentYear, confirmation: confirmArchive }),
       });
@@ -62,7 +62,7 @@ export default function ArchiveAdmin() {
   const startNext = async () => {
     setWorking(true); setError(""); setMessage("");
     try {
-      await adminFetch("/admin/tournament-years/rollover", {
+      await adminFetch("/admin/tournaments/rollover", {
         method: "POST",
         body: JSON.stringify({ fromYear: currentYear, toYear: nextYear, confirmation: confirmStart }),
       });
@@ -75,7 +75,7 @@ export default function ArchiveAdmin() {
 
   const exportYear = async (year) => {
     try {
-      const res = await adminFetch(`/admin/tournament-years/${year}`);
+      const res = await adminFetch(`/admin/tournaments/year/${year}`);
       downloadJson(`dalleo-open-${year}-archive.json`, res.archive);
     } catch (e) { setError(e.message); }
   };
