@@ -1,5 +1,5 @@
 import { useCallback, useRef } from "react";
-import { motion, useMotionValue, useSpring, useScroll, useTransform } from "framer-motion";
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { ImageIcon } from "lucide-react";
 import { useLiveData } from "@/data/useLiveData";
 import { Countdown } from "@/components/home/Countdown";
@@ -15,10 +15,6 @@ export const Hero = () => {
   const edition = "8th Annual Dalleo Open";
   const editionLabel = "8th Annual";
   const dateText = "Saturday, September 4, 2027";
-
-  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start start", "end start"] });
-  const wordY = useTransform(scrollYProgress, [0, 1], [0, 140]);
-  const fade = useTransform(scrollYProgress, [0, 0.75], [1, 0]);
 
   const mx = useMotionValue(0);
   const my = useMotionValue(0);
@@ -53,13 +49,13 @@ export const Hero = () => {
       />
       <motion.div
         aria-hidden="true"
-        style={{ y: wordY, x: wordX }}
+        style={{ x: wordX }}
         className="text-outline-cream pointer-events-none absolute inset-x-0 top-14 select-none text-center font-display text-[24vw] font-black leading-none tracking-tight sm:top-8"
       >
         DALLEO
       </motion.div>
 
-      <motion.div style={{ opacity: fade }} className="relative mx-auto max-w-6xl px-4 pb-8 pt-20 text-center sm:px-6 sm:pb-9 sm:pt-24">
+      <motion.div className="relative mx-auto max-w-6xl px-4 pb-8 pt-20 text-center sm:px-6 sm:pb-9 sm:pt-24">
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
