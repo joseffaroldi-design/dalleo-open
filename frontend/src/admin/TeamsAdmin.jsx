@@ -1,5 +1,7 @@
+import { useEffect, useMemo, useState } from "react";
 import { SEED } from "@/admin/seedData";
 import { ImageUpload } from "@/admin/ImageUpload";
+import { adminFetch } from "@/lib/api";
 import {
   useAdminDomain, AdminSection, AdminLoading, Field, TextInput, TextArea,
   SelectInput, Toggle, SaveBar,
@@ -14,6 +16,28 @@ const COLOR_OPTIONS = [
 
 export default function TeamsAdmin() {
   const { data, setData, loading, saving, saved, error, save } = useAdminDomain("teams", SEED.teams);
+  const [archivedPlayers, setArchivedPlayers] = useState([]);
+
+  useEffect(() => {
+    let active = true;
+    adminFetch("/admin/site")
+      .then((res) => active && setArchivedPlayers(res.data?.playerLibrary ?? []))
+      .catch(() => {});
+    return () => { active = false; };
+  }, []);
+
+  const photoByName = useMemo(() => {
+    const map = new Map();
+    for (const player of archivedPlayers) {
+      if (player?.name && player?.photoUrl) map.set(player.name.trim().toLowerCase(), player.photoUrl);
+    }
+    for (const team of data?.items ?? []) {
+      for (const player of team.players ?? []) {
+        if (player?.name && player?.photoUrl) map.set(player.name.trim().toLowerCase(), player.photoUrl);
+      }
+    }
+    return map;
+  }, [archivedPlayers, data]);
 
   if (loading || !data) return <AdminLoading />;
 
@@ -23,15 +47,23 @@ export default function TeamsAdmin() {
   const playersText = (team) => team.players.map((p) => p.name).join("\n");
   const setPlayers = (id, text) => {
     const prev = data.items.find((t) => t.id === id)?.players ?? [];
+    const previousByName = new Map(
+      data.items.flatMap((t) => t.players ?? []).filter((p) => p?.name).map((p) => [p.name.trim().toLowerCase(), p])
+    );
     const players = text
       .split("\n")
       .map((name) => name.trim())
       .filter(Boolean)
-      .map((name, i) => ({
-        name,
-        ...(i === 0 ? { role: "Captain" } : {}),
-        ...(prev[i]?.photoUrl ? { photoUrl: prev[i].photoUrl } : {}),
-      }));
+      .map((name, i) => {
+        const key = name.toLowerCase();
+        const prior = previousByName.get(key) ?? prev[i] ?? {};
+        const photoUrl = prior.photoUrl || photoByName.get(key) || null;
+        return {
+          name,
+          ...(i === 0 ? { role: "Captain" } : {}),
+          ...(photoUrl ? { photoUrl } : {}),
+        };
+      });
     updateTeam(id, { players });
   };
 
@@ -49,7 +81,7 @@ export default function TeamsAdmin() {
     <div data-testid="teams-admin">
       <h1 className="text-2xl font-extrabold tracking-tight text-forest sm:text-3xl">Teams</h1>
       <p className="mt-1 text-sm text-charcoal/60">
-        2026 tournament setup — exactly eight teams, four players each (captain first). Assign shotgun starting holes and times here; they appear on the public Teams and Schedule pages.
+        Tournament setup — exactly eight teams, four players each (captain first). Returning player photos are reused automatically when their saved name matches the player library.
       </p>
 
       <div className="mt-8 flex flex-col gap-6">
@@ -87,7 +119,7 @@ export default function TeamsAdmin() {
                     const m = v.match(/^(\d{1,2})([AB])?$/);
                     const n = m ? parseInt(m[1], 10) : NaN;
                     if (!m || n < 1 || n > 18) return;
-                    updateTeam(team.id, { startingHole: n, startingHoleLabel: m[2] ? `${n}${m[2]}` : null });
+                    updateTeam(id, { startingHole: n, startingHoleLabel: m[2] ? `${n}${m[2]}` : null });
                   }}
                 />
               </Field>
@@ -123,7 +155,7 @@ export default function TeamsAdmin() {
               checked={team.active !== false}
               onChange={(v) => updateTeam(team.id, { active: v })}
             />
-            <Field label="Roster — one player per line" hint="First line becomes the Captain on the public page.">
+            <Field label="Roster — one player per line" hint="First line becomes the Captain. Returning players keep their archived photo when the name matches.">
               <TextArea
                 rows={Math.max(4, team.players.length + 1)}
                 data-testid={`team-players-${team.id}`}
