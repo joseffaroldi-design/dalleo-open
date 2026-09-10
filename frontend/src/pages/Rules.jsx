@@ -20,21 +20,17 @@ const fromLive = (live) => ({
 
 export default function Rules() {
   const live = useLiveData("rules");
-  const published = live ? live.published : RULES_PUBLISHED;
-  const approved = live ? live.approved : RULES_APPROVED;
-  const R = live ? fromLive(live) : RULES;
+  const liveIs2027 = /2027/.test(live?.edition ?? "");
+  const published = liveIs2027 ? live.published : RULES_PUBLISHED;
+  const approved = liveIs2027 ? live.approved : RULES_APPROVED;
+  const R = liveIs2027 ? fromLive(live) : RULES;
+
   return (
     <div data-testid="rules-page" className="mx-auto max-w-4xl px-4 py-14 sm:px-6 sm:py-20">
       <header className="max-w-2xl">
-        <h1 className="text-4xl font-extrabold tracking-tight text-forest sm:text-5xl">
-          {R.header.title}
-        </h1>
-        <p className="mt-3 text-base font-semibold text-charcoal/60 sm:text-lg">
-          {R.header.edition}
-        </p>
-        <p className="mt-2 text-base leading-relaxed text-charcoal/60">
-          {R.header.description}
-        </p>
+        <h1 className="text-4xl font-extrabold tracking-tight text-forest sm:text-5xl">{R.header.title}</h1>
+        <p className="mt-3 text-base font-semibold text-charcoal/60 sm:text-lg">{R.header.edition}</p>
+        <p className="mt-2 text-base leading-relaxed text-charcoal/60">{R.header.description}</p>
       </header>
 
       <div className="mt-10">
@@ -46,9 +42,7 @@ export default function Rules() {
 
             <RuleSection id="format" title="Tournament Format" testId="section-format">
               <div className="rounded-3xl bg-white p-7 shadow-sm ring-1 ring-border sm:p-8">
-                <p className="text-base leading-relaxed text-charcoal/70">
-                  {R.format.intro}
-                </p>
+                <p className="text-base leading-relaxed text-charcoal/70">{R.format.intro}</p>
                 <ul className="mt-6 space-y-3">
                   {R.format.points.map((point, i) => (
                     <li key={i} data-testid={`format-point-${i + 1}`} className="flex items-start gap-3">
@@ -57,9 +51,7 @@ export default function Rules() {
                     </li>
                   ))}
                 </ul>
-                <p className="mt-6 rounded-2xl bg-gold/10 px-4 py-3 text-sm font-semibold text-gold-deep">
-                  {R.format.note}
-                </p>
+                <p className="mt-6 rounded-2xl bg-gold/10 px-4 py-3 text-sm font-semibold text-gold-deep">{R.format.note}</p>
               </div>
             </RuleSection>
 
@@ -70,17 +62,9 @@ export default function Rules() {
             <RuleSection id="conduct" title="Player Conduct" testId="section-conduct">
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 {R.conduct.map((item, i) => (
-                  <div
-                    key={item.title}
-                    data-testid={`conduct-item-${i + 1}`}
-                    className="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-border"
-                  >
-                    <h3 className="text-lg font-extrabold tracking-tight text-forest">
-                      {item.title}
-                    </h3>
-                    <p className="mt-2 text-sm leading-relaxed text-charcoal/60 sm:text-base">
-                      {item.body}
-                    </p>
+                  <div key={item.title} data-testid={`conduct-item-${i + 1}`} className="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-border">
+                    <h3 className="text-lg font-extrabold tracking-tight text-forest">{item.title}</h3>
+                    <p className="mt-2 text-sm leading-relaxed text-charcoal/60 sm:text-base">{item.body}</p>
                   </div>
                 ))}
               </div>
@@ -91,19 +75,12 @@ export default function Rules() {
                 <ol className="space-y-4">
                   {R.tiebreakers.steps.map((step, i) => (
                     <li key={step} data-testid={`tiebreaker-${i + 1}`} className="flex items-center gap-4">
-                      <span
-                        aria-hidden="true"
-                        className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-forest text-sm font-extrabold text-gold"
-                      >
-                        {i + 1}
-                      </span>
+                      <span aria-hidden="true" className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-forest text-sm font-extrabold text-gold">{i + 1}</span>
                       <span className="text-base font-bold text-charcoal sm:text-lg">{step}</span>
                     </li>
                   ))}
                 </ol>
-                <p className="mt-6 rounded-2xl bg-gold/10 px-4 py-3 text-sm font-semibold text-gold-deep">
-                  {R.tiebreakers.note}
-                </p>
+                <p className="mt-6 rounded-2xl bg-gold/10 px-4 py-3 text-sm font-semibold text-gold-deep">{R.tiebreakers.note}</p>
               </div>
             </RuleSection>
 

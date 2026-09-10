@@ -1,6 +1,5 @@
 import { useEffect, useMemo } from "react";
-import { Link } from "react-router-dom";
-import { ArrowRight, Trophy } from "lucide-react";
+import { Trophy } from "lucide-react";
 import { TEAMS } from "@/data/teams";
 import { useLiveData } from "@/data/useLiveData";
 import { trackEvent } from "@/lib/analytics";
@@ -23,6 +22,7 @@ export default function Leaderboard() {
   useEffect(() => {
     trackEvent("leaderboard_view");
   }, []);
+
   const teams = useMemo(() => {
     const items = (liveTeams ? liveTeams.items : TEAMS).filter((t) => t.active !== false);
     return [...items].sort((a, b) => (a.order ?? 99) - (b.order ?? 99));
@@ -37,6 +37,7 @@ export default function Leaderboard() {
   const final = status === "final";
   const leader = standings.find((r) => r.position === 1);
   const updated = formatUpdatedAt(scoring?.updatedAt);
+  const heading = final ? "2026 Final Results" : started ? "Live Leaderboard" : "2027 Leaderboard";
 
   return (
     <div data-testid="leaderboard-page" className="mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-14">
@@ -44,7 +45,7 @@ export default function Leaderboard() {
         <div>
           <p className="font-display text-sm italic text-gold-deep">Four-Person Scramble Championship</p>
           <h1 className="mt-2 text-4xl font-extrabold tracking-tight text-forest sm:text-5xl">
-            Live Leaderboard
+            {heading}
           </h1>
           <p className="mt-3 text-base font-semibold text-charcoal/60 sm:text-lg">
             One round · 18 holes · Lowest team score wins
@@ -70,24 +71,6 @@ export default function Leaderboard() {
           />
         )}
       </header>
-
-      {status !== "final" && (
-        <Link
-          to="/score"
-          data-testid="captain-signin-banner"
-          className="mt-6 flex items-center justify-between gap-4 rounded-2xl bg-forest px-5 py-4 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md"
-        >
-          <span className="text-sm font-bold text-cream sm:text-base">
-            {started
-              ? "Captains — sign in to enter your team's scores"
-              : "Captains — sign in to get ready for Saturday's round"}
-          </span>
-          <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-gold px-4 py-2 text-sm font-extrabold text-forest-deep">
-            Sign In
-            <ArrowRight className="h-4 w-4" aria-hidden="true" />
-          </span>
-        </Link>
-      )}
 
       <div className="mt-7 sm:mt-8">
         {started ? (
