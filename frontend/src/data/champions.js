@@ -1,5 +1,5 @@
-// Champions fallback content — mirrors the live Trophy Wall (real champions
-// since 2020). The 2026 champion is added via the admin after the tournament.
+// Champions fallback content — mirrors the permanent Trophy Wall.
+// 2026 result is official; photography can be added later without changing the entry.
 
 const entry = (year, ordinal, teamName, captain, members) => ({
   year,
@@ -31,6 +31,28 @@ export const CHAMPIONS = {
     body: "Every year earns a permanent place in tournament history. This is the Trophy Wall — the teams who lifted the Dalleo Open and the stories of how they did it.",
   },
   entries: [
+    {
+      year: 2026,
+      teamName: "Team Martin",
+      captain: "Patrick Martin",
+      members: ["Patrick Martin", "Roger Freibert", "Small Fry", "Colin Leroux"],
+      finalScore: "69 (−3)",
+      margin: "2 strokes",
+      mvp: "",
+      quote: "",
+      story: "Team Martin won the 7th Annual Dalleo Open with a 69 (−3), finishing two strokes clear of Team Breaud. All eight teams completed all 18 holes, closing the tournament with 144 of 144 scores recorded.",
+      moments: ["Team Martin finishes at 69 (−3)", "Two-stroke victory over Team Breaud", "144 of 144 team-hole scores recorded"],
+      awards: ["2026 Dalleo Open Champions"],
+      stats: [
+        { label: "Final Score", value: "69 (−3)" },
+        { label: "Winning Margin", value: "2 strokes" },
+        { label: "Edition", value: "7th Annual" },
+      ],
+      photoCaption: "2026 Team Martin championship photo — coming soon",
+      photoUrl: null,
+      published: true,
+      placeholder: false,
+    },
     entry(2025, "6th", "Team Devin", "Devin", ["Devin", "Ross", "Pittman", "Josef"]),
     entry(2024, "5th", "Roger & Mark", "Roger", ["Roger", "Mark"]),
     entry(2023, "4th", "Kaleb & Devin", "Kaleb", ["Kaleb", "Devin"]),

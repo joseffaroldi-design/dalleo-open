@@ -1,113 +1,133 @@
-import { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Share, X } from "lucide-react";
+import "@/App.css";
+import { useEffect } from "react";
+import { BrowserRouter, Routes, Route, useLocation, Navigate } from "react-router-dom";
+import { MotionConfig, motion } from "framer-motion";
+import { trackPageView } from "@/lib/analytics";
+import { Navbar } from "@/components/Navbar";
+import { Footer } from "@/components/Footer";
+import { InstallPrompt } from "@/components/InstallPrompt";
+import { ScrollToTop } from "@/components/ScrollToTop";
+import { useLenis } from "@/hooks/useLenis";
+import Home from "@/pages/Home";
+import Leaderboard from "@/pages/Leaderboard";
+import Champions from "@/pages/Champions";
+import ChampionDetail from "@/pages/ChampionDetail";
+import Course from "@/pages/Course";
+import Teams from "@/pages/Teams";
+import TeamDetail from "@/pages/TeamDetail";
+import Schedule from "@/pages/Schedule";
+import Announcements from "@/pages/Announcements";
+import Gallery from "@/pages/Gallery";
+import Brandon from "@/pages/Brandon";
+import Rules from "@/pages/Rules";
+import Draft from "@/pages/Draft";
+import Committee from "@/pages/Committee";
+import AdminLogin from "@/admin/AdminLogin";
+import AdminLayout from "@/admin/AdminLayout";
+import Dashboard from "@/admin/Dashboard";
+import AnnouncementsAdmin from "@/admin/AnnouncementsAdmin";
+import TeamsAdmin from "@/admin/TeamsAdmin";
+import ScheduleAdmin from "@/admin/ScheduleAdmin";
+import GalleryAdmin from "@/admin/GalleryAdmin";
+import CommitteeAdmin from "@/admin/CommitteeAdmin";
+import ContentAdmin from "@/admin/ContentAdmin";
+import RulesAdmin from "@/admin/RulesAdmin";
+import ChampionsAdmin from "@/admin/ChampionsAdmin";
+import ScoringAdmin from "@/admin/ScoringAdmin";
+import GameDayAdmin from "@/admin/GameDayAdmin";
+import CourseAdmin from "@/admin/CourseAdmin";
 
-const DISMISS_KEY = "dalleo-install-dismissed-at";
-const SNOOZE_DAYS = 30;
+const PAGE_TITLES = [
+  [/^\/leaderboard/, "2026 Final Results — Dalleo Open"],
+  [/^\/champions/, "Champions — Dalleo Open"],
+  [/^\/score/, "2026 Final Results — Dalleo Open"],
+  [/^\/course/, "2026 Championship Course — Dalleo Open"],
+  [/^\/teams/, "2026 Field — Dalleo Open"],
+  [/^\/schedule/, "2026 Tournament Schedule — Dalleo Open"],
+  [/^\/announcements/, "2026 Tournament Recap — Dalleo Open"],
+  [/^\/gallery/, "Gallery — Dalleo Open"],
+  [/^\/brandon/, "In Memory of Brandon Dalleo — Dalleo Open"],
+  [/^\/rules/, "Official 2026 Rules — Dalleo Open"],
+  [/^\/draft/, "2026 Draft — Dalleo Open"],
+  [/^\/committee/, "Committee & Leadership — Dalleo Open"],
+  [/^\/admin/, "Organizer — Dalleo Open"],
+];
 
-const isIOS = () =>
-  /iphone|ipad|ipod/i.test(window.navigator.userAgent) ||
-  (window.navigator.platform === "MacIntel" && window.navigator.maxTouchPoints > 1);
+const Shell = () => {
+  const { pathname } = useLocation();
+  const isAdmin = pathname.startsWith("/admin");
 
-const isStandalone = () =>
-  window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true;
-
-const snoozed = () => {
-  const at = Number(window.localStorage.getItem(DISMISS_KEY) || 0);
-  return at > 0 && Date.now() - at < SNOOZE_DAYS * 24 * 60 * 60 * 1000;
-};
-
-// "Add to Home Screen" prompt — Android/Chrome fires beforeinstallprompt and we
-// offer a one-tap install; iOS Safari cannot be prompted programmatically, so we
-// show short guidance instead. Dismissal snoozes for 30 days; never nags once installed.
-export const InstallPrompt = () => {
-  const [deferred, setDeferred] = useState(null);
-  const [visible, setVisible] = useState(false);
+  useLenis(!isAdmin);
 
   useEffect(() => {
-    if (isStandalone() || snoozed()) return undefined;
-    const onPrompt = (e) => {
-      e.preventDefault();
-      setDeferred(() => e);
-      setVisible(true);
-    };
-    window.addEventListener("beforeinstallprompt", onPrompt);
-    let t;
-    if (isIOS()) t = setTimeout(() => setVisible(true), 4000);
-    return () => {
-      window.removeEventListener("beforeinstallprompt", onPrompt);
-      if (t) clearTimeout(t);
-    };
-  }, []);
-
-  const dismiss = () => {
-    window.localStorage.setItem(DISMISS_KEY, String(Date.now()));
-    setVisible(false);
-  };
-
-  const install = async () => {
-    if (!deferred) return;
-    deferred.prompt();
-    const { outcome } = await deferred.userChoice;
-    if (outcome === "accepted") setVisible(false);
-    setDeferred(null);
-  };
-
-  const ios = isIOS();
+    const match = PAGE_TITLES.find(([pattern]) => pattern.test(pathname));
+    document.title = match ? match[1] : "Dalleo Open Digital Clubhouse";
+    trackPageView(pathname);
+  }, [pathname]);
 
   return (
-    <AnimatePresence>
-      {visible && (
+    <>
+      <ScrollToTop />
+      {!isAdmin && <Navbar />}
+      {!isAdmin && <div aria-hidden="true" className="grain-overlay" />}
+      <main id="main-content">
         <motion.div
-          initial={{ opacity: 0, y: 40, scale: 0.96 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          exit={{ opacity: 0, y: 24, scale: 0.98 }}
+          key={pathname}
+          initial={{ opacity: 0, y: 14 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          data-testid="install-prompt-banner"
-          role="dialog"
-          aria-label="Add Dalleo Open to your home screen"
-          className="fixed inset-x-4 bottom-4 z-50 mx-auto max-w-md rounded-3xl bg-forest-deep p-5 shadow-2xl ring-1 ring-gold/40 sm:bottom-6"
         >
-          <button
-            type="button"
-            onClick={dismiss}
-            data-testid="install-prompt-dismiss"
-            aria-label="Dismiss install prompt"
-            className="absolute right-3 top-3 flex h-9 w-9 items-center justify-center rounded-full text-cream/60 transition-colors duration-200 hover:bg-cream/10 hover:text-cream"
-          >
-            <X className="h-4 w-4" aria-hidden="true" />
-          </button>
-          <div className="flex items-center gap-4">
-            <img
-              src="/apple-touch-icon.png"
-              alt=""
-              aria-hidden="true"
-              className="h-14 w-14 shrink-0 rounded-2xl ring-2 ring-gold/60"
-            />
-            <div className="min-w-0">
-              <p className="font-display text-base italic text-gold-soft">Your clubhouse, one tap away</p>
-              <p className="mt-0.5 text-sm font-semibold text-cream/80">
-                Add the Dalleo Open to your home screen for tournament day.
-              </p>
-            </div>
-          </div>
-          {ios ? (
-            <p data-testid="install-prompt-ios-steps" className="mt-4 flex items-center gap-2 rounded-2xl bg-cream/5 px-4 py-3 text-sm font-semibold text-cream/85">
-              Tap <Share className="h-4 w-4 text-gold" aria-hidden="true" /> Share, then choose
-              <span className="font-bold text-gold">&ldquo;Add to Home Screen&rdquo;</span>
-            </p>
-          ) : (
-            <button
-              type="button"
-              onClick={install}
-              data-testid="install-prompt-action"
-              className="mt-4 min-h-11 w-full rounded-full bg-gold px-5 py-2.5 text-sm font-extrabold text-forest-deep shadow-md transition-[transform,background-color] duration-200 hover:bg-gold-soft active:scale-[0.98]"
-            >
-              Add to Home Screen
-            </button>
-          )}
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/leaderboard" element={<Leaderboard />} />
+          <Route path="/champions" element={<Champions />} />
+          <Route path="/champions/:year" element={<ChampionDetail />} />
+          <Route path="/score" element={<Navigate to="/leaderboard" replace />} />
+          <Route path="/course" element={<Course />} />
+          <Route path="/teams" element={<Teams />} />
+          <Route path="/teams/:teamId" element={<TeamDetail />} />
+          <Route path="/schedule" element={<Schedule />} />
+          <Route path="/announcements" element={<Announcements />} />
+          <Route path="/gallery" element={<Gallery />} />
+          <Route path="/brandon" element={<Brandon />} />
+          <Route path="/rules" element={<Rules />} />
+          <Route path="/draft" element={<Draft />} />
+          <Route path="/committee" element={<Committee />} />
+          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route path="/admin" element={<AdminLayout />}>
+            <Route index element={<Dashboard />} />
+            <Route path="announcements" element={<AnnouncementsAdmin />} />
+            <Route path="teams" element={<TeamsAdmin />} />
+            <Route path="schedule" element={<ScheduleAdmin />} />
+            <Route path="gallery" element={<GalleryAdmin />} />
+            <Route path="content" element={<ContentAdmin />} />
+            <Route path="rules" element={<RulesAdmin />} />
+            <Route path="champions" element={<ChampionsAdmin />} />
+            <Route path="scoring" element={<ScoringAdmin />} />
+            <Route path="gameday" element={<GameDayAdmin />} />
+            <Route path="committee" element={<CommitteeAdmin />} />
+            <Route path="course" element={<CourseAdmin />} />
+          </Route>
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
         </motion.div>
-      )}
-    </AnimatePresence>
+      </main>
+      {!isAdmin && <Footer />}
+      {!isAdmin && <InstallPrompt />}
+    </>
   );
 };
+
+function App() {
+  return (
+    <MotionConfig reducedMotion="user">
+      <div className="App">
+        <BrowserRouter>
+          <Shell />
+        </BrowserRouter>
+      </div>
+    </MotionConfig>
+  );
+}
+
+export default App;
