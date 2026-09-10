@@ -17,9 +17,6 @@ const snoozed = () => {
   return at > 0 && Date.now() - at < SNOOZE_DAYS * 24 * 60 * 60 * 1000;
 };
 
-// "Add to Home Screen" prompt — Android/Chrome fires beforeinstallprompt and we
-// offer a one-tap install; iOS Safari cannot be prompted programmatically, so we
-// show short guidance instead. Dismissal snoozes for 30 days; never nags once installed.
 export const InstallPrompt = () => {
   const [deferred, setDeferred] = useState(null);
   const [visible, setVisible] = useState(false);
@@ -87,7 +84,7 @@ export const InstallPrompt = () => {
             <div className="min-w-0">
               <p className="font-display text-base italic text-gold-soft">Your clubhouse, one tap away</p>
               <p className="mt-0.5 text-sm font-semibold text-cream/80">
-                Add the Dalleo Open to your home screen for tournament day.
+                Add the Dalleo Open for results, tournament history, and future event updates.
               </p>
             </div>
           </div>
