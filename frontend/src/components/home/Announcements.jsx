@@ -10,16 +10,30 @@ const ARCHIVE_RECAP = {
   priority: "important",
 };
 
+const is2027 = (item) => /2027/.test(`${item.title} ${item.date} ${item.body}`);
+const isArchiveRecap = (item) => /Team Martin/i.test(item.title) && /2026/.test(`${item.title} ${item.date} ${item.body}`);
+
 export const Announcements = () => {
   const live = useLiveData("announcements");
   const published = live?.items
     ?.filter((a) => a.published)
     .map((a) => ({ title: a.title, date: a.date, body: a.message, priority: a.priority })) ?? [];
 
-  const has2027Announcement = published.some((item) => /2027/.test(`${item.title} ${item.date} ${item.body}`));
-  const hasArchiveRecap = published.some((item) => /Team Martin/i.test(item.title) && /2026/.test(`${item.title} ${item.date} ${item.body}`));
-  const withArchive = hasArchiveRecap ? published : [ARCHIVE_RECAP, ...published];
-  const items = (has2027Announcement ? published : withArchive).slice(0, 3);
+  const hasArchiveRecap = published.some(isArchiveRecap);
+  const allItems = hasArchiveRecap ? [...published] : [ARCHIVE_RECAP, ...published];
+  const items = allItems
+    .map((item, index) => ({ item, index }))
+    .sort((a, b) => {
+      const a2027 = is2027(a.item) ? 1 : 0;
+      const b2027 = is2027(b.item) ? 1 : 0;
+      if (a2027 !== b2027) return b2027 - a2027;
+      const aRecap = isArchiveRecap(a.item) ? 1 : 0;
+      const bRecap = isArchiveRecap(b.item) ? 1 : 0;
+      if (aRecap !== bRecap) return bRecap - aRecap;
+      return a.index - b.index;
+    })
+    .map(({ item }) => item)
+    .slice(0, 3);
 
   return (
     <section data-testid="announcements-section" aria-labelledby="announcements-title" className="mx-auto max-w-6xl px-4 py-20 sm:px-6 sm:py-28">
