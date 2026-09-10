@@ -1,22 +1,14 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { Logo } from "@/components/Logo";
 import { NAV_LINKS } from "@/constants/nav";
-import { useEffect } from "react";
 
 const linkClass = ({ isActive }) =>
   `rounded-full px-3 py-2 text-sm font-semibold transition-colors duration-200 ${
     isActive
       ? "bg-forest text-cream"
       : "text-charcoal/80 hover:bg-forest-mist hover:text-forest"
-  }`;
-
-const scoreLinkClass = ({ isActive }) =>
-  `inline-flex min-h-11 items-center justify-center rounded-full px-4 py-2 text-sm font-extrabold transition-all duration-200 ${
-    isActive
-      ? "bg-forest text-gold shadow-sm"
-      : "bg-gold text-forest-deep shadow-sm hover:-translate-y-0.5 hover:bg-gold-soft hover:shadow-md"
   }`;
 
 export const Navbar = () => {
@@ -43,14 +35,8 @@ export const Navbar = () => {
               {label}
             </NavLink>
           ))}
-          <NavLink to="/score" data-testid="nav-link-score" className={scoreLinkClass}>
-            Score
-          </NavLink>
         </div>
         <div className="flex items-center gap-2 md:hidden">
-          <NavLink to="/score" data-testid="nav-link-score-mobile" className={scoreLinkClass}>
-            Score
-          </NavLink>
           <button
             type="button"
             data-testid="mobile-menu-button"
