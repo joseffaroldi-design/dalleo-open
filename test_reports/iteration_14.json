@@ -1,0 +1,40 @@
+{
+  "summary": "FINAL RELEASE GATE verification for release-candidate-2026-09-04 (commit eac572d). All 4 test blocks (S1 negative auth, S2 public integrity sweep, S3 captain read-only, S4 tournament data integrity) passed cleanly. No code was modified. Old admin credential is confirmed dead on both API (401) and UI (styled 'Invalid email or password' error). Public routes render with zero console errors, pairings and gold Score pill intact on desktop and mobile 390px. Captain scoring shows the correct pre-round notice for Team White and sign-out works. Backend integrity endpoints return 8 teams, correct starting-hole distribution [1,1,13,14,15,16,17,18] with martin=1A/white=1B, scoring status not-started, empty scores, par summing to exactly 72.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {"ui_bugs": [], "integration_issues": [], "design_issues": []},
+  "test_results": {
+    "S1_old_credential_rejected": {
+      "ui": "PASS — one attempt on /admin/login with old admin credential surfaced login-error 'Invalid email or password'; remained on /admin/login (no session, no redirect).",
+      "api": "PASS — POST /api/auth/login with old credential returned HTTP 401 {'detail':'Invalid email or password'}. Single attempt only, no retries (lockout budget preserved).",
+      "attempts_used": 1
+    },
+    "S2_public_integrity_sweep": {
+      "routes_zero_console_errors": ["/", "/leaderboard", "/teams", "/schedule", "/score", "/admin/login"],
+      "homepage_pairings_1A_1B_chips": "PASS (both chips present in DOM)",
+      "schedule_pairings_1A_1B_chips": "PASS (both chips present in DOM)",
+      "gold_score_pill_desktop": "PASS — data-testid=nav-link-score visible, click navigated to /score",
+      "gold_score_pill_mobile_390": "PASS — pill visible at (249,10) 73x44, click navigated to /score",
+      "note": "Only console error captured during the entire session was the expected 401 from the S1 negative test itself."
+    },
+    "S3_captain_scoring_read_only": {
+      "team_white_pin_login": "PASS — one correct attempt with captain PIN, landed on /score with 'Team White · 0/18 holes · card not started' header",
+      "pre_round_notice": "PASS — rendered 'Scoring opens when the round begins' with 'The organizer will open scoring at the shotgun start — check back then.' and 'View Leaderboard' CTA. No score entry surface exposed.",
+      "sign_out": "PASS — Sign out button clicked, returned to team selection screen",
+      "score_saves_performed": "NONE (read-only verification)"
+    },
+    "S4_tournament_data_integrity": {
+      "GET_/api/public/scoring": "PASS — status='not-started', scores=[] (empty), par array sums to 72 (4+4+5+3+4+4+5+3+4 + 4+4+4+5+3+4+4+3+5 = 36+36)",
+      "GET_/api/public/teams": "PASS — 8 teams; starting holes (sorted) = [1,1,13,14,15,16,17,18]; martin startingHoleLabel='1A'; white startingHoleLabel='1B'; other 6 labels null (as expected for non-shared holes)"
+    }
+  },
+  "test_report_links": [],
+  "action_items": [],
+  "critical_code_review_comments": [],
+  "updated_files": [],
+  "success_rate": {"backend": "100%", "frontend": "100%"},
+  "seed_data_creation": "None. No writes performed against the release-candidate environment.",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Release-candidate-2026-09-04 verified as tournament-ready. Old admin credential fully rotated out — do NOT re-attempt admin login (lockout budget is 5/15min). Captain PIN 9840 for Team White worked on a single attempt. Tournament data is in the correct pre-round state; do not create any scores/data. If further verification is requested post-tournament-start, expect scoring status to flip from 'not-started'.",
+  "rca of the issue": "N/A — no issues found."
+}

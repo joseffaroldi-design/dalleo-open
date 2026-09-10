@@ -58,22 +58,13 @@ export const Footer = () => {
         <p data-testid="footer-copyright">
           &copy; {new Date().getFullYear()} Dalleo Open. All rights reserved.
         </p>
-        <div className="flex items-center gap-5">
-          <Link
-            to="/score"
-            data-testid="footer-captain-scoring-link"
-            className="flex min-h-11 items-center rounded-md font-semibold text-cream/40 transition-colors duration-200 hover:text-gold"
-          >
-            Captain Scoring
-          </Link>
-          <Link
-            to="/admin/login"
-            data-testid="footer-organizer-link"
-            className="flex min-h-11 items-center rounded-md font-semibold text-cream/40 transition-colors duration-200 hover:text-gold"
-          >
-            Organizer Login
-          </Link>
-        </div>
+        <Link
+          to="/admin/login"
+          data-testid="footer-organizer-link"
+          className="flex min-h-11 items-center rounded-md font-semibold text-cream/40 transition-colors duration-200 hover:text-gold"
+        >
+          Organizer Login
+        </Link>
       </div>
     </div>
   </footer>

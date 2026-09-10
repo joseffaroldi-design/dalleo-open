@@ -19,6 +19,8 @@ export const BrandonSection = () => {
           src={site.brandonPhotoUrl}
           alt="Photo of Brandon Dalleo"
           data-testid="brandon-photo"
+          loading="lazy"
+          decoding="async"
           className="aspect-[4/5] w-full rounded-t-[999px] border border-gold/40 object-cover shadow-sm"
         />
       ) : (

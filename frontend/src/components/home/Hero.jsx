@@ -1,5 +1,5 @@
 import { useCallback, useRef } from "react";
-import { motion, useMotionValue, useSpring, useScroll, useTransform } from "framer-motion";
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { ImageIcon } from "lucide-react";
 import { useLiveData } from "@/data/useLiveData";
 import { Countdown } from "@/components/home/Countdown";
@@ -10,15 +10,12 @@ export const Hero = () => {
   const site = useLiveData("site");
   const sectionRef = useRef(null);
 
-  const edition = site?.edition ?? "7th Annual Dalleo Open";
-  const editionLabel = edition.replace(/dalleo open/i, "").trim() || edition;
+  // The public hero is intentionally pinned to the announced 8th Annual event.
+  // Older 2026 site records may still exist in the API, but must not regress the 2027 masthead.
+  const edition = "8th Annual Dalleo Open";
+  const editionLabel = "8th Annual";
+  const dateText = "Saturday, September 4, 2027";
 
-  // Scroll parallax — giant masthead word drifts as you leave the hero.
-  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start start", "end start"] });
-  const wordY = useTransform(scrollYProgress, [0, 1], [0, 140]);
-  const fade = useTransform(scrollYProgress, [0, 0.75], [1, 0]);
-
-  // Mouse parallax — subtle 3D drift on the masthead word and photo frame.
   const mx = useMotionValue(0);
   const my = useMotionValue(0);
   const sx = useSpring(mx, { stiffness: 50, damping: 20 });
@@ -52,13 +49,13 @@ export const Hero = () => {
       />
       <motion.div
         aria-hidden="true"
-        style={{ y: wordY, x: wordX }}
+        style={{ x: wordX }}
         className="text-outline-cream pointer-events-none absolute inset-x-0 top-14 select-none text-center font-display text-[24vw] font-black leading-none tracking-tight sm:top-8"
       >
         DALLEO
       </motion.div>
 
-      <motion.div style={{ opacity: fade }} className="relative mx-auto max-w-6xl px-4 pb-8 pt-20 text-center sm:px-6 sm:pb-9 sm:pt-24">
+      <motion.div className="relative mx-auto max-w-6xl px-4 pb-8 pt-20 text-center sm:px-6 sm:pb-9 sm:pt-24">
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -96,6 +93,8 @@ export const Hero = () => {
             src="/dalleo-logo-gold.png"
             alt="Dalleo Open — ESTD 2020 · Play Me!"
             data-testid="hero-logo"
+            fetchPriority="high"
+            decoding="async"
             className="w-full"
           />
         </motion.div>
@@ -107,7 +106,7 @@ export const Hero = () => {
           data-testid="hero-date-placeholder"
           className="mt-1 text-base font-semibold text-cream/70 sm:mt-2 sm:text-lg"
         >
-          {site?.dateText ?? "Tournament dates to be announced"}
+          {dateText}
         </motion.p>
 
         <motion.div

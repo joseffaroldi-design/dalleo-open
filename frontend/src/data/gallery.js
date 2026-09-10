@@ -30,10 +30,6 @@ const item = (id, type, caption, description, category, year, aspect, alt, sourc
 });
 
 export const GALLERY_ITEMS = [
-  item("g2026-champions", "image", "2026 Champions — Team Martin", "Patrick Martin, Roger Freibert, Small Fry, and Colin Leroux — 7th Annual Dalleo Open Champions. Championship photo coming soon.", "awards", 2026, "landscape", "2026 Team Martin championship photo placeholder", "Tournament Committee", 100, true),
-  item("g2026-tournament", "image", "The 7th Annual Dalleo Open", "Thirty-two players. Eight teams. Eighteen holes. Tournament-day photography coming soon.", "tournament", 2026, "landscape", "2026 Dalleo Open tournament-day photo placeholder", "Tournament Committee", 99),
-  item("g2026-draft", "image", "2026 Draft Party", "The teams were set the night before the championship. Draft Party photography coming soon.", "draft-night", 2026, "landscape", "2026 Dalleo Open Draft Party photo placeholder", "Draft Night Crew", 98),
-  item("g2026-dalleo", "image", "For Dalleo", "The tradition continues. Memorial and tournament-tradition photography coming soon.", "memories", 2026, "landscape", "2026 Dalleo Open memorial photo placeholder", "Tournament Committee", 97),
   item("g1", "image", "Champions on the 18th green", "The moment Team Green sealed last year's title — hands in the air, families rushing the green.", "tournament", 2025, "landscape", "Team Green celebrating their championship win on the 18th green", "Tournament Committee", 1, true),
   item("g2", "image", "Captains at the draft board", "Four captains, one board, and a room full of heckling friends.", "draft-night", 2025, "portrait", "The four team captains standing at the live draft board", "Draft Night Crew", 2),
   item("g3", "image", "Team Green before Round 1", "Matching polos and early-morning nerves on the first tee.", "teams", 2024, "landscape", "Team Green posing together before the first round", "Tournament Committee", 3),

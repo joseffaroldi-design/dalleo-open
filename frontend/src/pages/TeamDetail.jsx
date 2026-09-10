@@ -136,6 +136,8 @@ export default function TeamDetail() {
                   src={player.photoUrl}
                   alt={`${player.name} player photo`}
                   data-testid={`player-photo-${i + 1}`}
+                  loading="lazy"
+                  decoding="async"
                   className="h-11 w-11 shrink-0 rounded-full object-cover ring-1 ring-border"
                 />
               ) : (

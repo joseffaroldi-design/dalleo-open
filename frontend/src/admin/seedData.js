@@ -12,7 +12,9 @@ import { COMMITTEE } from "@/data/committee";
 export const SEED = {
   announcements: () => ({
     items: [
-      { id: "results-2026", title: "Team Martin Wins the 2026 Dalleo Open", message: "Team Martin finished at 69 (−3) to win the 7th Annual Dalleo Open by two strokes over Team Breaud. All 144 team-hole scores were recorded. The 2026 championship is officially in the books.", date: "September 5, 2026", priority: "important", published: true },
+      { id: "a1", title: "Draft Party details are coming together", message: "Friday night's Draft Party venue and start time will be revealed soon — stay tuned.", date: "Sample announcement", priority: "normal", published: true },
+      { id: "a2", title: "Team registration opens this summer", message: "Grab your playing partners early. Spots for the 7th Annual Dalleo Open will be limited.", date: "Sample announcement", priority: "normal", published: true },
+      { id: "a3", title: "A weekend that gives back", message: "This year's tournament continues Brandon's legacy by supporting causes close to his heart.", date: "Sample announcement", priority: "normal", published: true },
     ],
   }),
   teams: () => ({ published: TEAMS_ANNOUNCED, items: TEAMS.map((t) => ({ ...t, players: t.players.map((p) => ({ ...p })) })) }),
