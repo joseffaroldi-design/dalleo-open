@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
-// Countdown to the 7th Annual Dalleo Open — Saturday, September 5, 2026 (shotgun start 8:30 AM).
-const TARGET = new Date("2026-09-05T08:30:00");
+// Countdown to the 8th Annual Dalleo Open — Saturday, September 4, 2027.
+const TARGET = new Date("2027-09-04T08:00:00");
 
 export const Countdown = () => {
   const [now, setNow] = useState(() => Date.now());
