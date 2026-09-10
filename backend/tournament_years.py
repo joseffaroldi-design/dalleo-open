@@ -148,7 +148,7 @@ def build_tournament_years_router(db, get_current_user: Callable, read_domain: C
             pairs.append((domain, await read_domain(domain)))
         return dict(pairs)
 
-    @router.get("/admin/tournament-years")
+    @router.get("/admin/tournaments/years")
     async def tournament_years(user=Depends(get_current_user)):
         site = await read_domain("site")
         current_year = _year_from_site(site)
@@ -156,14 +156,14 @@ def build_tournament_years_router(db, get_current_user: Callable, read_domain: C
         archives = [_summary(doc) async for doc in cursor]
         return {"currentYear": current_year, "archives": archives}
 
-    @router.get("/admin/tournament-years/{year}")
+    @router.get("/admin/tournaments/year/{year}")
     async def tournament_year(year: int, user=Depends(get_current_user)):
         archive = await db.tournament_archives.find_one({"year": year}, {"_id": 0})
         if not archive:
             raise HTTPException(status_code=404, detail="Tournament archive not found")
         return {"archive": archive}
 
-    @router.post("/admin/tournament-years/archive")
+    @router.post("/admin/tournaments/archive")
     async def archive_tournament(input: ArchiveInput, user=Depends(get_current_user)):
         site = await read_domain("site")
         current_year = _year_from_site(site)
@@ -184,32 +184,36 @@ def build_tournament_years_router(db, get_current_user: Callable, read_domain: C
             "locked": True,
             "domains": deepcopy(domains),
         }
+
+        inserted = False
         try:
             await db.tournament_archives.insert_one(deepcopy(archive))
-        except Exception:
-            if await db.tournament_archives.find_one({"year": input.year}):
-                raise HTTPException(status_code=409, detail=f"{input.year} is already archived")
+            inserted = True
+            for player in _player_records(domains.get("teams"), input.year):
+                existing = await db.players.find_one({"key": player["key"]}) or {}
+                photo = existing.get("photoUrl") or player.get("photoUrl")
+                years = sorted(set(existing.get("years", []) + player.get("years", [])))
+                appearances = existing.get("appearances", []) + [
+                    a for a in player.get("appearances", []) if a not in existing.get("appearances", [])
+                ]
+                await db.players.update_one(
+                    {"key": player["key"]},
+                    {"$set": {"key": player["key"], "name": player["name"], "photoUrl": photo, "years": years, "appearances": appearances, "updatedAt": now}},
+                    upsert=True,
+                )
+
+            saved = await db.tournament_archives.find_one({"year": input.year}, {"_id": 0})
+            if not saved or saved.get("domains") != archive.get("domains"):
+                raise RuntimeError("archive verification failed")
+            return {"ok": True, "archive": _summary(saved)}
+        except HTTPException:
             raise
+        except Exception as exc:
+            if inserted:
+                await db.tournament_archives.delete_one({"year": input.year})
+            raise HTTPException(status_code=500, detail=f"Archive failed; rollover remains blocked: {str(exc)[:160]}")
 
-        for player in _player_records(domains.get("teams"), input.year):
-            existing = await db.players.find_one({"key": player["key"]}) or {}
-            photo = existing.get("photoUrl") or player.get("photoUrl")
-            years = sorted(set(existing.get("years", []) + player.get("years", [])))
-            appearances = existing.get("appearances", []) + [
-                a for a in player.get("appearances", []) if a not in existing.get("appearances", [])
-            ]
-            await db.players.update_one(
-                {"key": player["key"]},
-                {"$set": {"key": player["key"], "name": player["name"], "photoUrl": photo, "years": years, "appearances": appearances, "updatedAt": now}},
-                upsert=True,
-            )
-
-        saved = await db.tournament_archives.find_one({"year": input.year}, {"_id": 0})
-        if not saved or saved.get("domains") != archive.get("domains"):
-            raise HTTPException(status_code=500, detail="Archive verification failed; rollover remains blocked")
-        return {"ok": True, "archive": _summary(saved)}
-
-    @router.post("/admin/tournament-years/rollover")
+    @router.post("/admin/tournaments/rollover")
     async def rollover_tournament(input: RolloverInput, user=Depends(get_current_user)):
         site = await read_domain("site")
         current_year = _year_from_site(site)
@@ -226,6 +230,8 @@ def build_tournament_years_router(db, get_current_user: Callable, read_domain: C
             raise HTTPException(status_code=409, detail="This rollover was already completed")
 
         before = await load_domains()
+        old_pins = [doc async for doc in db.team_pins.find({})]
+        old_pin_attempts = [doc async for doc in db.login_attempts.find({"identifier": {"$regex": "^pin:"}})]
         now = datetime.now(timezone.utc).isoformat()
         next_docs = {
             "teams": _next_teams(before.get("teams")),
@@ -266,6 +272,12 @@ def build_tournament_years_router(db, get_current_user: Callable, read_domain: C
                     {"$set": {"data": before[domain], "updated_at": datetime.now(timezone.utc).isoformat()}},
                     upsert=True,
                 )
+            await db.team_pins.delete_many({})
+            if old_pins:
+                await db.team_pins.insert_many(old_pins)
+            await db.login_attempts.delete_many({"identifier": {"$regex": "^pin:"}})
+            if old_pin_attempts:
+                await db.login_attempts.insert_many(old_pin_attempts)
             await db.tournament_rollovers.update_one(
                 {"_id": audit_result.inserted_id},
                 {"$set": {"status": "rolled-back", "error": str(exc)[:500], "rolledBackAt": datetime.now(timezone.utc).isoformat()}},
@@ -280,7 +292,7 @@ def build_tournament_years_router(db, get_current_user: Callable, read_domain: C
             "reset": ["teams and rosters", "scores", "pairings", "schedule", "announcements", "captain PINs", "rules publication"],
         }
 
-    @router.get("/admin/players")
+    @router.get("/admin/tournaments/players")
     async def player_library(user=Depends(get_current_user)):
         cursor = db.players.find({}, {"_id": 0}).sort("name", 1)
         return {"players": [doc async for doc in cursor]}
