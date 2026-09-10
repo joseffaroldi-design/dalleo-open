@@ -36,6 +36,7 @@ import ChampionsAdmin from "@/admin/ChampionsAdmin";
 import ScoringAdmin from "@/admin/ScoringAdmin";
 import GameDayAdmin from "@/admin/GameDayAdmin";
 import CourseAdmin from "@/admin/CourseAdmin";
+import ArchiveAdmin from "@/admin/ArchiveAdmin";
 
 const PAGE_TITLES = [
   [/^\/leaderboard/, "Leaderboard — Dalleo Open"],
@@ -97,16 +98,17 @@ const Shell = () => {
           <Route path="/admin" element={<AdminLayout />}>
             <Route index element={<Dashboard />} />
             <Route path="announcements" element={<AnnouncementsAdmin />} />
+            <Route path="scoring" element={<ScoringAdmin />} />
+            <Route path="gameday" element={<GameDayAdmin />} />
+            <Route path="archive" element={<ArchiveAdmin />} />
+            <Route path="committee" element={<CommitteeAdmin />} />
+            <Route path="course" element={<CourseAdmin />} />
+            <Route path="champions" element={<ChampionsAdmin />} />
             <Route path="teams" element={<TeamsAdmin />} />
             <Route path="schedule" element={<ScheduleAdmin />} />
             <Route path="gallery" element={<GalleryAdmin />} />
             <Route path="content" element={<ContentAdmin />} />
             <Route path="rules" element={<RulesAdmin />} />
-            <Route path="champions" element={<ChampionsAdmin />} />
-            <Route path="scoring" element={<ScoringAdmin />} />
-            <Route path="gameday" element={<GameDayAdmin />} />
-            <Route path="committee" element={<CommitteeAdmin />} />
-            <Route path="course" element={<CourseAdmin />} />
           </Route>
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
