@@ -1,24 +1,34 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, Trophy } from "lucide-react";
+import { ArrowRight, Megaphone } from "lucide-react";
 import { useLiveData } from "@/data/useLiveData";
 import { Reveal } from "@/components/motion/Reveal";
 
-const ARCHIVE_ANNOUNCEMENTS = [
+const SAMPLE_ANNOUNCEMENTS = [
   {
-    title: "Team Martin Wins the 2026 Dalleo Open",
-    date: "September 5, 2026",
-    body: "Team Martin finished at 69 (−3) to win by two strokes over Team Breaud. All 144 team-hole scores were captured and the final leaderboard is preserved.",
-    priority: "important",
+    title: "Draft Party details are coming together",
+    date: "Sample announcement",
+    body: "Friday night's Draft Party venue and start time will be revealed soon — stay tuned.",
+    priority: "normal",
+  },
+  {
+    title: "Team registration opens this summer",
+    date: "Sample announcement",
+    body: "Grab your playing partners early. Spots for the 7th Annual Dalleo Open will be limited.",
+    priority: "normal",
   },
 ];
 
+// Homepage bulletin — the latest few announcements with a path to the full
+// Announcements page. Hidden entirely when a live record exists with nothing published.
 export const Announcements = () => {
   const live = useLiveData("announcements");
-  const published = live?.items
-    ?.filter((a) => a.published)
-    .slice(0, 3)
-    .map((a) => ({ title: a.title, date: a.date, body: a.message, priority: a.priority })) ?? [];
-  const items = published.length > 0 ? published : ARCHIVE_ANNOUNCEMENTS;
+  const items = live
+    ? live.items
+        .filter((a) => a.published)
+        .slice(0, 3)
+        .map((a) => ({ title: a.title, date: a.date, body: a.message, priority: a.priority }))
+    : SAMPLE_ANNOUNCEMENTS;
+  if (live && items.length === 0) return null;
 
   return (
     <section
@@ -29,12 +39,12 @@ export const Announcements = () => {
       <Reveal>
         <div className="flex items-center justify-between gap-4">
           <div>
-            <p className="font-display text-sm italic text-gold-deep">Chapter 02 · The Final Word</p>
+            <p className="font-display text-sm italic text-gold-deep">Chapter 02 · The Bulletin</p>
             <h2
               id="announcements-title"
               className="mt-2 text-base font-bold uppercase tracking-[0.2em] text-gold-deep md:text-lg"
             >
-              2026 Tournament Recap
+              Announcements
             </h2>
           </div>
           <Link
@@ -42,7 +52,7 @@ export const Announcements = () => {
             data-testid="view-all-announcements"
             className="group inline-flex min-h-11 items-center gap-1.5 rounded-full px-4 py-2 text-sm font-bold text-forest transition-colors duration-200 hover:bg-forest-mist"
           >
-            Full Recap
+            All Announcements
             <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" aria-hidden="true" />
           </Link>
         </div>
@@ -51,7 +61,7 @@ export const Announcements = () => {
         <div className="mt-10 overflow-hidden rounded-3xl border border-border bg-cream shadow-sm">
           {items.map((item, i) => (
             <article
-              key={`${item.title}-${item.date}`}
+              key={item.title}
               data-testid={`announcement-card-${i + 1}`}
               className={`flex gap-5 p-6 sm:p-8 ${i > 0 ? "border-t border-border" : ""}`}
             >
@@ -59,14 +69,14 @@ export const Announcements = () => {
                 aria-hidden="true"
                 className="mt-1 flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-forest-mist text-forest"
               >
-                <Trophy className="h-5 w-5" />
+                <Megaphone className="h-5 w-5" />
               </span>
               <div>
                 <p className="text-xs font-bold uppercase tracking-widest text-charcoal/40">
                   {item.date}
                   {item.priority === "important" && (
                     <span className="ml-2 rounded-full bg-gold px-2 py-0.5 text-[10px] normal-case tracking-normal text-forest-deep">
-                      Official
+                      Important
                     </span>
                   )}
                 </p>
