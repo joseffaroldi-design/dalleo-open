@@ -10,7 +10,7 @@ export const Hero = () => {
   const site = useLiveData("site");
   const sectionRef = useRef(null);
 
-  const edition = site?.edition ?? "7th Annual Dalleo Open";
+  const edition = site?.edition ?? "8th Annual Dalleo Open";
   const editionLabel = edition.replace(/dalleo open/i, "").trim() || edition;
 
   // Scroll parallax — giant masthead word drifts as you leave the hero.

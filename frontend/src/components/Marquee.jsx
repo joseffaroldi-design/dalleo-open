@@ -4,8 +4,8 @@ import { useLiveData } from "@/data/useLiveData";
 export const Marquee = () => {
   const site = useLiveData("site");
   const items = [
-    site?.edition ?? "7th Annual Dalleo Open",
-    "September 5, 2026",
+    site?.edition ?? "8th Annual Dalleo Open",
+    "September 4, 2027",
     "In Memory of Brandon Dalleo",
     "Four-Person Scramble Championship",
     "8 Teams · One Round · Lowest Score Wins",
