@@ -1,14 +1,12 @@
-import { useLiveData } from "@/data/useLiveData";
-
-// One slow editorial marquee — tournament journal masthead band.
+// One slow editorial marquee — permanent 2026 tournament record.
 export const Marquee = () => {
-  const site = useLiveData("site");
   const items = [
-    site?.edition ?? "7th Annual Dalleo Open",
-    "September 5, 2026",
+    "7th Annual Dalleo Open",
+    "2026 Champions · Team Martin",
+    "69 · −3 · Won by 2",
+    "September 5, 2026 · LA Tour",
+    "144 of 144 Scores Captured",
     "In Memory of Brandon Dalleo",
-    "Four-Person Scramble Championship",
-    "8 Teams · One Round · Lowest Score Wins",
   ];
 
   const row = (hidden) => (
