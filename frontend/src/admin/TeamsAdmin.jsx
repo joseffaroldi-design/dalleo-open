@@ -20,7 +20,7 @@ export default function TeamsAdmin() {
 
   useEffect(() => {
     let active = true;
-    adminFetch("/admin/players")
+    adminFetch("/admin/tournaments/players")
       .then((res) => active && setArchivedPlayers(res.players ?? []))
       .catch(() => {});
     return () => { active = false; };
