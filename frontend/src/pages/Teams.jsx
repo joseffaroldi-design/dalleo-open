@@ -5,6 +5,9 @@ import { TeamsEmptyState } from "@/components/teams/TeamsEmptyState";
 
 export default function Teams() {
   const live = useLiveData("teams");
+  const site = useLiveData("site");
+  const liveYear = Number(live?.year);
+  const displayEdition = liveYear ? `${site?.edition ?? "Dalleo Open"} · ${liveYear}` : "7th Annual Dalleo Open · 2026";
   const announced = live ? live.published : TEAMS_ANNOUNCED;
   const teams = (live ? live.items : TEAMS)
     .filter((t) => t.active !== false)
@@ -16,7 +19,7 @@ export default function Teams() {
           Teams
         </h1>
         <p className="mt-3 text-base font-semibold text-charcoal/60 sm:text-lg">
-          7th Annual Dalleo Open &middot; 2026
+          {displayEdition}
         </p>
         <p className="mt-2 text-base leading-relaxed text-charcoal/60">
           Meet this year&rsquo;s captains and tournament teams.
