@@ -41,8 +41,9 @@ def test_next_year_teams_clear_rosters_pairings_and_team_photos():
             }
         ],
     }
-    result = _next_teams(teams)
+    result = _next_teams(teams, 2027)
     team = result["items"][0]
+    assert result["year"] == 2027
     assert result["published"] is False
     assert team["name"] == "Team 1"
     assert team["captain"] == "TBD"
@@ -61,7 +62,8 @@ def test_next_year_scoring_is_clean_but_keeps_course_setup():
         "scores": [{"teamId": "t1", "hole": 1, "strokes": 4}],
         "updatedAt": "old",
     }
-    result = _next_scoring(scoring)
+    result = _next_scoring(scoring, 2027)
+    assert result["year"] == 2027
     assert result["status"] == "not-started"
     assert result["scores"] == []
     assert result["par"] == [4] * 18
@@ -81,6 +83,7 @@ def test_next_year_site_and_rules_advance_without_publishing_old_rules():
     assert next_site["year"] == "2028"
     assert next_site["edition"] == "9th Annual Dalleo Open"
     assert next_site["dateText"] == "Tournament date to be announced"
+    assert next_rules["year"] == 2028
     assert next_rules["published"] is False
     assert next_rules["approved"] is False
     assert next_rules["edition"] == "9th Annual Dalleo Open · 2028"
