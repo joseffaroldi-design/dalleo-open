@@ -10,6 +10,7 @@ import { CourseCard } from "@/components/schedule/CourseCard";
 
 export default function Schedule() {
   const live = useLiveData("schedule");
+  const site = useLiveData("site");
   const [now, setNow] = useState(() => new Date());
   useEffect(() => {
     const id = setInterval(() => setNow(new Date()), 60000);
@@ -29,7 +30,9 @@ export default function Schedule() {
     let currentEvent = null;
     for (const day of DAYS) {
       grouped[day.id] = grouped[day.id].map((e) => {
-        const displayStatus = getAutoStatus(e, grouped[day.id], now);
+        const displayStatus = live?.year && Number(live.year) !== 2026
+          ? e.status
+          : getAutoStatus(e, grouped[day.id], now);
         if (displayStatus === "happening-now" && !currentEvent) {
           currentEvent = { day, event: e };
         }
@@ -57,7 +60,7 @@ export default function Schedule() {
           Never wonder where you&rsquo;re supposed to be.
         </p>
         <p className="mt-2 inline-block rounded-full bg-forest-mist px-4 py-1.5 text-sm font-bold text-forest">
-          {TOURNAMENT_DATES_TEXT}
+          {live?.year && String(live.year) === String(site?.year) ? site?.dateText : TOURNAMENT_DATES_TEXT}
         </p>
       </header>
 

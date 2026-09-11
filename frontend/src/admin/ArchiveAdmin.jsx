@@ -1,22 +1,8 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { adminFetch } from "@/lib/api";
-
-const ARCHIVE_DOMAINS = [
-  "announcements",
-  "teams",
-  "schedule",
-  "gallery",
-  "site",
-  "rules",
-  "champions",
-  "scoring",
-  "course",
-  "committee",
-];
 
 const inputCls =
   "w-full rounded-xl border border-border bg-white px-4 py-3 text-base text-charcoal shadow-sm focus:border-forest";
-
 const buttonCls =
   "min-h-12 rounded-full bg-forest px-6 py-3 text-sm font-extrabold text-cream disabled:cursor-not-allowed disabled:opacity-50";
 
@@ -32,166 +18,73 @@ function downloadJson(filename, payload) {
   URL.revokeObjectURL(url);
 }
 
-function buildPlayerLibrary(teams) {
-  const map = new Map();
-  for (const team of teams?.items ?? []) {
-    for (const player of team.players ?? []) {
-      const name = (player.name ?? "").trim();
-      if (!name) continue;
-      const key = name.toLowerCase();
-      const existing = map.get(key) ?? { name, photoUrl: null, appearances: [] };
-      if (!existing.photoUrl && player.photoUrl) existing.photoUrl = player.photoUrl;
-      existing.appearances.push({ teamId: team.id, teamName: team.name });
-      map.set(key, existing);
-    }
-  }
-  return [...map.values()].sort((a, b) => a.name.localeCompare(b.name));
-}
-
 export default function ArchiveAdmin() {
-  const [domains, setDomains] = useState(null);
-  const [archiveYear, setArchiveYear] = useState("2026");
-  const [nextYear, setNextYear] = useState("2027");
-  const [confirmText, setConfirmText] = useState("");
-  const [loading, setLoading] = useState(true);
+  const [state, setState] = useState(null);
+  const [confirmArchive, setConfirmArchive] = useState("");
+  const [confirmStart, setConfirmStart] = useState("");
   const [working, setWorking] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
 
   const load = async () => {
-    setLoading(true);
     setError("");
     try {
-      const entries = await Promise.all(
-        ARCHIVE_DOMAINS.map(async (domain) => {
-          const res = await adminFetch(`/admin/${domain}`);
-          return [domain, res.data ?? null];
-        })
-      );
-      setDomains(Object.fromEntries(entries));
+      setState(await adminFetch("/admin/tournaments/years"));
     } catch (e) {
       setError(e.message);
-    } finally {
-      setLoading(false);
     }
   };
 
-  useEffect(() => {
-    load();
-  }, []);
+  useEffect(() => { load(); }, []);
 
-  const playerLibrary = useMemo(() => buildPlayerLibrary(domains?.teams), [domains]);
-  const archives = domains?.site?.archives ?? [];
-  const archiveExists = archives.some((a) => String(a.year) === String(archiveYear));
+  if (!state && !error) {
+    return <p className="py-16 text-center text-sm font-semibold text-charcoal/50">Loading tournament years…</p>;
+  }
 
-  const snapshot = useMemo(() => {
-    if (!domains) return null;
-    const cleanSite = { ...(domains.site ?? {}) };
-    delete cleanSite.archives;
-    delete cleanSite.playerLibrary;
-    return {
-      version: 1,
-      year: Number(archiveYear),
-      archivedAt: new Date().toISOString(),
-      playerLibrary,
-      domains: { ...domains, site: cleanSite },
-    };
-  }, [domains, archiveYear, playerLibrary]);
+  const currentYear = Number(state?.currentYear || 0);
+  const nextYear = currentYear + 1;
+  const currentArchive = state?.archives?.find((a) => Number(a.year) === currentYear);
 
-  const exportSnapshot = () => {
-    if (!snapshot) return;
-    downloadJson(`dalleo-open-${archiveYear}-archive.json`, snapshot);
-  };
-
-  const saveArchive = async () => {
-    if (!snapshot || archiveExists) return;
-    setWorking(true);
-    setError("");
-    setMessage("");
+  const archiveCurrent = async () => {
+    setWorking(true); setError(""); setMessage("");
     try {
-      const previousLibrary = domains.site?.playerLibrary ?? [];
-      const merged = new Map(previousLibrary.map((p) => [p.name.toLowerCase(), p]));
-      for (const player of playerLibrary) {
-        const key = player.name.toLowerCase();
-        const prior = merged.get(key) ?? {};
-        merged.set(key, {
-          ...prior,
-          ...player,
-          photoUrl: prior.photoUrl || player.photoUrl || null,
-          archivedYears: [...new Set([...(prior.archivedYears ?? []), Number(archiveYear)])],
-        });
-      }
-
-      const archiveRecord = { ...snapshot, locked: true };
-      const nextSite = {
-        ...(domains.site ?? {}),
-        archives: [...archives, archiveRecord],
-        playerLibrary: [...merged.values()].sort((a, b) => a.name.localeCompare(b.name)),
-      };
-      await adminFetch("/admin/site", {
-        method: "PUT",
-        body: JSON.stringify({ data: nextSite }),
+      await adminFetch("/admin/tournaments/archive", {
+        method: "POST",
+        body: JSON.stringify({ year: currentYear, confirmation: confirmArchive }),
       });
-      downloadJson(`dalleo-open-${archiveYear}-archive.json`, archiveRecord);
-      setDomains((d) => ({ ...d, site: nextSite }));
-      setMessage(`${archiveYear} archived and locked. A backup JSON file was also downloaded.`);
-    } catch (e) {
-      setError(e.message);
-    } finally {
-      setWorking(false);
-    }
+      setConfirmArchive("");
+      setMessage(`${currentYear} is archived and locked.`);
+      await load();
+    } catch (e) { setError(e.message); }
+    finally { setWorking(false); }
   };
 
-  const rollover = async () => {
-    if (!domains || !archiveExists || confirmText !== `START ${nextYear}`) return;
-    setWorking(true);
-    setError("");
-    setMessage("");
+  const startNext = async () => {
+    setWorking(true); setError(""); setMessage("");
     try {
-      const teams = {
-        ...(domains.teams ?? {}),
-        published: false,
-        items: (domains.teams?.items ?? []).map((team) => ({
-          ...team,
-          startingHole: null,
-          startingHoleLabel: null,
-          startingTime: null,
-        })),
-      };
-      const scoring = {
-        ...(domains.scoring ?? {}),
-        status: "not-started",
-        scores: [],
-        updatedAt: new Date().toISOString(),
-      };
-      const site = {
-        ...(domains.site ?? {}),
-        year: String(nextYear),
-        currentTournamentYear: Number(nextYear),
-      };
-
-      // The old season is already persisted in site.archives before these live docs change.
-      await adminFetch("/admin/teams", { method: "PUT", body: JSON.stringify({ data: teams }) });
-      await adminFetch("/admin/scoring", { method: "PUT", body: JSON.stringify({ data: scoring }) });
-      await adminFetch("/admin/site", { method: "PUT", body: JSON.stringify({ data: site }) });
-
-      setDomains((d) => ({ ...d, teams, scoring, site }));
-      setConfirmText("");
-      setMessage(`${nextYear} workspace prepared. Player names and photos were retained; pairings and scores were cleared.`);
-    } catch (e) {
-      setError(e.message);
-    } finally {
-      setWorking(false);
-    }
+      await adminFetch("/admin/tournaments/rollover", {
+        method: "POST",
+        body: JSON.stringify({ fromYear: currentYear, toYear: nextYear, confirmation: confirmStart }),
+      });
+      setConfirmStart("");
+      setMessage(`${nextYear} tournament workspace is ready.`);
+      await load();
+    } catch (e) { setError(e.message); }
+    finally { setWorking(false); }
   };
 
-  if (loading) return <p className="py-16 text-center text-sm font-semibold text-charcoal/50">Loading archive data…</p>;
+  const exportYear = async (year) => {
+    try {
+      const res = await adminFetch(`/admin/tournaments/year/${year}`);
+      downloadJson(`dalleo-open-${year}-archive.json`, res.archive);
+    } catch (e) { setError(e.message); }
+  };
 
   return (
     <div data-testid="archive-admin">
-      <h1 className="text-2xl font-extrabold tracking-tight text-forest sm:text-3xl">Tournament Archive & Yearly Rollover</h1>
+      <h1 className="text-2xl font-extrabold tracking-tight text-forest sm:text-3xl">Tournament Years</h1>
       <p className="mt-2 max-w-3xl text-sm leading-6 text-charcoal/60">
-        Archive first, then start the next tournament. Archived seasons are stored inside the site data and a backup JSON is downloaded. Uploaded images are referenced by their existing URLs; no media is deleted.
+        Close a completed tournament, preserve its official record, then prepare the next year. Historical data is never deleted by this workflow.
       </p>
 
       {error && <div className="mt-5 rounded-2xl bg-red-50 p-4 text-sm font-bold text-red-700">{error}</div>}
@@ -199,68 +92,66 @@ export default function ArchiveAdmin() {
 
       <div className="mt-8 grid gap-6">
         <section className="rounded-3xl bg-white p-6 shadow-sm ring-1 ring-border sm:p-8">
-          <h2 className="text-xl font-extrabold text-forest">1. Archive completed tournament</h2>
-          <p className="mt-1 text-sm text-charcoal/60">Creates a permanent snapshot before any live tournament data changes.</p>
-          <div className="mt-6 grid gap-4 sm:grid-cols-2">
-            <label className="block">
-              <span className="text-sm font-bold text-charcoal">Tournament year</span>
-              <input className={`${inputCls} mt-1.5`} value={archiveYear} onChange={(e) => setArchiveYear(e.target.value.replace(/\D/g, "").slice(0, 4))} />
-            </label>
-            <div className="rounded-2xl bg-cream p-4 text-sm text-charcoal/70">
-              <div><strong>{domains?.teams?.items?.length ?? 0}</strong> teams</div>
-              <div><strong>{playerLibrary.length}</strong> reusable player records</div>
-              <div><strong>{domains?.scoring?.scores?.length ?? 0}</strong> saved hole scores</div>
-              <div><strong>{domains?.gallery?.items?.length ?? 0}</strong> gallery records</div>
+          <div className="flex flex-wrap items-start justify-between gap-4">
+            <div>
+              <p className="text-xs font-bold uppercase tracking-[0.18em] text-gold-deep">Current Tournament</p>
+              <h2 className="mt-2 text-2xl font-extrabold text-forest">{currentYear || "—"}</h2>
             </div>
-          </div>
-          <div className="mt-6 flex flex-wrap gap-3">
-            <button type="button" className={buttonCls} onClick={exportSnapshot}>Download backup only</button>
-            <button type="button" className={buttonCls} disabled={working || archiveExists || archiveYear.length !== 4} onClick={saveArchive}>
-              {archiveExists ? `${archiveYear} already archived` : working ? "Archiving…" : `Archive ${archiveYear}`}
-            </button>
+            <span className="rounded-full bg-forest/10 px-4 py-2 text-sm font-bold text-forest">Current</span>
           </div>
         </section>
 
         <section className="rounded-3xl bg-white p-6 shadow-sm ring-1 ring-border sm:p-8">
-          <h2 className="text-xl font-extrabold text-forest">2. Start next tournament</h2>
+          <h2 className="text-xl font-extrabold text-forest">Close {currentYear}</h2>
           <p className="mt-1 text-sm text-charcoal/60">
-            Only available after the completed year is archived. This keeps player names/photos and team records, but clears shotgun assignments and hole scores and sets scoring to Not Started.
+            Creates a locked snapshot of teams, rosters, scores, standings data, rules, schedule, announcements, gallery references, champions, course and committee data. Player names and photo references are also saved for reuse.
           </p>
-          <div className="mt-6 grid gap-4 sm:grid-cols-2">
-            <label className="block">
-              <span className="text-sm font-bold text-charcoal">Next tournament year</span>
-              <input className={`${inputCls} mt-1.5`} value={nextYear} onChange={(e) => setNextYear(e.target.value.replace(/\D/g, "").slice(0, 4))} />
-            </label>
-            <div className="rounded-2xl border border-gold/30 bg-gold/5 p-4 text-sm text-charcoal/70">
-              <strong>Will retain:</strong> names, player photos, team photos, gallery media, champions, course and committee data.<br />
-              <strong>Will reset:</strong> 18-hole scores, scoring status and shotgun starting assignments. Teams become unpublished until reviewed.
-            </div>
-          </div>
+          {currentArchive ? (
+            <div className="mt-5 rounded-2xl bg-cream p-4 text-sm font-bold text-forest">{currentYear} is already archived.</div>
+          ) : (
+            <>
+              <label className="mt-6 block">
+                <span className="text-sm font-bold text-charcoal">Confirmation</span>
+                <span className="mt-1 block text-xs text-charcoal/50">Type ARCHIVE {currentYear} exactly.</span>
+                <input className={`${inputCls} mt-1.5`} value={confirmArchive} onChange={(e) => setConfirmArchive(e.target.value.toUpperCase())} placeholder={`ARCHIVE ${currentYear}`} />
+              </label>
+              <button type="button" className={`${buttonCls} mt-5`} disabled={working || confirmArchive !== `ARCHIVE ${currentYear}`} onClick={archiveCurrent}>
+                {working ? "Working…" : `Archive ${currentYear}`}
+              </button>
+            </>
+          )}
+        </section>
 
+        <section className="rounded-3xl bg-white p-6 shadow-sm ring-1 ring-border sm:p-8">
+          <h2 className="text-xl font-extrabold text-forest">Start {nextYear}</h2>
+          <p className="mt-1 text-sm text-charcoal/60">
+            Available only after {currentYear} is archived. The next workspace keeps the player library, gallery, champions, course, committee and branding while clearing active rosters, scores, pairings, schedule, announcements and captain PINs. Rules remain as an unpublished draft for review.
+          </p>
           <label className="mt-6 block">
             <span className="text-sm font-bold text-charcoal">Confirmation</span>
             <span className="mt-1 block text-xs text-charcoal/50">Type START {nextYear} exactly.</span>
-            <input className={`${inputCls} mt-1.5`} value={confirmText} onChange={(e) => setConfirmText(e.target.value.toUpperCase())} placeholder={`START ${nextYear}`} />
+            <input className={`${inputCls} mt-1.5`} value={confirmStart} onChange={(e) => setConfirmStart(e.target.value.toUpperCase())} placeholder={`START ${nextYear}`} />
           </label>
-          <button
-            type="button"
-            className={`${buttonCls} mt-6`}
-            disabled={working || !archiveExists || nextYear.length !== 4 || confirmText !== `START ${nextYear}`}
-            onClick={rollover}
-          >
-            {working ? "Preparing…" : `Prepare ${nextYear} Tournament`}
+          <button type="button" className={`${buttonCls} mt-5`} disabled={working || !currentArchive || confirmStart !== `START ${nextYear}`} onClick={startNext}>
+            {working ? "Working…" : `Prepare ${nextYear} Tournament`}
           </button>
-          {!archiveExists && <p className="mt-3 text-xs font-bold text-red-700">Archive {archiveYear} first. Rollover is intentionally locked until an archive exists.</p>}
+          {!currentArchive && <p className="mt-3 text-xs font-bold text-red-700">Archive {currentYear} first. The rollover stays locked until that archive exists.</p>}
         </section>
 
         <section className="rounded-3xl bg-white p-6 shadow-sm ring-1 ring-border sm:p-8">
-          <h2 className="text-xl font-extrabold text-forest">Archived years</h2>
-          <div className="mt-4 flex flex-wrap gap-2">
-            {archives.length ? archives.slice().sort((a, b) => Number(b.year) - Number(a.year)).map((archive) => (
-              <span key={archive.year} className="rounded-full bg-forest/10 px-4 py-2 text-sm font-bold text-forest">
-                {archive.year} · locked
-              </span>
-            )) : <span className="text-sm text-charcoal/50">No database archives created yet.</span>}
+          <h2 className="text-xl font-extrabold text-forest">Archived Years</h2>
+          <div className="mt-5 grid gap-3">
+            {state?.archives?.length ? state.archives.map((archive) => (
+              <div key={archive.year} className="flex flex-wrap items-center justify-between gap-3 rounded-2xl bg-cream p-4">
+                <div>
+                  <p className="font-extrabold text-forest">{archive.year} · Final Archive</p>
+                  <p className="mt-1 text-xs text-charcoal/60">
+                    {archive.teamCount} teams · {archive.scoreCount} saved hole scores{archive.champion?.teamName ? ` · Champion: ${archive.champion.teamName}` : ""}
+                  </p>
+                </div>
+                <button type="button" onClick={() => exportYear(archive.year)} className="rounded-full bg-white px-4 py-2 text-xs font-extrabold text-forest ring-1 ring-border">Download JSON</button>
+              </div>
+            )) : <p className="text-sm text-charcoal/50">No archived tournament years yet.</p>}
           </div>
         </section>
       </div>

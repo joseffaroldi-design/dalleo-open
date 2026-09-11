@@ -10,11 +10,13 @@ const ARCHIVE_RECAP = {
   priority: "important",
 };
 
-const is2027 = (item) => /2027/.test(`${item.title} ${item.date} ${item.body}`);
+const isYear = (item, year) => year && new RegExp(`\\b${year}\\b`).test(`${item.title} ${item.date} ${item.body}`);
 const isArchiveRecap = (item) => /Team Martin/i.test(item.title) && /2026/.test(`${item.title} ${item.date} ${item.body}`);
 
 export const Announcements = () => {
   const live = useLiveData("announcements");
+  const site = useLiveData("site");
+  const currentYear = String(live?.year ?? site?.year ?? "");
   const published = live?.items
     ?.filter((a) => a.published)
     .map((a) => ({ title: a.title, date: a.date, body: a.message, priority: a.priority })) ?? [];
@@ -24,9 +26,9 @@ export const Announcements = () => {
   const items = allItems
     .map((item, index) => ({ item, index }))
     .sort((a, b) => {
-      const a2027 = is2027(a.item) ? 1 : 0;
-      const b2027 = is2027(b.item) ? 1 : 0;
-      if (a2027 !== b2027) return b2027 - a2027;
+      const aCurrent = isYear(a.item, currentYear) ? 1 : 0;
+      const bCurrent = isYear(b.item, currentYear) ? 1 : 0;
+      if (aCurrent !== bCurrent) return bCurrent - aCurrent;
       const aRecap = isArchiveRecap(a.item) ? 1 : 0;
       const bRecap = isArchiveRecap(b.item) ? 1 : 0;
       if (aRecap !== bRecap) return bRecap - aRecap;

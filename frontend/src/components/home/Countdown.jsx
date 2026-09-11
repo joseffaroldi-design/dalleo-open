@@ -1,17 +1,30 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
-// Countdown to the 8th Annual Dalleo Open — Saturday, September 4, 2027 (shotgun start 8:00 AM).
-const TARGET = new Date("2027-09-04T08:00:00");
+const MONTHS = {
+  january: 0, february: 1, march: 2, april: 3, may: 4, june: 5,
+  july: 6, august: 7, september: 8, october: 9, november: 10, december: 11,
+};
 
-export const Countdown = () => {
+const tournamentTarget = (dateText) => {
+  const match = /([A-Za-z]+)\s+(\d{1,2}),\s*(\d{4})/.exec(dateText ?? "");
+  if (!match) return null;
+  const month = MONTHS[match[1].toLowerCase()];
+  if (month === undefined) return null;
+  return new Date(Number(match[3]), month, Number(match[2]), 8, 0, 0);
+};
+
+export const Countdown = ({ dateText }) => {
   const [now, setNow] = useState(() => Date.now());
+  const target = useMemo(() => tournamentTarget(dateText), [dateText]);
 
   useEffect(() => {
     const id = setInterval(() => setNow(Date.now()), 1000);
     return () => clearInterval(id);
   }, []);
 
-  const diff = Math.max(0, TARGET.getTime() - now);
+  if (!target) return null;
+
+  const diff = Math.max(0, target.getTime() - now);
   const units = [
     ["Days", Math.floor(diff / 86400000)],
     ["Hours", Math.floor(diff / 3600000) % 24],
@@ -28,9 +41,7 @@ export const Countdown = () => {
       {units.map(([unit, value], i) => (
         <div
           key={unit}
-          className={`flex w-20 flex-col items-center px-3 sm:w-24 ${
-            i > 0 ? "border-l border-cream/15" : ""
-          }`}
+          className={`flex w-20 flex-col items-center px-3 sm:w-24 ${i > 0 ? "border-l border-cream/15" : ""}`}
         >
           <span
             data-testid={`countdown-${unit.toLowerCase()}`}
