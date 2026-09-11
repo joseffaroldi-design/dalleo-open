@@ -79,8 +79,9 @@ def _player_records(teams: dict | None, year: int) -> list[dict[str, Any]]:
     return list(records.values())
 
 
-def _next_teams(teams: dict | None) -> dict:
+def _next_teams(teams: dict | None, to_year: int) -> dict:
     result = deepcopy(teams or {"published": False, "items": []})
+    result["year"] = to_year
     result["published"] = False
     for index, team in enumerate(result.get("items", []), start=1):
         team["name"] = f"Team {index}"
@@ -106,6 +107,7 @@ def _next_site(site: dict, to_year: int) -> dict:
 
 def _next_rules(rules: dict | None, to_year: int) -> dict:
     result = deepcopy(rules or {})
+    result["year"] = to_year
     result["published"] = False
     result["approved"] = False
     if result.get("edition"):
@@ -113,8 +115,9 @@ def _next_rules(rules: dict | None, to_year: int) -> dict:
     return result
 
 
-def _next_scoring(scoring: dict | None) -> dict:
+def _next_scoring(scoring: dict | None, to_year: int) -> dict:
     result = deepcopy(scoring or {})
+    result["year"] = to_year
     result["status"] = "not-started"
     result["scores"] = []
     result["updatedAt"] = datetime.now(timezone.utc).isoformat()
@@ -234,10 +237,10 @@ def build_tournament_years_router(db, get_current_user: Callable, read_domain: C
         old_pin_attempts = [doc async for doc in db.login_attempts.find({"identifier": {"$regex": "^pin:"}})]
         now = datetime.now(timezone.utc).isoformat()
         next_docs = {
-            "teams": _next_teams(before.get("teams")),
-            "scoring": _next_scoring(before.get("scoring")),
-            "schedule": {"published": False, "events": []},
-            "announcements": {"items": []},
+            "teams": _next_teams(before.get("teams"), input.toYear),
+            "scoring": _next_scoring(before.get("scoring"), input.toYear),
+            "schedule": {"year": input.toYear, "published": False, "events": []},
+            "announcements": {"year": input.toYear, "items": []},
             "rules": _next_rules(before.get("rules"), input.toYear),
             "site": _next_site(before.get("site") or {}, input.toYear),
         }
