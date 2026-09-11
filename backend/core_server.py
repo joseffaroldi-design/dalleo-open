@@ -376,6 +376,7 @@ class Announcement(BaseModel):
 
 
 class AnnouncementsDoc(BaseModel):
+    year: Optional[int] = Field(None, ge=2000, le=2100)
     items: List[Announcement] = []
 
 
@@ -401,6 +402,7 @@ class TeamInput(BaseModel):
 
 
 class TeamsDoc(BaseModel):
+    year: Optional[int] = Field(None, ge=2000, le=2100)
     published: bool
     items: List[TeamInput] = Field(max_length=8)
 
@@ -419,6 +421,7 @@ class EventInput(BaseModel):
 
 
 class ScheduleDoc(BaseModel):
+    year: Optional[int] = Field(None, ge=2000, le=2100)
     published: bool
     events: List[EventInput]
 
@@ -488,6 +491,7 @@ class Topic(BaseModel):
 
 
 class RulesDoc(BaseModel):
+    year: Optional[int] = Field(None, ge=2000, le=2100)
     published: bool
     approved: bool
     header: TextPair = TextPair(title="Rules & Format", body="Tournament format and the rules every player should know.")
@@ -555,6 +559,7 @@ class HoleScore(BaseModel):
 
 
 class ScoringDoc(BaseModel):
+    year: Optional[int] = Field(None, ge=2000, le=2100)
     status: Literal["not-started", "live", "final", "test"]
     par: List[int] = Field(min_length=18, max_length=18)
     courseLabel: str = Field(default="", max_length=120)
@@ -643,8 +648,15 @@ async def admin_get(domain: str, user=Depends(get_current_user)):
 async def admin_put(domain: str, body: SaveInput, user=Depends(get_current_user)):
     if domain not in DOMAINS:
         raise HTTPException(status_code=404, detail="Unknown domain")
+    data = dict(body.data)
+    if domain in {"announcements", "teams", "schedule", "rules", "scoring"} and data.get("year") is None:
+        site = await read_domain("site")
+        try:
+            data["year"] = int((site or {}).get("year"))
+        except (TypeError, ValueError):
+            pass
     try:
-        validated = MODELS[domain](**body.data)
+        validated = MODELS[domain](**data)
     except ValidationError as e:
         first = e.errors()[0] if e.errors() else {}
         loc = ".".join(str(p) for p in first.get("loc", []))
