@@ -18,6 +18,7 @@ import { Reveal } from "@/components/motion/Reveal";
 export default function Leaderboard() {
   const scoring = useLiveData("scoring");
   const liveTeams = useLiveData("teams");
+  const site = useLiveData("site");
 
   useEffect(() => {
     trackEvent("leaderboard_view");
@@ -37,7 +38,10 @@ export default function Leaderboard() {
   const final = status === "final";
   const leader = standings.find((r) => r.position === 1);
   const updated = formatUpdatedAt(scoring?.updatedAt);
-  const heading = final ? "2026 Final Results" : started ? "Live Leaderboard" : "2027 Leaderboard";
+  const activeYear = Number(scoring?.year ?? site?.year ?? 2027);
+  const updatedYear = scoring?.updatedAt ? new Date(scoring.updatedAt).getFullYear() : NaN;
+  const finalYear = Number(scoring?.year) || (Number.isFinite(updatedYear) ? updatedYear : 2026);
+  const heading = final ? `${finalYear} Final Results` : started ? "Live Leaderboard" : `${activeYear} Leaderboard`;
 
   return (
     <div data-testid="leaderboard-page" className="mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-14">
@@ -85,7 +89,7 @@ export default function Leaderboard() {
                     <Trophy className="h-8 w-8" />
                   </span>
                   <p className="text-xs font-bold uppercase tracking-[0.3em] text-gold">
-                    2026 Dalleo Open Champion
+                    {finalYear} Dalleo Open Champion
                   </p>
                   <p className="font-display text-3xl font-semibold text-cream sm:text-4xl">
                     {leader.team.name}
