@@ -10,7 +10,11 @@ export const WeekendPreview = () => {
   const allEvents = live
     ? live.events
     : DAYS.flatMap((d) => SCHEDULE[d.id].map((e) => ({ ...e, day: d.id })));
-  const next = published ? getNextEvents(allEvents, 3) : [];
+  const next = published
+    ? (live?.year && Number(live.year) !== 2026
+        ? allEvents.filter((event) => event.status !== "completed").slice(0, 3)
+        : getNextEvents(allEvents, 3))
+    : [];
   if (next.length === 0) return null;
 
   const dayLabel = (id) => DAYS.find((d) => d.id === id)?.label ?? id;
