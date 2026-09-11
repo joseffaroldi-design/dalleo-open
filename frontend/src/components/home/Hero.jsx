@@ -10,11 +10,13 @@ export const Hero = () => {
   const site = useLiveData("site");
   const sectionRef = useRef(null);
 
-  // The public hero is intentionally pinned to the announced 8th Annual event.
-  // Older 2026 site records may still exist in the API, but must not regress the 2027 masthead.
-  const edition = "8th Annual Dalleo Open";
-  const editionLabel = "8th Annual";
-  const dateText = "Saturday, September 4, 2027";
+  // Legacy 2026 API data must not regress the announced 2027 masthead.
+  // Once the active site year is 2027+, the organizer-managed site record is authoritative.
+  const siteYear = Number(site?.year);
+  const useCurrentSite = Number.isFinite(siteYear) && siteYear >= 2027;
+  const edition = useCurrentSite ? site.edition : "8th Annual Dalleo Open";
+  const editionLabel = edition.replace(/\s+Dalleo Open$/, "");
+  const dateText = useCurrentSite ? site.dateText : "Saturday, September 4, 2027";
 
   const mx = useMotionValue(0);
   const my = useMotionValue(0);
@@ -114,7 +116,7 @@ export const Hero = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.9, delay: 0.85, ease: EASE }}
         >
-          <Countdown />
+          <Countdown dateText={dateText} />
         </motion.div>
       </motion.div>
 
