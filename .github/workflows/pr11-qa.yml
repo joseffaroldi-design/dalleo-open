@@ -22,7 +22,7 @@ jobs:
       - name: Run Tournament Years tests
         run: |
           cd backend
-          PYTHONPATH=. pytest -q tests/test_tournament_years.py -n 0
+          PYTHONPATH=. pytest -q tests/test_tournament_years.py tests/test_tournament_years_service.py -n 0
 
       - name: Verify backend entrypoint and Tournament Years routes
         env:
