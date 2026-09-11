@@ -20,10 +20,14 @@ const fromLive = (live) => ({
 
 export default function Rules() {
   const live = useLiveData("rules");
-  const usePublished2027 = Boolean(live?.published && /2027/.test(live?.edition ?? ""));
-  const published = usePublished2027 ? true : RULES_PUBLISHED;
-  const approved = usePublished2027 ? live.approved : RULES_APPROVED;
-  const R = usePublished2027 ? fromLive(live) : RULES;
+  const site = useLiveData("site");
+  const currentYear = String(site?.year ?? "");
+  const usePublishedCurrent = Boolean(
+    live?.published && currentYear && String(live?.year ?? live?.edition ?? "").includes(currentYear)
+  );
+  const published = usePublishedCurrent ? true : RULES_PUBLISHED;
+  const approved = usePublishedCurrent ? live.approved : RULES_APPROVED;
+  const R = usePublishedCurrent ? fromLive(live) : RULES;
 
   return (
     <div data-testid="rules-page" className="mx-auto max-w-4xl px-4 py-14 sm:px-6 sm:py-20">
